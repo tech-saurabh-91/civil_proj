@@ -3,6 +3,7 @@
 import { type ReactNode, createContext, useContext, useState, useEffect, useCallback, useRef } from 'react'
 import { Toaster } from 'sonner'
 import { SessionProvider as NextAuthSessionProvider } from 'next-auth/react'
+import { GpsTracker } from '@/components/gps-tracker'
 
 type Theme = 'light' | 'dark' | 'system'
 
@@ -98,6 +99,7 @@ export default function Providers({ children }: { children: ReactNode }) {
   return (
     <NextAuthSessionProvider>
       <ThemeProvider>
+        <GpsTracker />
         {children}
         <Toaster
           position="top-right"

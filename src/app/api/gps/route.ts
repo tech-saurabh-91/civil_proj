@@ -201,7 +201,7 @@ export async function POST(req: NextRequest) {
         where: {
           engineerId: userId,
           isDeleted: false,
-          status: { in: ['IN_PROGRESS', 'SCHEDULED'] },
+          status: { in: ['IN_PROGRESS', 'ASSIGNED'] as any },
           gpsLatitude: { not: null },
           gpsLongitude: { not: null },
         },
@@ -221,14 +221,14 @@ export async function POST(req: NextRequest) {
 
     const location = await db.gpsTracking.create({
       data: {
-        userId,
+        user: { connect: { id: userId } },
         latitude: lat,
         longitude: lng,
         accuracy: accuracy ? parseFloat(accuracy) : null,
         speed: speed ? parseFloat(speed) : null,
         batteryLevel: batteryLevel != null ? parseInt(batteryLevel) : null,
         isMoving,
-        projectId: assignedProjectId,
+        ...(assignedProjectId ? { project: { connect: { id: assignedProjectId } } } : {}),
       },
     })
 

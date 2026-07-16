@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
         take: limit,
         orderBy: { createdAt: 'desc' },
         include: {
-          client: { select: { companyName: true, contactPerson: true } },
+          client: { select: { companyName: true, contactPerson: true, id: true } },
           manager: { select: { firstName: true, lastName: true } },
           _count: { select: { surveys: true, boqItems: true } },
         },
@@ -52,18 +52,24 @@ export async function GET(request: NextRequest) {
         type: p.type,
         status: p.status,
         budget: p.budget,
+        spent: p.actualCost || 0,
         actualCost: p.actualCost,
         startDate: p.startDate,
         endDate: p.endDate,
         address: p.address,
         city: p.city,
         state: p.state,
+        area: p.area || 0,
+        floors: p.floors || 0,
         clientId: p.clientId,
         clientName: p.client?.companyName || '',
         managerId: p.managerId,
         managerName: p.manager
           ? `${p.manager.firstName} ${p.manager.lastName}`
           : 'Unassigned',
+        managerInitials: p.manager
+          ? `${p.manager.firstName[0]}${p.manager.lastName[0]}`
+          : 'NA',
         progress:
           p.status === 'COMPLETED'
             ? 100
@@ -117,6 +123,19 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    const typeMap: Record<string, string> = {
+      'residential': 'RESIDENTIAL', 'residential tower': 'RESIDENTIAL',
+      'commercial': 'COMMERCIAL', 'commercial complex': 'COMMERCIAL',
+      'industrial': 'INDUSTRIAL',
+      'infrastructure': 'INFRASTRUCTURE', 'highway': 'INFRASTRUCTURE', 'bridge': 'INFRASTRUCTURE',
+      'interior': 'INTERIOR',
+      'mep': 'MEP',
+      'renovation': 'RENOVATION',
+    }
+    const validTypes = ['RESIDENTIAL', 'COMMERCIAL', 'INDUSTRIAL', 'INFRASTRUCTURE', 'INTERIOR', 'MEP', 'RENOVATION']
+    let normalizedType = typeMap[type?.toLowerCase() || ''] || type || 'RESIDENTIAL'
+    if (!validTypes.includes(normalizedType)) normalizedType = 'RESIDENTIAL'
+
     const projectCode = code || `PRJ-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 999) + 1).padStart(3, '0')}`
 
     const existing = await db.project.findUnique({ where: { code: projectCode } })
@@ -127,22 +146,38 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    let lat = latitude ? parseFloat(latitude) : null
+    let lng = longitude ? parseFloat(longitude) : null
+
+    if ((!lat || !lng) && city) {
+      try {
+        const geoRes = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(city + ', India')}&limit=1`, {
+          headers: { 'User-Agent': 'BuildSurveyPro/1.0' },
+        })
+        const geoData = await geoRes.json()
+        if (geoData.length > 0) {
+          lat = parseFloat(geoData[0].lat)
+          lng = parseFloat(geoData[0].lon)
+        }
+      } catch {}
+    }
+
     const project = await db.project.create({
       data: {
         name,
         code: projectCode,
         description: description || null,
-        type: type || 'RESIDENTIAL',
-        clientId,
-        managerId: managerId || null,
+        type: normalizedType as any,
+        client: { connect: { id: clientId } },
+        ...(managerId ? { manager: { connect: { id: managerId } } } : {}),
         startDate: startDate ? new Date(startDate) : null,
         endDate: endDate ? new Date(endDate) : null,
         budget: budget ? parseFloat(budget) : null,
         address: address || null,
         city: city || null,
         state: state || null,
-        latitude: latitude ? parseFloat(latitude) : null,
-        longitude: longitude ? parseFloat(longitude) : null,
+        latitude: lat,
+        longitude: lng,
         area: area ? parseFloat(area) : null,
         floors: floors ? parseInt(floors) : null,
       },

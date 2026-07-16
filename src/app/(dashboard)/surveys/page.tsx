@@ -1,219 +1,330 @@
-"use client"
+'use client'
 
-import { useState, useMemo } from "react"
-import Link from "next/link"
+import React, { useState, useMemo, useEffect, useCallback } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 import {
-  Plus, Search, MapPin, Eye, Edit, Trash2, Copy,
-  MoreHorizontal, Calendar, ClipboardCheck, FileText,
-  Download, ChevronDown, ChevronLeft, ChevronRight,
-  CheckSquare, CircleDot, Clock, Users, Timer, X
-} from "lucide-react"
-import { PageHeader } from "@/components/ui/page-header"
-import { StatCard } from "@/components/ui/stat-card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Card, CardContent } from "@/components/ui/card"
-import { StatusBadge } from "@/components/ui/status-badge"
-import { Checkbox } from "@/components/ui/checkbox"
+  AlertTriangle, ArrowLeft, Camera, CheckCircle2, ChevronDown, ChevronLeft, ChevronRight,
+  ClipboardClock, Clock, Download, FileText, Filter, Image as ImageIcon,
+  LayoutGrid, MapPin, Mic, MoreHorizontal, Navigation, Plus, Search,
+  TableIcon, X, Zap, Eye, Play, FileDown, Share2, Map,
+  CheckSquare, Calendar, Users, Trash2, Loader2, Send, PlayCircle,
+} from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { Checkbox } from '@/components/ui/checkbox'
+import { PageHeader } from '@/components/ui/page-header'
+import { StatCard } from '@/components/ui/stat-card'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Badge } from '@/components/ui/badge'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Card, CardContent } from '@/components/ui/card'
+import { Progress } from '@/components/ui/progress'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip'
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
-} from "@/components/ui/table"
+} from '@/components/ui/table'
 import {
-  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu"
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
-} from "@/components/ui/select"
-import { EmptyState } from "@/components/ui/empty-state"
+} from '@/components/ui/select'
+import { EmptyState } from '@/components/ui/empty-state'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog'
+import { toast } from 'sonner'
 
-interface Survey {
+interface SurveyData {
   id: string
   title: string
+  description: string | null
   project: string
+  projectId: string
   type: string
   status: string
-  engineer: { name: string; avatar: string; initials: string } | null
+  engineer: { id: string; name: string; email: string; initials: string } | null
   scheduledDate: string
   hasGps: boolean
+  gpsLatitude: number | null
+  gpsLongitude: number | null
   duration: string | null
-  priority: string
+  checklistTotal: number
+  checklistCompleted: number
+  photoCount: number
+  voiceNoteCount: number
+  videoCount: number
+  siteVisitCount: number
+  weatherCondition: string | null
+  siteCondition: string | null
+  notes: string | null
+  createdAt: string
 }
 
-const mockSurveys: Survey[] = [
-  { id: "SUR-001", title: "Foundation Inspection - Phase 1", project: "Riverside Tower Complex", type: "Initial", status: "completed", engineer: { name: "Rajesh Kumar", avatar: "", initials: "RK" }, scheduledDate: "2026-07-01", hasGps: true, duration: "4h 30m", priority: "high" },
-  { id: "SUR-002", title: "Electrical Systems Audit", project: "Green Valley Office Park", type: "Detailed", status: "in_progress", engineer: { name: "Priya Sharma", avatar: "", initials: "PS" }, scheduledDate: "2026-07-05", hasGps: true, duration: null, priority: "medium" },
-  { id: "SUR-003", title: "Plumbing Network Assessment", project: "Metro Residential Towers", type: "Follow-up", status: "pending", engineer: { name: "Amit Patel", avatar: "", initials: "AP" }, scheduledDate: "2026-07-10", hasGps: false, duration: null, priority: "low" },
-  { id: "SUR-004", title: "Fire Safety Compliance Check", project: "Downtown Mall Expansion", type: "Final", status: "approved", engineer: { name: "Neha Gupta", avatar: "", initials: "NG" }, scheduledDate: "2026-06-28", hasGps: true, duration: "3h 15m", priority: "high" },
-  { id: "SUR-005", title: "Environmental Impact Survey", project: "Lakeside Villa Community", type: "Initial", status: "draft", engineer: null, scheduledDate: "2026-07-15", hasGps: false, duration: null, priority: "low" },
-  { id: "SUR-006", title: "Interior Finishing Quality Check", project: "Riverside Tower Complex", type: "As-Built", status: "in_progress", engineer: { name: "Rajesh Kumar", avatar: "", initials: "RK" }, scheduledDate: "2026-07-08", hasGps: true, duration: null, priority: "medium" },
-  { id: "SUR-007", title: "Structural Integrity Assessment", project: "Heritage Building Renovation", type: "Detailed", status: "under_review", engineer: { name: "Suresh Reddy", avatar: "", initials: "SR" }, scheduledDate: "2026-07-02", hasGps: true, duration: "6h 00m", priority: "critical" },
-  { id: "SUR-008", title: "HVAC System Inspection", project: "Green Valley Office Park", type: "Follow-up", status: "assigned", engineer: { name: "Priya Sharma", avatar: "", initials: "PS" }, scheduledDate: "2026-07-12", hasGps: false, duration: null, priority: "medium" },
-  { id: "SUR-009", title: "Site Drainage Assessment", project: "Metro Residential Towers", type: "Initial", status: "completed", engineer: { name: "Amit Patel", avatar: "", initials: "AP" }, scheduledDate: "2026-06-25", hasGps: true, duration: "2h 45m", priority: "low" },
-  { id: "SUR-010", title: "Elevator Installation Survey", project: "Downtown Mall Expansion", type: "As-Built", status: "assigned", engineer: { name: "Neha Gupta", avatar: "", initials: "NG" }, scheduledDate: "2026-07-14", hasGps: false, duration: null, priority: "high" },
-  { id: "SUR-011", title: "Roofing Material Inspection", project: "Heritage Building Renovation", type: "Detailed", status: "in_progress", engineer: { name: "Suresh Reddy", avatar: "", initials: "SR" }, scheduledDate: "2026-07-06", hasGps: true, duration: null, priority: "medium" },
-  { id: "SUR-012", title: "Water Supply Network Audit", project: "Lakeside Villa Community", type: "Follow-up", status: "pending", engineer: { name: "Rajesh Kumar", avatar: "", initials: "RK" }, scheduledDate: "2026-07-18", hasGps: false, duration: null, priority: "low" },
-  { id: "SUR-013", title: "Parking Structure Assessment", project: "Riverside Tower Complex", type: "Final", status: "completed", engineer: { name: "Priya Sharma", avatar: "", initials: "PS" }, scheduledDate: "2026-06-20", hasGps: true, duration: "5h 15m", priority: "high" },
-  { id: "SUR-014", title: "Storm Water Management Survey", project: "Green Valley Office Park", type: "Initial", status: "rejected", engineer: { name: "Amit Patel", avatar: "", initials: "AP" }, scheduledDate: "2026-07-03", hasGps: true, duration: "3h 00m", priority: "medium" },
-  { id: "SUR-015", title: "Facade Inspection - East Wing", project: "Downtown Mall Expansion", type: "Detailed", status: "draft", engineer: null, scheduledDate: "2026-07-20", hasGps: false, duration: null, priority: "low" },
-  { id: "SUR-016", title: "Landscaping Irrigation Survey", project: "Lakeside Villa Community", type: "As-Built", status: "scheduled", engineer: { name: "Neha Gupta", avatar: "", initials: "NG" }, scheduledDate: "2026-07-22", hasGps: false, duration: null, priority: "low" },
-  { id: "SUR-017", title: "Seismic Resistance Testing", project: "Metro Residential Towers", type: "Initial", status: "in_progress", engineer: { name: "Suresh Reddy", avatar: "", initials: "SR" }, scheduledDate: "2026-07-09", hasGps: true, duration: null, priority: "critical" },
-  { id: "SUR-018", title: "Fire Suppression System Audit", project: "Downtown Mall Expansion", type: "Final", status: "approved", engineer: { name: "Rajesh Kumar", avatar: "", initials: "RK" }, scheduledDate: "2026-06-30", hasGps: true, duration: "2h 30m", priority: "high" },
-  { id: "SUR-019", title: "Solar Panel Installation Survey", project: "Green Valley Office Park", type: "Initial", status: "completed", engineer: { name: "Priya Sharma", avatar: "", initials: "PS" }, scheduledDate: "2026-06-22", hasGps: true, duration: "3h 45m", priority: "medium" },
-  { id: "SUR-020", title: "Accessibility Compliance Check", project: "Riverside Tower Complex", type: "Final", status: "in_progress", engineer: { name: "Amit Patel", avatar: "", initials: "AP" }, scheduledDate: "2026-07-11", hasGps: true, duration: null, priority: "high" },
-  { id: "SUR-021", title: "Basement Waterproofing Survey", project: "Metro Residential Towers", type: "Follow-up", status: "under_review", engineer: { name: "Neha Gupta", avatar: "", initials: "NG" }, scheduledDate: "2026-07-04", hasGps: true, duration: "4h 00m", priority: "medium" },
-  { id: "SUR-022", title: "Compound Wall & Gate Assessment", project: "Lakeside Villa Community", type: "Detailed", status: "completed", engineer: { name: "Suresh Reddy", avatar: "", initials: "SR" }, scheduledDate: "2026-06-18", hasGps: true, duration: "2h 00m", priority: "low" },
-]
-
-const typeColors: Record<string, string> = {
-  Initial: "bg-blue-100 text-blue-800 border-blue-200",
-  Detailed: "bg-purple-100 text-purple-800 border-purple-200",
-  "Follow-up": "bg-amber-100 text-amber-800 border-amber-200",
-  Final: "bg-emerald-100 text-emerald-800 border-emerald-200",
-  "As-Built": "bg-cyan-100 text-cyan-800 border-cyan-200",
+const STATUS_COLORS: Record<string, string> = {
+  DRAFT: 'bg-slate-100 text-slate-700',
+  ASSIGNED: 'bg-blue-100 text-blue-700',
+  IN_PROGRESS: 'bg-amber-100 text-amber-700',
+  SUBMITTED: 'bg-purple-100 text-purple-700',
+  UNDER_REVIEW: 'bg-indigo-100 text-indigo-700',
+  MANAGER_APPROVED: 'bg-teal-100 text-teal-700',
+  APPROVED: 'bg-emerald-100 text-emerald-700',
+  REJECTED: 'bg-red-100 text-red-700',
+  COMPLETED: 'bg-emerald-100 text-emerald-700',
 }
 
-const priorityColors: Record<string, string> = {
-  critical: "bg-red-500",
-  high: "bg-orange-500",
-  medium: "bg-amber-400",
-  low: "bg-green-500",
+const STATUS_LABELS: Record<string, string> = {
+  DRAFT: 'Draft',
+  ASSIGNED: 'Assigned',
+  IN_PROGRESS: 'In Progress',
+  SUBMITTED: 'Submitted',
+  UNDER_REVIEW: 'Under Review',
+  MANAGER_APPROVED: 'Manager Approved',
+  APPROVED: 'Approved',
+  REJECTED: 'Rejected',
+  COMPLETED: 'Completed',
 }
-
-const ITEMS_PER_PAGE_OPTIONS = [10, 15, 20, 25]
 
 export default function SurveysPage() {
-  const [searchQuery, setSearchQuery] = useState("")
-  const [statusFilter, setStatusFilter] = useState("all")
-  const [typeFilter, setTypeFilter] = useState("all")
-  const [projectFilter, setProjectFilter] = useState("all")
-  const [engineerFilter, setEngineerFilter] = useState("all")
-  const [dateFrom, setDateFrom] = useState("")
-  const [dateTo, setDateTo] = useState("")
+  const router = useRouter()
+  const { data: session } = useSession()
+  const userRole = (session?.user as any)?.role as string | undefined
+  const userId = (session?.user as any)?.id as string | undefined
+  const canApprove = userRole === 'ADMIN' || userRole === 'MANAGER' || userRole === 'SUPER_ADMIN'
+  const [searchQuery, setSearchQuery] = useState('')
+  const [statusFilter, setStatusFilter] = useState('all')
+  const [typeFilter, setTypeFilter] = useState('all')
   const [selectedIds, setSelectedIds] = useState<string[]>([])
   const [currentPage, setCurrentPage] = useState(1)
-  const [itemsPerPage, setItemsPerPage] = useState(10)
+  const [itemsPerPage, setItemsPerPage] = useState(15)
+  const [surveys, setSurveys] = useState<SurveyData[]>([])
+  const [loading, setLoading] = useState(true)
+  const [viewMode, setViewMode] = useState<'table' | 'card'>('table')
+  const [expandedRow, setExpandedRow] = useState<string | null>(null)
+  const [actionLoading, setActionLoading] = useState<string | null>(null)
+  const [assignDialogOpen, setAssignDialogOpen] = useState(false)
+  const [assignSurveyId, setAssignSurveyId] = useState<string | null>(null)
+  const [assignEngineerId, setAssignEngineerId] = useState<string>('')
+  const [engineers, setEngineers] = useState<{ id: string; firstName: string; lastName: string }[]>([])
+  const [engineersLoading, setEngineersLoading] = useState(false)
 
-  const projects = [...new Set(mockSurveys.map(s => s.project))]
-  const engineers = [...new Set(mockSurveys.filter(s => s.engineer).map(s => s.engineer!.name))]
+  const fetchSurveys = useCallback(async () => {
+    try {
+      setLoading(true)
+      const res = await fetch('/api/surveys?limit=200', { cache: 'no-store' })
+      const json = await res.json()
+      if (json.success) setSurveys(json.data ?? [])
+    } catch {
+      toast.error('Failed to load surveys')
+    } finally {
+      setLoading(false)
+    }
+  }, [])
 
-  const filteredSurveys = useMemo(() => {
-    return mockSurveys.filter((survey) => {
-      const matchesSearch =
-        survey.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        survey.project.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        survey.id.toLowerCase().includes(searchQuery.toLowerCase())
-      const matchesStatus = statusFilter === "all" || survey.status === statusFilter
-      const matchesType = typeFilter === "all" || survey.type === typeFilter
-      const matchesProject = projectFilter === "all" || survey.project === projectFilter
-      const matchesEngineer = engineerFilter === "all" || survey.engineer?.name === engineerFilter
-      const matchesDateFrom = !dateFrom || survey.scheduledDate >= dateFrom
-      const matchesDateTo = !dateTo || survey.scheduledDate <= dateTo
-      return matchesSearch && matchesStatus && matchesType && matchesProject && matchesEngineer && matchesDateFrom && matchesDateTo
-    })
-  }, [searchQuery, statusFilter, typeFilter, projectFilter, engineerFilter, dateFrom, dateTo])
+  useEffect(() => {
+    fetchSurveys()
+  }, [fetchSurveys])
 
-  const totalPages = Math.ceil(filteredSurveys.length / itemsPerPage)
-  const paginatedSurveys = filteredSurveys.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
-
-  const toggleSelectAll = () => {
-    if (selectedIds.length === paginatedSurveys.length) {
-      setSelectedIds([])
-    } else {
-      setSelectedIds(paginatedSurveys.map(s => s.id))
+  const openAssignDialog = async (surveyId: string) => {
+    setAssignSurveyId(surveyId)
+    setAssignEngineerId('')
+    setAssignDialogOpen(true)
+    if (engineers.length === 0) {
+      setEngineersLoading(true)
+      try {
+        const res = await fetch('/api/users?role=ENGINEER&limit=50')
+        const json = await res.json()
+        const list = json.data ?? json.users ?? []
+        setEngineers(list.filter((u: any) => u.role === 'ENGINEER' || u.role === 'SURVEYOR'))
+      } catch {} finally {
+        setEngineersLoading(false)
+      }
     }
   }
 
-  const toggleSelect = (id: string) => {
-    setSelectedIds(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id])
+  const handleAssign = async () => {
+    if (!assignSurveyId || !assignEngineerId) return
+    try {
+      setActionLoading(assignSurveyId)
+      const res = await fetch('/api/surveys', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: assignSurveyId, engineerId: assignEngineerId, status: 'ASSIGNED' }),
+      })
+      const json = await res.json()
+      if (json.success) {
+        const eng = engineers.find((e) => e.id === assignEngineerId)
+        setSurveys((prev) =>
+          prev.map((s) =>
+            s.id === assignSurveyId
+              ? { ...s, status: 'ASSIGNED', engineer: eng ? { id: eng.id, name: `${eng.firstName} ${eng.lastName}`, email: '', initials: `${eng.firstName[0]}${eng.lastName[0]}`.toUpperCase() } : s.engineer }
+              : s
+          )
+        )
+        toast.success('Engineer assigned successfully')
+        setAssignDialogOpen(false)
+      } else {
+        toast.error(json.error || 'Failed to assign')
+      }
+    } catch {
+      toast.error('Failed to assign engineer')
+    } finally {
+      setActionLoading(null)
+    }
+  }
+
+  const filteredSurveys = useMemo(() => {
+    return surveys.filter((s) => {
+      const q = searchQuery.toLowerCase()
+      const matchSearch = !q || s.title.toLowerCase().includes(q) || s.project.toLowerCase().includes(q)
+      const matchStatus = statusFilter === 'all' || s.status === statusFilter
+      const matchType = typeFilter === 'all' || s.type === typeFilter
+      return matchSearch && matchStatus && matchType
+    })
+  }, [surveys, searchQuery, statusFilter, typeFilter])
+
+  const totalPages = Math.ceil(filteredSurveys.length / itemsPerPage)
+  const paginatedSurveys = filteredSurveys.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  )
+
+  const summaryStats = useMemo(() => {
+    const today = new Date().toISOString().split('T')[0]
+    const draft = surveys.filter((s) => s.status === 'DRAFT').length
+    const inProgress = surveys.filter((s) => s.status === 'IN_PROGRESS').length
+    const pendingReview = surveys.filter((s) => s.status === 'SUBMITTED' || s.status === 'UNDER_REVIEW').length
+    const completed = surveys.filter((s) => s.status === 'APPROVED' || s.status === 'COMPLETED').length
+    const overdue = surveys.filter(
+      (s) => s.scheduledDate && s.scheduledDate < today && s.status !== 'APPROVED' && s.status !== 'COMPLETED'
+    ).length
+    const noEngineer = surveys.filter((s) => !s.engineer).length
+    return { draft, inProgress, pendingReview, completed, overdue, noEngineer }
+  }, [surveys])
+
+  const handleStatusChange = async (surveyId: string, newStatus: string) => {
+    try {
+      setActionLoading(surveyId)
+      const res = await fetch('/api/surveys', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: surveyId, status: newStatus }),
+      })
+      const json = await res.json()
+      if (json.success) {
+        setSurveys((prev) =>
+          prev.map((s) => (s.id === surveyId ? { ...s, status: newStatus } : s))
+        )
+        toast.success(`Survey ${STATUS_LABELS[newStatus] || newStatus.toLowerCase()}`)
+      } else {
+        toast.error(json.error || 'Failed to update')
+      }
+    } catch {
+      toast.error('Failed to update survey')
+    } finally {
+      setActionLoading(null)
+    }
+  }
+
+  const handleApprovalAction = async (surveyId: string, action: string) => {
+    try {
+      setActionLoading(surveyId)
+      const res = await fetch(`/api/surveys/${surveyId}/approval`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action }),
+      })
+      const json = await res.json()
+      if (json.success) {
+        toast.success(json.message)
+        fetchSurveys()
+      } else {
+        toast.error(json.error || 'Action failed')
+      }
+    } catch {
+      toast.error('Approval action failed')
+    } finally {
+      setActionLoading(null)
+    }
+  }
+
+  const handleDelete = async (surveyId: string) => {
+    if (!confirm('Delete this survey?')) return
+    try {
+      setActionLoading(surveyId)
+      const res = await fetch(`/api/surveys/${surveyId}`, { method: 'DELETE' })
+      const json = await res.json()
+      if (json.success) {
+        setSurveys((prev) => prev.filter((s) => s.id !== surveyId))
+        toast.success('Survey deleted')
+      } else {
+        toast.error(json.error || 'Failed to delete')
+      }
+    } catch {
+      toast.error('Failed to delete survey')
+    } finally {
+      setActionLoading(null)
+    }
   }
 
   const clearFilters = () => {
-    setSearchQuery("")
-    setStatusFilter("all")
-    setTypeFilter("all")
-    setProjectFilter("all")
-    setEngineerFilter("all")
-    setDateFrom("")
-    setDateTo("")
+    setSearchQuery('')
+    setStatusFilter('all')
+    setTypeFilter('all')
   }
 
-  const hasActiveFilters = searchQuery || statusFilter !== "all" || typeFilter !== "all" || projectFilter !== "all" || engineerFilter !== "all" || dateFrom || dateTo
+  const hasActiveFilters = searchQuery || statusFilter !== 'all' || typeFilter !== 'all'
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <PageHeader
+          title="Site Surveys"
+          description="Manage and track all construction site surveys"
+          breadcrumbs={[{ label: 'Dashboard', href: '/' }, { label: 'Surveys' }]}
+        />
+        <Card>
+          <CardContent className="flex items-center justify-center py-16">
+            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+            <span className="ml-2 text-sm text-muted-foreground">Loading surveys...</span>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
 
   return (
-    <div className="space-y-6">
-      <PageHeader
-        title="Site Surveys"
-        description="Manage and track all construction site surveys"
-        breadcrumbs={[
-          { label: "Dashboard", href: "/" },
-          { label: "Surveys" },
-        ]}
-        actions={
-          <div className="flex items-center gap-2">
-            <Button variant="outline">
-              <Download className="h-4 w-4 mr-2" />
-              Export
-            </Button>
-            <Link href="/surveys/new">
-              <Button>
-                <Plus className="h-4 w-4 mr-2" />
-                New Survey
-              </Button>
-            </Link>
-          </div>
-        }
-      />
+    <TooltipProvider>
+      <div className="space-y-6">
+        <PageHeader
+          title="Site Surveys"
+          description="Manage and track all construction site surveys"
+          breadcrumbs={[{ label: 'Dashboard', href: '/' }, { label: 'Surveys' }]}
+          actions={
+            <div className="flex items-center gap-2">
+              <Link href="/surveys/new">
+                <Button size="sm">
+                  <Plus className="h-4 w-4 mr-1.5" /> New Survey
+                </Button>
+              </Link>
+            </div>
+          }
+        />
 
-      {/* KPI Stats */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
-        <StatCard
-          icon={<ClipboardCheck className="h-6 w-6" />}
-          label="Total Surveys"
-          value={mockSurveys.length}
-          color="default"
-          change={8}
-          trend="up"
-        />
-        <StatCard
-          icon={<Clock className="h-6 w-6" />}
-          label="In Progress"
-          value={mockSurveys.filter(s => s.status === "in_progress").length}
-          color="info"
-          change={12}
-          trend="up"
-        />
-        <StatCard
-          icon={<FileText className="h-6 w-6" />}
-          label="Pending Approval"
-          value={mockSurveys.filter(s => s.status === "pending" || s.status === "under_review").length}
-          color="warning"
-          change={-5}
-          trend="down"
-        />
-        <StatCard
-          icon={<CheckSquare className="h-6 w-6" />}
-          label="Completed This Month"
-          value={mockSurveys.filter(s => s.status === "completed" || s.status === "approved").length}
-          color="success"
-          change={15}
-          trend="up"
-        />
-        <StatCard
-          icon={<Timer className="h-6 w-6" />}
-          label="Avg. Duration"
-          value="3h 52m"
-          color="default"
-          change={-8}
-          trend="down"
-        />
-      </div>
+        {/* Summary Cards */}
+        <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-6">
+          <StatCard icon={<FileText className="h-6 w-6" />} label="Total Surveys" value={surveys.length} color="info" />
+          <StatCard icon={<ClipboardClock className="h-6 w-6" />} label="Draft" value={summaryStats.draft} color="info" />
+          <StatCard icon={<Play className="h-6 w-6" />} label="In Progress" value={summaryStats.inProgress} color="warning" />
+          <StatCard icon={<Clock className="h-6 w-6" />} label="Pending Review" value={summaryStats.pendingReview} color="info" />
+          <StatCard icon={<CheckCircle2 className="h-6 w-6" />} label="Completed" value={summaryStats.completed} color="success" />
+          <StatCard icon={<AlertTriangle className="h-6 w-6" />} label="Overdue" value={summaryStats.overdue} color="danger" />
+        </div>
 
-      {/* Filters */}
-      <Card>
-        <CardContent className="p-4">
-          <div className="flex flex-col gap-4">
+        {/* Filters */}
+        <Card>
+          <CardContent className="p-4">
             <div className="flex flex-col gap-3 md:flex-row md:items-center">
               <div className="relative flex-1 max-w-sm">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -221,256 +332,546 @@ export default function SurveysPage() {
                   placeholder="Search surveys..."
                   className="pl-8"
                   value={searchQuery}
-                  onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1) }}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value)
+                    setCurrentPage(1)
+                  }}
                 />
               </div>
-              <Select value={statusFilter} onValueChange={(v) => { setStatusFilter(v); setCurrentPage(1) }}>
-                <SelectTrigger className="w-[150px]"><SelectValue placeholder="Status" /></SelectTrigger>
+              <Select
+                value={statusFilter}
+                onValueChange={(v) => {
+                  setStatusFilter(v)
+                  setCurrentPage(1)
+                }}
+              >
+                <SelectTrigger className="w-[150px]">
+                  <SelectValue placeholder="Status" />
+                </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Statuses</SelectItem>
-                  <SelectItem value="draft">Draft</SelectItem>
-                  <SelectItem value="assigned">Assigned</SelectItem>
-                  <SelectItem value="scheduled">Scheduled</SelectItem>
-                  <SelectItem value="in_progress">In Progress</SelectItem>
-                  <SelectItem value="under_review">Under Review</SelectItem>
-                  <SelectItem value="pending">Pending</SelectItem>
-                  <SelectItem value="completed">Completed</SelectItem>
-                  <SelectItem value="approved">Approved</SelectItem>
-                  <SelectItem value="rejected">Rejected</SelectItem>
+                  {Object.entries(STATUS_LABELS).map(([k, v]) => (
+                    <SelectItem key={k} value={k}>{v}</SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
-              <Select value={typeFilter} onValueChange={(v) => { setTypeFilter(v); setCurrentPage(1) }}>
-                <SelectTrigger className="w-[150px]"><SelectValue placeholder="Type" /></SelectTrigger>
+              <Select
+                value={typeFilter}
+                onValueChange={(v) => {
+                  setTypeFilter(v)
+                  setCurrentPage(1)
+                }}
+              >
+                <SelectTrigger className="w-[140px]">
+                  <SelectValue placeholder="Type" />
+                </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Types</SelectItem>
                   <SelectItem value="Initial">Initial</SelectItem>
                   <SelectItem value="Detailed">Detailed</SelectItem>
-                  <SelectItem value="Follow-up">Follow-up</SelectItem>
+                  <SelectItem value="Follow Up">Follow Up</SelectItem>
                   <SelectItem value="Final">Final</SelectItem>
-                  <SelectItem value="As-Built">As-Built</SelectItem>
+                  <SelectItem value="As Built">As Built</SelectItem>
                 </SelectContent>
               </Select>
-              <Select value={projectFilter} onValueChange={(v) => { setProjectFilter(v); setCurrentPage(1) }}>
-                <SelectTrigger className="w-[200px]"><SelectValue placeholder="Project" /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Projects</SelectItem>
-                  {projects.map(p => <SelectItem key={p} value={p}>{p}</SelectItem>)}
-                </SelectContent>
-              </Select>
-              <Select value={engineerFilter} onValueChange={(v) => { setEngineerFilter(v); setCurrentPage(1) }}>
-                <SelectTrigger className="w-[180px]"><SelectValue placeholder="Engineer" /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Engineers</SelectItem>
-                  {engineers.map(e => <SelectItem key={e} value={e}>{e}</SelectItem>)}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="flex flex-col gap-3 md:flex-row md:items-center">
-              <div className="flex items-center gap-2">
-                <Input type="date" value={dateFrom} onChange={(e) => { setDateFrom(e.target.value); setCurrentPage(1) }} className="w-[150px]" />
-                <span className="text-sm text-muted-foreground">to</span>
-                <Input type="date" value={dateTo} onChange={(e) => { setDateTo(e.target.value); setCurrentPage(1) }} className="w-[150px]" />
+              <div className="flex items-center gap-1.5">
+                <Filter className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">
+                  {filteredSurveys.length} of {surveys.length}
+                </span>
               </div>
               <div className="flex-1" />
               {hasActiveFilters && (
                 <Button variant="ghost" size="sm" onClick={clearFilters}>
-                  <X className="h-4 w-4 mr-1" />
-                  Clear Filters
+                  <X className="h-4 w-4 mr-1" /> Clear
                 </Button>
               )}
-              <div className="text-sm text-muted-foreground">
-                {filteredSurveys.length} of {mockSurveys.length} surveys
+              <div className="flex items-center rounded-md border">
+                <Button
+                  variant={viewMode === 'table' ? 'secondary' : 'ghost'}
+                  size="icon"
+                  className="h-8 w-8 rounded-r-none"
+                  onClick={() => setViewMode('table')}
+                >
+                  <TableIcon className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant={viewMode === 'card' ? 'secondary' : 'ghost'}
+                  size="icon"
+                  className="h-8 w-8 rounded-l-none"
+                  onClick={() => setViewMode('card')}
+                >
+                  <LayoutGrid className="h-4 w-4" />
+                </Button>
               </div>
             </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
 
-      {/* Bulk Actions Bar */}
-      {selectedIds.length > 0 && (
-        <div className="flex items-center gap-3 rounded-lg border bg-primary/5 p-3 animate-in slide-in-from-top-2">
-          <CheckSquare className="h-4 w-4 text-primary" />
-          <span className="text-sm font-medium">{selectedIds.length} selected</span>
-          <div className="flex-1" />
-          <Button variant="outline" size="sm">
-            <Download className="h-4 w-4 mr-1" />
-            Export Selected
-          </Button>
-          <Button variant="destructive" size="sm">
-            <Trash2 className="h-4 w-4 mr-1" />
-            Delete Selected
-          </Button>
-          <Button variant="ghost" size="sm" onClick={() => setSelectedIds([])}>
-            <X className="h-4 w-4" />
-          </Button>
-        </div>
-      )}
-
-      {/* Data Table */}
-      <Card>
-        <CardContent className="p-0">
-          {filteredSurveys.length === 0 ? (
-            <EmptyState
-              icon={<ClipboardCheck className="h-6 w-6" />}
-              title="No surveys found"
-              description="No surveys match your current filters. Try adjusting your search criteria."
-              action={hasActiveFilters ? { label: "Clear Filters", onClick: clearFilters } : undefined}
-            />
-          ) : (
-            <>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="w-[40px]">
-                      <Checkbox
-                        checked={selectedIds.length === paginatedSurveys.length && paginatedSurveys.length > 0}
-                        onCheckedChange={toggleSelectAll}
-                      />
-                    </TableHead>
-                    <TableHead>Title</TableHead>
-                    <TableHead>Project</TableHead>
-                    <TableHead>Type</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Engineer</TableHead>
-                    <TableHead>Scheduled</TableHead>
-                    <TableHead>GPS</TableHead>
-                    <TableHead>Duration</TableHead>
-                    <TableHead className="w-[50px]"></TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {paginatedSurveys.map((survey) => (
-                    <TableRow key={survey.id} className={selectedIds.includes(survey.id) ? "bg-primary/5" : ""}>
-                      <TableCell>
-                        <Checkbox
-                          checked={selectedIds.includes(survey.id)}
-                          onCheckedChange={() => toggleSelect(survey.id)}
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          <div className={`h-2 w-2 rounded-full ${priorityColors[survey.priority]}`} />
-                          <div>
-                            <Link href={`/surveys/${survey.id}`} className="font-medium text-foreground hover:underline">
-                              {survey.title}
-                            </Link>
-                            <div className="text-xs text-muted-foreground">{survey.id}</div>
-                          </div>
-                        </div>
-                      </TableCell>
-                      <TableCell className="max-w-[180px] truncate text-sm">{survey.project}</TableCell>
-                      <TableCell>
-                        <span className={`inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-medium ${typeColors[survey.type] || "bg-gray-100 text-gray-800"}`}>
-                          {survey.type}
-                        </span>
-                      </TableCell>
-                      <TableCell><StatusBadge status={survey.status} /></TableCell>
-                      <TableCell>
+        {/* Card View */}
+        {viewMode === 'card' && (
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {paginatedSurveys.map((survey) => {
+              const progress = survey.checklistTotal > 0
+                ? Math.round((survey.checklistCompleted / survey.checklistTotal) * 100)
+                : 0
+              return (
+                <Card key={survey.id} className="group hover:shadow-md transition-shadow">
+                  <CardContent className="p-4">
+                    <div className="flex items-start justify-between mb-3">
+                      <Link href={`/surveys/${survey.id}`} className="font-semibold text-sm hover:underline line-clamp-2">
+                        {survey.title}
+                      </Link>
+                      <Badge className={cn('text-[10px] shrink-0 ml-2', STATUS_COLORS[survey.status])}>
+                        {STATUS_LABELS[survey.status] || survey.status}
+                      </Badge>
+                    </div>
+                    <p className="text-xs text-muted-foreground mb-3">{survey.project} &middot; {survey.type}</p>
+                    <Progress value={progress} className="h-1.5 mb-2" />
+                    <div className="flex items-center justify-between text-xs text-muted-foreground mb-3">
+                      <span>{progress}% complete</span>
+                      <span>{survey.checklistCompleted}/{survey.checklistTotal} checks</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2 text-xs">
                         {survey.engineer ? (
-                          <div className="flex items-center gap-2">
-                            <Avatar className="h-7 w-7">
-                              <AvatarImage src={survey.engineer.avatar} alt={survey.engineer.name} />
-                              <AvatarFallback className="text-xs">{survey.engineer.initials}</AvatarFallback>
-                            </Avatar>
-                            <span className="text-sm">{survey.engineer.name}</span>
-                          </div>
-                        ) : (
-                          <span className="text-sm text-muted-foreground italic">Unassigned</span>
-                        )}
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-1 text-sm">
-                          <Calendar className="h-3.5 w-3.5 text-muted-foreground" />
-                          {survey.scheduledDate}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        {survey.hasGps ? (
                           <div className="flex items-center gap-1">
-                            <div className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" />
-                            <span className="text-xs text-emerald-600">Set</span>
+                            <Avatar className="h-5 w-5">
+                              <AvatarFallback className="text-[10px]">{survey.engineer.initials}</AvatarFallback>
+                            </Avatar>
+                            <span className="truncate max-w-[100px]">{survey.engineer.name}</span>
                           </div>
                         ) : (
-                          <span className="text-xs text-muted-foreground">—</span>
+                          <span className="text-muted-foreground italic">Unassigned</span>
                         )}
-                      </TableCell>
-                      <TableCell>
-                        {survey.duration ? (
-                          <span className="text-sm font-medium">{survey.duration}</span>
-                        ) : (
-                          <span className="text-sm text-muted-foreground">—</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        {survey.hasGps && <Navigation className="h-3 w-3 text-emerald-500" />}
+                        {survey.photoCount > 0 && (
+                          <span className="flex items-center gap-0.5">
+                            <Camera className="h-3 w-3" /> {survey.photoCount}
+                          </span>
                         )}
-                      </TableCell>
-                      <TableCell>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon" className="h-8 w-8">
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem asChild>
-                              <Link href={`/surveys/${survey.id}`}>
-                                <Eye className="h-4 w-4 mr-2" />
-                                View Details
-                              </Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                              <Edit className="h-4 w-4 mr-2" />
-                              Edit Survey
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                              <Copy className="h-4 w-4 mr-2" />
-                              Duplicate
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                              <Download className="h-4 w-4 mr-2" />
-                              Export PDF
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem className="text-destructive">
-                              <Trash2 className="h-4 w-4 mr-2" />
-                              Delete
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              )
+            })}
+          </div>
+        )}
 
-              {/* Pagination */}
-              <div className="flex items-center justify-between border-t p-4">
-                <div className="flex items-center gap-2">
-                  <span className="text-sm text-muted-foreground">Rows per page:</span>
-                  <Select value={String(itemsPerPage)} onValueChange={(v) => { setItemsPerPage(Number(v)); setCurrentPage(1) }}>
-                    <SelectTrigger className="h-8 w-[70px]"><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      {ITEMS_PER_PAGE_OPTIONS.map(opt => (
-                        <SelectItem key={opt} value={String(opt)}>{opt}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-sm text-muted-foreground">
-                    {(currentPage - 1) * itemsPerPage + 1}–{Math.min(currentPage * itemsPerPage, filteredSurveys.length)} of {filteredSurveys.length}
-                  </span>
-                  <div className="flex items-center gap-1">
-                    <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => setCurrentPage(p => Math.max(1, p - 1))} disabled={currentPage === 1}>
-                      <ChevronLeft className="h-4 w-4" />
-                    </Button>
-                    <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))} disabled={currentPage === totalPages}>
-                      <ChevronRight className="h-4 w-4" />
-                    </Button>
+        {/* Table View */}
+        {viewMode === 'table' && (
+          <Card>
+            <CardContent className="p-0">
+              {filteredSurveys.length === 0 ? (
+                <EmptyState
+                  icon={<ClipboardClock className="h-6 w-6" />}
+                  title="No surveys found"
+                  description={surveys.length === 0 ? 'Create your first survey to get started.' : 'No surveys match your filters.'}
+                  action={hasActiveFilters ? { label: 'Clear Filters', onClick: clearFilters } : undefined}
+                />
+              ) : (
+                <>
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead className="w-[40px]">
+                            <Checkbox
+                              checked={selectedIds.length === paginatedSurveys.length && paginatedSurveys.length > 0}
+                              onCheckedChange={() => {
+                                if (selectedIds.length === paginatedSurveys.length) setSelectedIds([])
+                                else setSelectedIds(paginatedSurveys.map((s) => s.id))
+                              }}
+                            />
+                          </TableHead>
+                          <TableHead>Title</TableHead>
+                          <TableHead>Project</TableHead>
+                          <TableHead>Engineer</TableHead>
+                          <TableHead>Type</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead>Progress</TableHead>
+                          <TableHead>Scheduled</TableHead>
+                          <TableHead className="w-[100px]">Actions</TableHead>
+                          <TableHead className="w-[30px]" />
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {paginatedSurveys.map((survey) => {
+                          const progress = survey.checklistTotal > 0
+                            ? Math.round((survey.checklistCompleted / survey.checklistTotal) * 100)
+                            : 0
+                          const isActionLoading = actionLoading === survey.id
+
+                          return (
+                            <React.Fragment key={survey.id}>
+                              <TableRow>
+                                <TableCell>
+                                  <Checkbox
+                                    checked={selectedIds.includes(survey.id)}
+                                    onCheckedChange={() => {
+                                      setSelectedIds((prev) =>
+                                        prev.includes(survey.id) ? prev.filter((i) => i !== survey.id) : [...prev, survey.id]
+                                      )
+                                    }}
+                                  />
+                                </TableCell>
+                                <TableCell>
+                                  <Link href={`/surveys/${survey.id}`} className="font-medium text-sm hover:underline">
+                                    {survey.title}
+                                  </Link>
+                                </TableCell>
+                                <TableCell className="text-sm">{survey.project}</TableCell>
+                                <TableCell>
+                                  {survey.engineer ? (
+                                    <div className="flex items-center gap-2">
+                                      <Avatar className="h-6 w-6">
+                                        <AvatarFallback className="text-[10px]">{survey.engineer.initials}</AvatarFallback>
+                                      </Avatar>
+                                      <span className="text-sm">{survey.engineer.name}</span>
+                                    </div>
+                                  ) : (
+                                    <span className="text-sm text-muted-foreground italic">Unassigned</span>
+                                  )}
+                                </TableCell>
+                                <TableCell className="text-sm">{survey.type}</TableCell>
+                                <TableCell>
+                                  <Badge className={cn('text-[10px]', STATUS_COLORS[survey.status])}>
+                                    {STATUS_LABELS[survey.status] || survey.status}
+                                  </Badge>
+                                </TableCell>
+                                <TableCell>
+                                  <div className="w-[90px]">
+                                    <Progress value={progress} className="h-1.5" />
+                                    <span className="text-[10px] text-muted-foreground mt-0.5 block">
+                                      {survey.checklistCompleted}/{survey.checklistTotal}
+                                    </span>
+                                  </div>
+                                </TableCell>
+                                <TableCell className="text-sm">
+                                  {survey.scheduledDate || '—'}
+                                </TableCell>
+                                <TableCell>
+                                  <div className="flex items-center gap-0.5">
+                                    <Tooltip>
+                                      <TooltipTrigger asChild>
+                                        <Button variant="ghost" size="icon" className="h-7 w-7" asChild>
+                                          <Link href={`/surveys/${survey.id}`}>
+                                            <Eye className="h-3.5 w-3.5" />
+                                          </Link>
+                                        </Button>
+                                      </TooltipTrigger>
+                                      <TooltipContent>View</TooltipContent>
+                                    </Tooltip>
+
+                                    {survey.status === 'DRAFT' || survey.status === 'ASSIGNED' ? (
+                                      <Tooltip>
+                                        <TooltipTrigger asChild>
+                                          <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            className="h-7 w-7"
+                                            disabled={isActionLoading}
+                                            onClick={() => handleStatusChange(survey.id, 'IN_PROGRESS')}
+                                          >
+                                            <PlayCircle className="h-3.5 w-3.5" />
+                                          </Button>
+                                        </TooltipTrigger>
+                                        <TooltipContent>Start Survey</TooltipContent>
+                                      </Tooltip>
+                                    ) : survey.status === 'IN_PROGRESS' ? (
+                                      <Tooltip>
+                                        <TooltipTrigger asChild>
+                                          <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            className="h-7 w-7"
+                                            disabled={isActionLoading}
+                                            onClick={() => handleStatusChange(survey.id, 'SUBMITTED')}
+                                          >
+                                            <Send className="h-3.5 w-3.5" />
+                                          </Button>
+                                        </TooltipTrigger>
+                                        <TooltipContent>Submit</TooltipContent>
+                                      </Tooltip>
+                                    ) : survey.status === 'SUBMITTED' && canApprove && userId !== survey.engineer?.id ? (
+                                      <Tooltip>
+                                        <TooltipTrigger asChild>
+                                          <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            className="h-7 w-7"
+                                            disabled={isActionLoading}
+                                            onClick={() => handleApprovalAction(survey.id, 'APPROVE')}
+                                          >
+                                            <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
+                                          </Button>
+                                        </TooltipTrigger>
+                                        <TooltipContent>Approve</TooltipContent>
+                                      </Tooltip>
+                                    ) : survey.status === 'MANAGER_APPROVED' && canApprove && (userRole === 'ADMIN' || userRole === 'SUPER_ADMIN') ? (
+                                      <Tooltip>
+                                        <TooltipTrigger asChild>
+                                          <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            className="h-7 w-7"
+                                            disabled={isActionLoading}
+                                            onClick={() => handleApprovalAction(survey.id, 'APPROVE')}
+                                          >
+                                            <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
+                                          </Button>
+                                        </TooltipTrigger>
+                                        <TooltipContent>Final Approve</TooltipContent>
+                                      </Tooltip>
+                                    ) : null}
+
+                                    <DropdownMenu>
+                                      <DropdownMenuTrigger asChild>
+                                        <Button variant="ghost" size="icon" className="h-7 w-7">
+                                          <MoreHorizontal className="h-3.5 w-3.5" />
+                                        </Button>
+                                      </DropdownMenuTrigger>
+                                      <DropdownMenuContent align="end">
+                                        <DropdownMenuItem onClick={() => router.push(`/surveys/${survey.id}`)}>
+                                          <Eye className="h-4 w-4 mr-2" /> View Details
+                                        </DropdownMenuItem>
+                                        {(survey.status === 'APPROVED' || survey.status === 'REJECTED' || survey.status === 'COMPLETED') && (
+                                          <DropdownMenuItem onClick={() => router.push(`/surveys/${survey.id}/report`)}>
+                                            <FileText className="h-4 w-4 mr-2" /> View Report
+                                          </DropdownMenuItem>
+                                        )}
+                                        {survey.status === 'DRAFT' && (
+                                          <DropdownMenuItem onClick={() => openAssignDialog(survey.id)}>
+                                            <Users className="h-4 w-4 mr-2" /> Assign Engineer
+                                          </DropdownMenuItem>
+                                        )}
+                                        {survey.status === 'IN_PROGRESS' && (
+                                          <DropdownMenuItem onClick={() => handleStatusChange(survey.id, 'SUBMITTED')}>
+                                            <Send className="h-4 w-4 mr-2" /> Submit Survey
+                                          </DropdownMenuItem>
+                                        )}
+                                        {survey.status === 'SUBMITTED' && canApprove && userId !== survey.engineer?.id && (
+                                          <DropdownMenuItem onClick={() => handleApprovalAction(survey.id, 'APPROVE')}>
+                                            <CheckCircle2 className="h-4 w-4 mr-2" /> Approve
+                                          </DropdownMenuItem>
+                                        )}
+                                        {survey.status === 'MANAGER_APPROVED' && (userRole === 'ADMIN' || userRole === 'SUPER_ADMIN') && (
+                                          <DropdownMenuItem onClick={() => handleApprovalAction(survey.id, 'APPROVE')}>
+                                            <CheckCircle2 className="h-4 w-4 mr-2" /> Final Approve
+                                          </DropdownMenuItem>
+                                        )}
+                                        {(survey.status === 'SUBMITTED' || survey.status === 'MANAGER_APPROVED') && canApprove && userId !== survey.engineer?.id && (
+                                          <DropdownMenuItem onClick={() => handleApprovalAction(survey.id, 'REJECT')} className="text-red-600">
+                                            <AlertTriangle className="h-4 w-4 mr-2" /> Reject
+                                          </DropdownMenuItem>
+                                        )}
+                                        {(survey.status === 'SUBMITTED' || survey.status === 'MANAGER_APPROVED') && canApprove && userId !== survey.engineer?.id && (
+                                          <DropdownMenuItem onClick={() => handleApprovalAction(survey.id, 'ESCALATE')}>
+                                            <Navigation className="h-4 w-4 mr-2" /> Escalate
+                                          </DropdownMenuItem>
+                                        )}
+                                        {(survey.status === 'SUBMITTED' || survey.status === 'MANAGER_APPROVED') && canApprove && userId !== survey.engineer?.id && (
+                                          <DropdownMenuItem onClick={() => handleApprovalAction(survey.id, 'REVERSE')}>
+                                            <ArrowLeft className="h-4 w-4 mr-2" /> Reverse
+                                          </DropdownMenuItem>
+                                        )}
+                                        {(survey.status === 'SUBMITTED' || survey.status === 'MANAGER_APPROVED') && (!canApprove || userId === survey.engineer?.id) && (
+                                          <DropdownMenuItem disabled>
+                                            <Clock className="h-4 w-4 mr-2" /> Pending Review
+                                          </DropdownMenuItem>
+                                        )}
+                                        {(survey.status === 'DRAFT' || survey.status === 'ASSIGNED') && (
+                                          <DropdownMenuItem onClick={() => handleStatusChange(survey.id, 'IN_PROGRESS')}>
+                                            <PlayCircle className="h-4 w-4 mr-2" /> Start Survey
+                                          </DropdownMenuItem>
+                                        )}
+                                        {(userRole === 'ADMIN' || userRole === 'SUPER_ADMIN') && (
+                                        <DropdownMenuItem
+                                          className="text-red-600"
+                                          onClick={() => handleDelete(survey.id)}
+                                        >
+                                          <Trash2 className="h-4 w-4 mr-2" /> Delete
+                                        </DropdownMenuItem>
+                                        )}
+                                      </DropdownMenuContent>
+                                    </DropdownMenu>
+                                  </div>
+                                </TableCell>
+                                <TableCell>
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="h-7 w-7"
+                                    onClick={() =>
+                                      setExpandedRow(expandedRow === survey.id ? null : survey.id)
+                                    }
+                                  >
+                                    <ChevronDown
+                                      className={cn(
+                                        'h-4 w-4 transition-transform',
+                                        expandedRow === survey.id && 'rotate-180'
+                                      )}
+                                    />
+                                  </Button>
+                                </TableCell>
+                              </TableRow>
+
+                              {expandedRow === survey.id && (
+                                <TableRow key={`${survey.id}-expanded`}>
+                                  <TableCell colSpan={10} className="p-0">
+                                    <div className="border-t bg-muted/30 px-6 py-4">
+                                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mb-4">
+                                        <div>
+                                          <span className="text-muted-foreground">Description:</span>{' '}
+                                          <span>{survey.description || '—'}</span>
+                                        </div>
+                                        <div>
+                                          <span className="text-muted-foreground">Weather:</span>{' '}
+                                          <span>{survey.weatherCondition || '—'}</span>
+                                        </div>
+                                        <div>
+                                          <span className="text-muted-foreground">Site Condition:</span>{' '}
+                                          <span>{survey.siteCondition || '—'}</span>
+                                        </div>
+                                        <div>
+                                          <span className="text-muted-foreground">GPS:</span>{' '}
+                                          <span>
+                                            {survey.hasGps
+                                              ? `${survey.gpsLatitude?.toFixed(4)}, ${survey.gpsLongitude?.toFixed(4)}`
+                                              : 'Not logged'}
+                                          </span>
+                                        </div>
+                                        <div>
+                                          <span className="text-muted-foreground">Photos:</span>{' '}
+                                          <span>{survey.photoCount}</span>
+                                        </div>
+                                        <div>
+                                          <span className="text-muted-foreground">Voice Notes:</span>{' '}
+                                          <span>{survey.voiceNoteCount}</span>
+                                        </div>
+                                        <div>
+                                          <span className="text-muted-foreground">Site Visits:</span>{' '}
+                                          <span>{survey.siteVisitCount}</span>
+                                        </div>
+                                        <div>
+                                          <span className="text-muted-foreground">Duration:</span>{' '}
+                                          <span>{survey.duration || '—'}</span>
+                                        </div>
+                                      </div>
+                                      {survey.notes && (
+                                        <div className="rounded-lg border bg-background p-3 text-sm">
+                                          <span className="font-medium">Notes:</span> {survey.notes}
+                                        </div>
+                                      )}
+                                    </div>
+                                  </TableCell>
+                                </TableRow>
+                              )}
+                            </React.Fragment>
+                          )
+                        })}
+                      </TableBody>
+                    </Table>
                   </div>
+
+                  {/* Pagination */}
+                  <div className="flex items-center justify-between border-t p-4">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-muted-foreground">Rows:</span>
+                      <Select
+                        value={String(itemsPerPage)}
+                        onValueChange={(v) => {
+                          setItemsPerPage(Number(v))
+                          setCurrentPage(1)
+                        }}
+                      >
+                        <SelectTrigger className="h-8 w-[70px]">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {[10, 15, 25, 50].map((opt) => (
+                            <SelectItem key={opt} value={String(opt)}>
+                              {opt}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-muted-foreground">
+                        {(currentPage - 1) * itemsPerPage + 1}–
+                        {Math.min(currentPage * itemsPerPage, filteredSurveys.length)} of{' '}
+                        {filteredSurveys.length}
+                      </span>
+                      <div className="flex items-center gap-1">
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          className="h-8 w-8"
+                          onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                          disabled={currentPage === 1}
+                        >
+                          <ChevronLeft className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          className="h-8 w-8"
+                          onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                          disabled={currentPage === totalPages}
+                        >
+                          <ChevronRight className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Assign Engineer Dialog */}
+        <Dialog open={assignDialogOpen} onOpenChange={setAssignDialogOpen}>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle>Assign Engineer</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4 mt-2">
+              {engineersLoading ? (
+                <div className="flex items-center justify-center py-6">
+                  <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
                 </div>
-              </div>
-            </>
-          )}
-        </CardContent>
-      </Card>
-    </div>
+              ) : engineers.length === 0 ? (
+                <p className="text-sm text-muted-foreground text-center py-6">No engineers found. Create engineers first.</p>
+              ) : (
+                <Select value={assignEngineerId} onValueChange={setAssignEngineerId}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select an engineer" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {engineers.map((e) => (
+                      <SelectItem key={e.id} value={e.id}>
+                        {e.firstName} {e.lastName}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setAssignDialogOpen(false)}>Cancel</Button>
+              <Button onClick={handleAssign} disabled={!assignEngineerId || !!actionLoading}>
+                {actionLoading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Users className="h-4 w-4 mr-2" />}
+                Assign
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
+    </TooltipProvider>
   )
 }

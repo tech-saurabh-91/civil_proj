@@ -88,20 +88,20 @@ export default function NewSurveyPage() {
   const [gpsLoading, setGpsLoading] = useState(false)
 
   useEffect(() => {
-    fetch('/api/projects')
+    fetch('/api/projects?limit=100')
       .then((res) => res.json())
       .then((data) => {
-        if (Array.isArray(data)) setProjects(data)
-        else if (data.projects) setProjects(data.projects)
+        const list = data.data ?? data.projects ?? (Array.isArray(data) ? data : [])
+        setProjects(list.map((p: any) => ({ id: p.id, name: p.name })))
       })
       .catch(() => {})
       .finally(() => setProjectsLoading(false))
 
-    fetch('/api/users')
+    fetch('/api/users?role=ENGINEER&limit=50')
       .then((res) => res.json())
       .then((data) => {
-        const list = Array.isArray(data) ? data : data.users || []
-        setEngineers(list.filter((u: EngineerOption) => u.role === 'ENGINEER' || u.role === 'SURVEYOR'))
+        const list = data.data ?? data.users ?? (Array.isArray(data) ? data : [])
+        setEngineers(list.filter((u: any) => u.role === 'ENGINEER' || u.role === 'SURVEYOR'))
       })
       .catch(() => {})
       .finally(() => setEngineersLoading(false))
@@ -913,7 +913,49 @@ export default function NewSurveyPage() {
                 <div className="flex items-center gap-2">
                   {currentStep === 7 ? (
                     <>
-                      <Button variant="outline" onClick={() => router.push("/surveys")}><Save className="h-4 w-4 mr-2" /> Save Draft</Button>
+                      <Button variant="outline" onClick={async () => {
+                        if (!formData.project || !formData.title) {
+                          setSubmitError("Project and title are required")
+                          return
+                        }
+                        setIsSubmitting(true)
+                        try {
+                          const res = await fetch("/api/surveys", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                              projectId: formData.project,
+                              title: formData.title.trim(),
+                              description: formData.description.trim() || undefined,
+                              type: formData.surveyType || "INITIAL",
+                              scheduledDate: formData.scheduledDate || undefined,
+                              engineerId: formData.engineer || undefined,
+                              weatherCondition: formData.weatherCondition || undefined,
+                              siteCondition: formData.siteCondition || undefined,
+                              accessDetails: formData.accessDetails || undefined,
+                              gpsLatitude: formData.latitude || undefined,
+                              gpsLongitude: formData.longitude || undefined,
+                              checklistItems: checklistItems.map((i) => ({
+                                category: i.category,
+                                item: i.item,
+                                notes: i.notes || undefined,
+                              })),
+                            }),
+                          })
+                          if (!res.ok) {
+                            const err = await res.json()
+                            setSubmitError(err.error || "Failed to save draft")
+                            setIsSubmitting(false)
+                            return
+                          }
+                          router.push("/surveys")
+                        } catch {
+                          setSubmitError("Network error. Please try again.")
+                          setIsSubmitting(false)
+                        }
+                      }} disabled={isSubmitting}>
+                        <Save className="h-4 w-4 mr-2" /> Save Draft
+                      </Button>
                       <Button onClick={handleSubmit} disabled={isSubmitting}>
                         {isSubmitting ? (
                           <><span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />Creating...</>

@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
 
     const item = await (db as any).bOQItem.create({
       data: {
-        projectId,
+        project: { connect: { id: projectId } },
         serialNumber: parseInt(serialNumber, 10),
         description,
         category,

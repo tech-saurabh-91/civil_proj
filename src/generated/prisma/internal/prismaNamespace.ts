@@ -389,6 +389,7 @@ export const ModelName = {
   Lead: 'Lead',
   Project: 'Project',
   Survey: 'Survey',
+  ApprovalLog: 'ApprovalLog',
   SurveyChecklistItem: 'SurveyChecklistItem',
   Photo: 'Photo',
   Video: 'Video',
@@ -417,13 +418,18 @@ export const ModelName = {
   Setting: 'Setting',
   ApiKey: 'ApiKey',
   GpsTracking: 'GpsTracking',
+  SiteVisit: 'SiteVisit',
   Meeting: 'Meeting',
   ChangeOrder: 'ChangeOrder',
   AuditTrail: 'AuditTrail',
   NotificationTemplate: 'NotificationTemplate',
   ReportTemplate: 'ReportTemplate',
   OfflineSync: 'OfflineSync',
-  AccessRequest: 'AccessRequest'
+  AccessRequest: 'AccessRequest',
+  Invoice: 'Invoice',
+  InvoiceItem: 'InvoiceItem',
+  ApprovalLevelConfig: 'ApprovalLevelConfig',
+  ApprovalLevelUser: 'ApprovalLevelUser'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -439,7 +445,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "client" | "lead" | "project" | "survey" | "surveyChecklistItem" | "photo" | "video" | "voiceNote" | "sketch" | "measurement" | "riskAssessment" | "materialRequirement" | "bOQItem" | "costEstimation" | "quotation" | "quotationItem" | "workflow" | "workflowStep" | "approval" | "digitalSignature" | "notification" | "emailLog" | "whatsAppLog" | "report" | "document" | "auditLog" | "activity" | "masterCategory" | "masterItem" | "setting" | "apiKey" | "gpsTracking" | "meeting" | "changeOrder" | "auditTrail" | "notificationTemplate" | "reportTemplate" | "offlineSync" | "accessRequest"
+    modelProps: "user" | "client" | "lead" | "project" | "survey" | "approvalLog" | "surveyChecklistItem" | "photo" | "video" | "voiceNote" | "sketch" | "measurement" | "riskAssessment" | "materialRequirement" | "bOQItem" | "costEstimation" | "quotation" | "quotationItem" | "workflow" | "workflowStep" | "approval" | "digitalSignature" | "notification" | "emailLog" | "whatsAppLog" | "report" | "document" | "auditLog" | "activity" | "masterCategory" | "masterItem" | "setting" | "apiKey" | "gpsTracking" | "siteVisit" | "meeting" | "changeOrder" | "auditTrail" | "notificationTemplate" | "reportTemplate" | "offlineSync" | "accessRequest" | "invoice" | "invoiceItem" | "approvalLevelConfig" | "approvalLevelUser"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -810,6 +816,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.SurveyCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.SurveyCountAggregateOutputType> | number
+        }
+      }
+    }
+    ApprovalLog: {
+      payload: Prisma.$ApprovalLogPayload<ExtArgs>
+      fields: Prisma.ApprovalLogFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ApprovalLogFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalLogPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ApprovalLogFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalLogPayload>
+        }
+        findFirst: {
+          args: Prisma.ApprovalLogFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalLogPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ApprovalLogFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalLogPayload>
+        }
+        findMany: {
+          args: Prisma.ApprovalLogFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalLogPayload>[]
+        }
+        create: {
+          args: Prisma.ApprovalLogCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalLogPayload>
+        }
+        createMany: {
+          args: Prisma.ApprovalLogCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ApprovalLogCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalLogPayload>[]
+        }
+        delete: {
+          args: Prisma.ApprovalLogDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalLogPayload>
+        }
+        update: {
+          args: Prisma.ApprovalLogUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalLogPayload>
+        }
+        deleteMany: {
+          args: Prisma.ApprovalLogDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ApprovalLogUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ApprovalLogUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalLogPayload>[]
+        }
+        upsert: {
+          args: Prisma.ApprovalLogUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalLogPayload>
+        }
+        aggregate: {
+          args: Prisma.ApprovalLogAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateApprovalLog>
+        }
+        groupBy: {
+          args: Prisma.ApprovalLogGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApprovalLogGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ApprovalLogCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApprovalLogCountAggregateOutputType> | number
         }
       }
     }
@@ -2885,6 +2965,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    SiteVisit: {
+      payload: Prisma.$SiteVisitPayload<ExtArgs>
+      fields: Prisma.SiteVisitFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SiteVisitFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteVisitPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SiteVisitFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteVisitPayload>
+        }
+        findFirst: {
+          args: Prisma.SiteVisitFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteVisitPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SiteVisitFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteVisitPayload>
+        }
+        findMany: {
+          args: Prisma.SiteVisitFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteVisitPayload>[]
+        }
+        create: {
+          args: Prisma.SiteVisitCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteVisitPayload>
+        }
+        createMany: {
+          args: Prisma.SiteVisitCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SiteVisitCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteVisitPayload>[]
+        }
+        delete: {
+          args: Prisma.SiteVisitDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteVisitPayload>
+        }
+        update: {
+          args: Prisma.SiteVisitUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteVisitPayload>
+        }
+        deleteMany: {
+          args: Prisma.SiteVisitDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SiteVisitUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SiteVisitUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteVisitPayload>[]
+        }
+        upsert: {
+          args: Prisma.SiteVisitUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteVisitPayload>
+        }
+        aggregate: {
+          args: Prisma.SiteVisitAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSiteVisit>
+        }
+        groupBy: {
+          args: Prisma.SiteVisitGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SiteVisitGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SiteVisitCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SiteVisitCountAggregateOutputType> | number
+        }
+      }
+    }
     Meeting: {
       payload: Prisma.$MeetingPayload<ExtArgs>
       fields: Prisma.MeetingFieldRefs
@@ -3403,6 +3557,302 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Invoice: {
+      payload: Prisma.$InvoicePayload<ExtArgs>
+      fields: Prisma.InvoiceFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.InvoiceFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvoicePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.InvoiceFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvoicePayload>
+        }
+        findFirst: {
+          args: Prisma.InvoiceFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvoicePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.InvoiceFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvoicePayload>
+        }
+        findMany: {
+          args: Prisma.InvoiceFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvoicePayload>[]
+        }
+        create: {
+          args: Prisma.InvoiceCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvoicePayload>
+        }
+        createMany: {
+          args: Prisma.InvoiceCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.InvoiceCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvoicePayload>[]
+        }
+        delete: {
+          args: Prisma.InvoiceDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvoicePayload>
+        }
+        update: {
+          args: Prisma.InvoiceUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvoicePayload>
+        }
+        deleteMany: {
+          args: Prisma.InvoiceDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.InvoiceUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.InvoiceUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvoicePayload>[]
+        }
+        upsert: {
+          args: Prisma.InvoiceUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvoicePayload>
+        }
+        aggregate: {
+          args: Prisma.InvoiceAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateInvoice>
+        }
+        groupBy: {
+          args: Prisma.InvoiceGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InvoiceGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.InvoiceCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InvoiceCountAggregateOutputType> | number
+        }
+      }
+    }
+    InvoiceItem: {
+      payload: Prisma.$InvoiceItemPayload<ExtArgs>
+      fields: Prisma.InvoiceItemFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.InvoiceItemFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvoiceItemPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.InvoiceItemFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvoiceItemPayload>
+        }
+        findFirst: {
+          args: Prisma.InvoiceItemFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvoiceItemPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.InvoiceItemFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvoiceItemPayload>
+        }
+        findMany: {
+          args: Prisma.InvoiceItemFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvoiceItemPayload>[]
+        }
+        create: {
+          args: Prisma.InvoiceItemCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvoiceItemPayload>
+        }
+        createMany: {
+          args: Prisma.InvoiceItemCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.InvoiceItemCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvoiceItemPayload>[]
+        }
+        delete: {
+          args: Prisma.InvoiceItemDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvoiceItemPayload>
+        }
+        update: {
+          args: Prisma.InvoiceItemUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvoiceItemPayload>
+        }
+        deleteMany: {
+          args: Prisma.InvoiceItemDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.InvoiceItemUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.InvoiceItemUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvoiceItemPayload>[]
+        }
+        upsert: {
+          args: Prisma.InvoiceItemUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvoiceItemPayload>
+        }
+        aggregate: {
+          args: Prisma.InvoiceItemAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateInvoiceItem>
+        }
+        groupBy: {
+          args: Prisma.InvoiceItemGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InvoiceItemGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.InvoiceItemCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InvoiceItemCountAggregateOutputType> | number
+        }
+      }
+    }
+    ApprovalLevelConfig: {
+      payload: Prisma.$ApprovalLevelConfigPayload<ExtArgs>
+      fields: Prisma.ApprovalLevelConfigFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ApprovalLevelConfigFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalLevelConfigPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ApprovalLevelConfigFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalLevelConfigPayload>
+        }
+        findFirst: {
+          args: Prisma.ApprovalLevelConfigFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalLevelConfigPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ApprovalLevelConfigFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalLevelConfigPayload>
+        }
+        findMany: {
+          args: Prisma.ApprovalLevelConfigFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalLevelConfigPayload>[]
+        }
+        create: {
+          args: Prisma.ApprovalLevelConfigCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalLevelConfigPayload>
+        }
+        createMany: {
+          args: Prisma.ApprovalLevelConfigCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ApprovalLevelConfigCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalLevelConfigPayload>[]
+        }
+        delete: {
+          args: Prisma.ApprovalLevelConfigDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalLevelConfigPayload>
+        }
+        update: {
+          args: Prisma.ApprovalLevelConfigUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalLevelConfigPayload>
+        }
+        deleteMany: {
+          args: Prisma.ApprovalLevelConfigDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ApprovalLevelConfigUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ApprovalLevelConfigUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalLevelConfigPayload>[]
+        }
+        upsert: {
+          args: Prisma.ApprovalLevelConfigUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalLevelConfigPayload>
+        }
+        aggregate: {
+          args: Prisma.ApprovalLevelConfigAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateApprovalLevelConfig>
+        }
+        groupBy: {
+          args: Prisma.ApprovalLevelConfigGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApprovalLevelConfigGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ApprovalLevelConfigCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApprovalLevelConfigCountAggregateOutputType> | number
+        }
+      }
+    }
+    ApprovalLevelUser: {
+      payload: Prisma.$ApprovalLevelUserPayload<ExtArgs>
+      fields: Prisma.ApprovalLevelUserFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ApprovalLevelUserFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalLevelUserPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ApprovalLevelUserFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalLevelUserPayload>
+        }
+        findFirst: {
+          args: Prisma.ApprovalLevelUserFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalLevelUserPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ApprovalLevelUserFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalLevelUserPayload>
+        }
+        findMany: {
+          args: Prisma.ApprovalLevelUserFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalLevelUserPayload>[]
+        }
+        create: {
+          args: Prisma.ApprovalLevelUserCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalLevelUserPayload>
+        }
+        createMany: {
+          args: Prisma.ApprovalLevelUserCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ApprovalLevelUserCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalLevelUserPayload>[]
+        }
+        delete: {
+          args: Prisma.ApprovalLevelUserDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalLevelUserPayload>
+        }
+        update: {
+          args: Prisma.ApprovalLevelUserUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalLevelUserPayload>
+        }
+        deleteMany: {
+          args: Prisma.ApprovalLevelUserDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ApprovalLevelUserUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ApprovalLevelUserUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalLevelUserPayload>[]
+        }
+        upsert: {
+          args: Prisma.ApprovalLevelUserUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalLevelUserPayload>
+        }
+        aggregate: {
+          args: Prisma.ApprovalLevelUserAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateApprovalLevelUser>
+        }
+        groupBy: {
+          args: Prisma.ApprovalLevelUserGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApprovalLevelUserGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ApprovalLevelUserCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApprovalLevelUserCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -3567,11 +4017,27 @@ export const SurveyScalarFieldEnum = {
   updatedBy: 'updatedBy',
   isDeleted: 'isDeleted',
   version: 'version',
+  currentApprovalLevel: 'currentApprovalLevel',
+  assignedApproverId: 'assignedApproverId',
   projectId: 'projectId',
   engineerId: 'engineerId'
 } as const
 
 export type SurveyScalarFieldEnum = (typeof SurveyScalarFieldEnum)[keyof typeof SurveyScalarFieldEnum]
+
+
+export const ApprovalLogScalarFieldEnum = {
+  id: 'id',
+  surveyId: 'surveyId',
+  level: 'level',
+  action: 'action',
+  fromUserId: 'fromUserId',
+  toUserId: 'toUserId',
+  notes: 'notes',
+  createdAt: 'createdAt'
+} as const
+
+export type ApprovalLogScalarFieldEnum = (typeof ApprovalLogScalarFieldEnum)[keyof typeof ApprovalLogScalarFieldEnum]
 
 
 export const SurveyChecklistItemScalarFieldEnum = {
@@ -3606,7 +4072,8 @@ export const PhotoScalarFieldEnum = {
   updatedBy: 'updatedBy',
   isDeleted: 'isDeleted',
   version: 'version',
-  surveyId: 'surveyId'
+  surveyId: 'surveyId',
+  projectId: 'projectId'
 } as const
 
 export type PhotoScalarFieldEnum = (typeof PhotoScalarFieldEnum)[keyof typeof PhotoScalarFieldEnum]
@@ -3979,6 +4446,7 @@ export const DocumentScalarFieldEnum = {
   fileUrl: 'fileUrl',
   filename: 'filename',
   fileSize: 'fileSize',
+  mimeType: 'mimeType',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   createdBy: 'createdBy',
@@ -4109,6 +4577,9 @@ export const GpsTrackingScalarFieldEnum = {
   latitude: 'latitude',
   longitude: 'longitude',
   accuracy: 'accuracy',
+  speed: 'speed',
+  batteryLevel: 'batteryLevel',
+  isMoving: 'isMoving',
   timestamp: 'timestamp',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -4121,6 +4592,27 @@ export const GpsTrackingScalarFieldEnum = {
 } as const
 
 export type GpsTrackingScalarFieldEnum = (typeof GpsTrackingScalarFieldEnum)[keyof typeof GpsTrackingScalarFieldEnum]
+
+
+export const SiteVisitScalarFieldEnum = {
+  id: 'id',
+  checkInAt: 'checkInAt',
+  checkOutAt: 'checkOutAt',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  accuracy: 'accuracy',
+  notes: 'notes',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  createdBy: 'createdBy',
+  isDeleted: 'isDeleted',
+  userId: 'userId',
+  projectId: 'projectId',
+  surveyId: 'surveyId'
+} as const
+
+export type SiteVisitScalarFieldEnum = (typeof SiteVisitScalarFieldEnum)[keyof typeof SiteVisitScalarFieldEnum]
 
 
 export const MeetingScalarFieldEnum = {
@@ -4236,6 +4728,84 @@ export const AccessRequestScalarFieldEnum = {
 } as const
 
 export type AccessRequestScalarFieldEnum = (typeof AccessRequestScalarFieldEnum)[keyof typeof AccessRequestScalarFieldEnum]
+
+
+export const InvoiceScalarFieldEnum = {
+  id: 'id',
+  invoiceNumber: 'invoiceNumber',
+  title: 'title',
+  description: 'description',
+  totalAmount: 'totalAmount',
+  taxAmount: 'taxAmount',
+  discountAmount: 'discountAmount',
+  grandTotal: 'grandTotal',
+  dueDate: 'dueDate',
+  paidDate: 'paidDate',
+  status: 'status',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy',
+  isDeleted: 'isDeleted',
+  version: 'version',
+  projectId: 'projectId',
+  quotationId: 'quotationId'
+} as const
+
+export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeof InvoiceScalarFieldEnum]
+
+
+export const InvoiceItemScalarFieldEnum = {
+  id: 'id',
+  description: 'description',
+  unit: 'unit',
+  quantity: 'quantity',
+  unitRate: 'unitRate',
+  amount: 'amount',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy',
+  isDeleted: 'isDeleted',
+  version: 'version',
+  invoiceId: 'invoiceId'
+} as const
+
+export type InvoiceItemScalarFieldEnum = (typeof InvoiceItemScalarFieldEnum)[keyof typeof InvoiceItemScalarFieldEnum]
+
+
+export const ApprovalLevelConfigScalarFieldEnum = {
+  id: 'id',
+  entityType: 'entityType',
+  level: 'level',
+  name: 'name',
+  description: 'description',
+  requiredRole: 'requiredRole',
+  allowForward: 'allowForward',
+  allowEscalate: 'allowEscalate',
+  allowReverse: 'allowReverse',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy',
+  isDeleted: 'isDeleted',
+  version: 'version'
+} as const
+
+export type ApprovalLevelConfigScalarFieldEnum = (typeof ApprovalLevelConfigScalarFieldEnum)[keyof typeof ApprovalLevelConfigScalarFieldEnum]
+
+
+export const ApprovalLevelUserScalarFieldEnum = {
+  id: 'id',
+  configId: 'configId',
+  userId: 'userId',
+  isActive: 'isActive',
+  createdAt: 'createdAt'
+} as const
+
+export type ApprovalLevelUserScalarFieldEnum = (typeof ApprovalLevelUserScalarFieldEnum)[keyof typeof ApprovalLevelUserScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -4693,6 +5263,7 @@ export type GlobalOmitConfig = {
   lead?: Prisma.LeadOmit
   project?: Prisma.ProjectOmit
   survey?: Prisma.SurveyOmit
+  approvalLog?: Prisma.ApprovalLogOmit
   surveyChecklistItem?: Prisma.SurveyChecklistItemOmit
   photo?: Prisma.PhotoOmit
   video?: Prisma.VideoOmit
@@ -4721,6 +5292,7 @@ export type GlobalOmitConfig = {
   setting?: Prisma.SettingOmit
   apiKey?: Prisma.ApiKeyOmit
   gpsTracking?: Prisma.GpsTrackingOmit
+  siteVisit?: Prisma.SiteVisitOmit
   meeting?: Prisma.MeetingOmit
   changeOrder?: Prisma.ChangeOrderOmit
   auditTrail?: Prisma.AuditTrailOmit
@@ -4728,6 +5300,10 @@ export type GlobalOmitConfig = {
   reportTemplate?: Prisma.ReportTemplateOmit
   offlineSync?: Prisma.OfflineSyncOmit
   accessRequest?: Prisma.AccessRequestOmit
+  invoice?: Prisma.InvoiceOmit
+  invoiceItem?: Prisma.InvoiceItemOmit
+  approvalLevelConfig?: Prisma.ApprovalLevelConfigOmit
+  approvalLevelUser?: Prisma.ApprovalLevelUserOmit
 }
 
 /* Types for Logging */

@@ -1,40 +1,46 @@
 "use client"
 
-import { useState, use } from "react"
+import { useState, useEffect, useCallback, use } from "react"
 import Link from "next/link"
+import { useRouter, useSearchParams } from "next/navigation"
 import {
-  Activity,
   ArrowLeft,
   Building2,
   Calendar,
-  Clock,
   DollarSign,
-  Download,
   Edit,
   FileText,
   FolderOpen,
   Mail,
   MapPin,
   Phone,
-  Receipt,
-  Star,
-  TrendingUp,
-  User,
-  Users,
+  Save,
+  X,
+  AlertCircle,
+  CheckCircle2,
 } from "lucide-react"
 
 import { cn, formatCurrency, formatDate } from "@/lib/utils"
+import { showSuccess, showError } from "@/components/ui/toast"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Progress } from "@/components/ui/progress"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 import { PageHeader } from "@/components/ui/page-header"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import {
@@ -46,153 +52,162 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-const clientData = {
-  id: "CLT-001",
-  companyName: "L&T Realty",
-  contactPerson: "Rajesh Kumar",
-  email: "rajesh.kumar@lntrealty.com",
-  phone: "+91 98765 43210",
-  city: "Mumbai",
-  state: "Maharashtra",
-  country: "India",
-  address: "12th Floor, L&T Technology Centre, Plot No. B-16, MIDC, Navi Mumbai - 400710",
-  gstNumber: "27AABCL1234F1ZP",
-  panNumber: "AABCL1234F",
-  website: "https://www.lntrealty.com",
-  type: "Real Estate Developer",
-  status: "Active",
-  rating: 4.8,
-  totalRevenue: 42500000,
-  projectsCount: 5,
-  createdAt: "2023-06-15",
-}
-
-const clientProjects = [
-  {
-    id: "PRJ-001",
-    name: "Worli Sky Residences",
-    code: "PRJ-2024-001",
-    status: "In Progress",
-    type: "Residential Tower",
-    progress: 65,
-    budget: 12500000,
-    managerName: "Amit Deshmukh",
-    managerInitials: "AD",
-    startDate: "2024-01-15",
-    endDate: "2025-06-30",
-  },
-  {
-    id: "PRJ-002",
-    name: "BKC Commercial Hub",
-    code: "PRJ-2024-002",
-    status: "Planning",
-    type: "Commercial Complex",
-    progress: 15,
-    budget: 8900000,
-    managerName: "Priya Nair",
-    managerInitials: "PN",
-    startDate: "2024-06-01",
-    endDate: "2026-03-31",
-  },
-  {
-    id: "PRJ-003",
-    name: "Navi Mumbai Township",
-    code: "PRJ-2023-015",
-    status: "Completed",
-    type: "Residential Tower",
-    progress: 100,
-    budget: 6700000,
-    managerName: "Suresh Patil",
-    managerInitials: "SP",
-    startDate: "2023-03-01",
-    endDate: "2024-08-30",
-  },
-  {
-    id: "PRJ-004",
-    name: "Powai Lake View Apartments",
-    code: "PRJ-2024-004",
-    status: "In Progress",
-    type: "Residential Tower",
-    progress: 42,
-    budget: 9800000,
-    managerName: "Neha Kulkarni",
-    managerInitials: "NK",
-    startDate: "2024-03-15",
-    endDate: "2025-12-31",
-  },
-  {
-    id: "PRJ-005",
-    name: "Thane Industrial Park",
-    code: "PRJ-2023-020",
-    status: "On Hold",
-    type: "Industrial",
-    progress: 30,
-    budget: 4600000,
-    managerName: "Vikram Desai",
-    managerInitials: "VD",
-    startDate: "2023-09-01",
-    endDate: "2025-04-30",
-  },
-]
-
-const invoices = [
-  { id: "INV-001", amount: 2500000, status: "Paid", date: "2024-01-15", description: "Initial Advance - Worli Sky Residences" },
-  { id: "INV-002", amount: 1800000, status: "Paid", date: "2024-03-20", description: "Phase 1 Completion - Worli Sky Residences" },
-  { id: "INV-003", amount: 3200000, status: "Pending", date: "2024-06-10", description: "Phase 2 Progress - Worli Sky Residences" },
-  { id: "INV-004", amount: 900000, status: "Paid", date: "2024-04-05", description: "Survey & Design - BKC Commercial Hub" },
-]
-
-const activityTimeline = [
-  { date: "2024-07-10", action: "Invoice INV-003 generated", user: "Accounts Team", type: "finance" },
-  { date: "2024-07-08", action: "Site survey completed for BKC Hub", user: "Survey Team", type: "survey" },
-  { date: "2024-07-05", action: "Project milestone achieved - Floor 12 slab", user: "Amit Deshmukh", type: "project" },
-  { date: "2024-07-01", action: "Monthly progress report shared", user: "Project Manager", type: "report" },
-  { date: "2024-06-28", action: "Material procurement order placed", user: "Procurement Team", type: "procurement" },
-  { date: "2024-06-25", action: "Quality inspection passed", user: "QC Team", type: "quality" },
-  { date: "2024-06-20", action: "Client meeting - reviewed design changes", user: "Rajesh Kumar", type: "meeting" },
-  { date: "2024-06-15", action: "Contract renewal signed", user: "Legal Team", type: "contract" },
-]
-
-const statusVariantMap: Record<string, "success" | "info" | "warning" | "destructive" | "secondary"> = {
-  "In Progress": "success",
-  Planning: "info",
-  "On Hold": "warning",
-  Completed: "secondary",
-  Cancelled: "destructive",
+interface ClientDetail {
+  id: string
+  companyName: string
+  contactPerson: string
+  email: string
+  phone: string
+  city: string
+  state: string
+  country: string
+  address: string
+  zipCode: string
+  gstNumber: string
+  panNumber: string
+  website: string
+  notes: string
+  createdAt: string
+  projects: { id: string; name: string; code: string; status: string }[]
+  leads: { id: string; name: string; status: string; createdAt: string }[]
 }
 
 export default function ClientDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const isEdit = searchParams.get("edit") === "true"
+
+  const [client, setClient] = useState<ClientDetail | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [editMode, setEditMode] = useState(isEdit)
+  const [saving, setSaving] = useState(false)
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [error, setError] = useState("")
+
+  const [editData, setEditData] = useState({
+    companyName: "", contactPerson: "", email: "", phone: "",
+    address: "", city: "", state: "", zipCode: "", country: "",
+    gstNumber: "", panNumber: "", website: "", notes: "",
+  })
+
+  const fetchClient = useCallback(async () => {
+    try {
+      const res = await fetch(`/api/clients/${id}`)
+      if (res.ok) {
+        const data = await res.json()
+        setClient(data.data)
+      }
+    } catch {} finally { setLoading(false) }
+  }, [id])
+
+  useEffect(() => { fetchClient() }, [fetchClient])
+
+  useEffect(() => {
+    if (client) {
+      setEditData({
+        companyName: client.companyName || "",
+        contactPerson: client.contactPerson || "",
+        email: client.email || "",
+        phone: client.phone || "",
+        address: client.address || "",
+        city: client.city || "",
+        state: client.state || "",
+        zipCode: client.zipCode || "",
+        country: client.country || "India",
+        gstNumber: client.gstNumber || "",
+        panNumber: client.panNumber || "",
+        website: client.website || "",
+        notes: client.notes || "",
+      })
+    }
+  }, [client])
+
+  const handleSave = async () => {
+    setSaving(true)
+    setError("")
+    try {
+      const res = await fetch(`/api/clients/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(editData),
+      })
+      if (res.ok) {
+        await fetchClient()
+        setEditMode(false)
+        showSuccess("Client updated successfully.")
+      } else {
+        const data = await res.json()
+        setError(data.error || "Failed to save")
+        showError(data.error || "Failed to save client.")
+      }
+    } catch { setError("Network error"); showError("Network error.") } finally { setSaving(false) }
+  }
+
+  const handleDelete = async () => {
+    try {
+      const res = await fetch(`/api/clients/${id}`, { method: "DELETE" })
+      if (res.ok) {
+        showSuccess("Client deleted successfully.")
+        router.push("/clients")
+      } else {
+        showError("Failed to delete client.")
+      }
+    } catch { showError("Network error.") }
+  }
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <PageHeader title="Loading..." description="" breadcrumbs={[{ label: "Dashboard", href: "/" }, { label: "Clients", href: "/clients" }, { label: "Loading..." }]} />
+        <Card><CardContent className="flex items-center justify-center py-12"><div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" /></CardContent></Card>
+      </div>
+    )
+  }
+
+  if (!client) {
+    return (
+      <div className="space-y-6">
+        <PageHeader title="Client Not Found" description="" breadcrumbs={[{ label: "Dashboard", href: "/" }, { label: "Clients", href: "/clients" }, { label: "Not Found" }]} />
+        <Card><CardContent className="flex flex-col items-center justify-center py-12"><p className="text-muted-foreground">Client not found.</p><Button asChild className="mt-4"><Link href="/clients">Back to Clients</Link></Button></CardContent></Card>
+      </div>
+    )
+  }
+
+  const statusVariantMap: Record<string, "success" | "info" | "warning" | "destructive" | "secondary"> = {
+    "In Progress": "success", Planning: "info", "On Hold": "warning", Completed: "secondary", Cancelled: "destructive", ACTIVE: "success", INACTIVE: "secondary",
+  }
 
   return (
     <div className="space-y-6">
       <PageHeader
-        title={clientData.companyName}
-        description={`Client ID: ${clientData.id}`}
+        title={editMode ? "Edit Client" : client.companyName}
+        description={`Client ID: ${client.id}`}
         breadcrumbs={[
           { label: "Dashboard", href: "/" },
           { label: "Clients", href: "/clients" },
-          { label: clientData.companyName },
+          { label: editMode ? "Edit" : client.companyName },
         ]}
         actions={
           <div className="flex items-center gap-2">
-            <Button variant="outline" asChild>
-              <Link href="/clients">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Back
-              </Link>
-            </Button>
-            <Button variant="outline">
-              <Edit className="mr-2 h-4 w-4" />
-              Edit
-            </Button>
-            <Button>
-              <Mail className="mr-2 h-4 w-4" />
-              Contact
-            </Button>
+            <Button variant="outline" asChild><Link href="/clients"><ArrowLeft className="mr-2 h-4 w-4" />Back</Link></Button>
+            {!editMode ? (
+              <>
+                <Button variant="outline" onClick={() => setEditMode(true)}><Edit className="mr-2 h-4 w-4" />Edit</Button>
+                <Button onClick={() => window.location.href = `mailto:${client.email}`}><Mail className="mr-2 h-4 w-4" />Contact</Button>
+                <Button variant="destructive" onClick={() => setDeleteDialogOpen(true)}><AlertCircle className="mr-2 h-4 w-4" />Delete</Button>
+              </>
+            ) : (
+              <>
+                <Button variant="outline" onClick={() => setEditMode(false)}><X className="mr-2 h-4 w-4" />Cancel</Button>
+                <Button onClick={handleSave} disabled={saving}><Save className="mr-2 h-4 w-4" />{saving ? "Saving..." : "Save"}</Button>
+              </>
+            )}
           </div>
         }
       />
+
+      {error && <div className="rounded-lg bg-red-50 p-3 text-sm text-red-600 flex items-center gap-2"><AlertCircle className="h-4 w-4" />{error}</div>}
 
       <div className="grid gap-6 lg:grid-cols-3">
         <Card className="lg:col-span-2">
@@ -201,291 +216,131 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
               <div className="flex items-center gap-4">
                 <Avatar className="h-16 w-16">
                   <AvatarFallback className="bg-primary/10 text-primary text-xl font-bold">
-                    {clientData.companyName.slice(0, 2).toUpperCase()}
+                    {client.companyName.slice(0, 2).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
                 <div>
-                  <h2 className="text-xl font-bold">{clientData.companyName}</h2>
-                  <p className="text-sm text-muted-foreground">{clientData.type}</p>
-                  <div className="mt-1 flex items-center gap-1">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className={cn(
-                          "h-4 w-4",
-                          i < Math.floor(clientData.rating)
-                            ? "fill-amber-400 text-amber-400"
-                            : "text-gray-200"
-                        )}
-                      />
-                    ))}
-                    <span className="ml-1 text-sm font-medium">{clientData.rating}</span>
-                  </div>
+                  <h2 className="text-xl font-bold">{client.companyName}</h2>
+                  <p className="text-sm text-muted-foreground">{client.contactPerson}</p>
                 </div>
               </div>
-              <Badge variant="success" className="text-sm">{clientData.status}</Badge>
+              <Badge variant="success" className="text-sm">Active</Badge>
             </div>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                  <User className="h-5 w-5 text-primary" />
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground">Contact Person</p>
-                  <p className="text-sm font-medium">{clientData.contactPerson}</p>
-                </div>
+            {editMode ? (
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-2"><Label>Company Name *</Label><Input value={editData.companyName} onChange={(e) => setEditData({ ...editData, companyName: e.target.value })} /></div>
+                <div className="space-y-2"><Label>Contact Person *</Label><Input value={editData.contactPerson} onChange={(e) => setEditData({ ...editData, contactPerson: e.target.value })} /></div>
+                <div className="space-y-2"><Label>Email *</Label><Input type="email" value={editData.email} onChange={(e) => setEditData({ ...editData, email: e.target.value })} /></div>
+                <div className="space-y-2"><Label>Phone *</Label><Input value={editData.phone} onChange={(e) => setEditData({ ...editData, phone: e.target.value })} /></div>
+                <div className="space-y-2 sm:col-span-2"><Label>Address</Label><Input value={editData.address} onChange={(e) => setEditData({ ...editData, address: e.target.value })} /></div>
+                <div className="space-y-2"><Label>City</Label><Input value={editData.city} onChange={(e) => setEditData({ ...editData, city: e.target.value })} /></div>
+                <div className="space-y-2"><Label>State</Label><Input value={editData.state} onChange={(e) => setEditData({ ...editData, state: e.target.value })} /></div>
+                <div className="space-y-2"><Label>GST Number</Label><Input value={editData.gstNumber} onChange={(e) => setEditData({ ...editData, gstNumber: e.target.value })} /></div>
+                <div className="space-y-2"><Label>PAN Number</Label><Input value={editData.panNumber} onChange={(e) => setEditData({ ...editData, panNumber: e.target.value })} /></div>
+                <div className="space-y-2"><Label>Website</Label><Input value={editData.website} onChange={(e) => setEditData({ ...editData, website: e.target.value })} /></div>
+                <div className="space-y-2"><Label>Notes</Label><Textarea value={editData.notes} onChange={(e) => setEditData({ ...editData, notes: e.target.value })} rows={3} /></div>
               </div>
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                  <Mail className="h-5 w-5 text-primary" />
+            ) : (
+              <>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10"><Mail className="h-5 w-5 text-primary" /></div>
+                    <div><p className="text-xs text-muted-foreground">Email</p><a href={`mailto:${client.email}`} className="text-sm font-medium text-primary hover:underline">{client.email}</a></div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10"><Phone className="h-5 w-5 text-primary" /></div>
+                    <div><p className="text-xs text-muted-foreground">Phone</p><a href={`tel:${client.phone}`} className="text-sm font-medium text-primary hover:underline">{client.phone}</a></div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10"><MapPin className="h-5 w-5 text-primary" /></div>
+                    <div><p className="text-xs text-muted-foreground">Location</p><p className="text-sm font-medium">{client.city}{client.state ? `, ${client.state}` : ''}</p></div>
+                  </div>
+                  {client.website && (
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10"><Building2 className="h-5 w-5 text-primary" /></div>
+                      <div><p className="text-xs text-muted-foreground">Website</p><a href={client.website} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline">{client.website}</a></div>
+                    </div>
+                  )}
                 </div>
-                <div>
-                  <p className="text-xs text-muted-foreground">Email</p>
-                  <p className="text-sm font-medium">{clientData.email}</p>
+                {client.address && <div className="rounded-lg border p-4"><p className="text-xs text-muted-foreground mb-1">Address</p><p className="text-sm">{client.address}</p></div>}
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {client.gstNumber && <div className="rounded-lg border p-4"><p className="text-xs text-muted-foreground">GST Number</p><p className="text-sm font-mono font-medium mt-1">{client.gstNumber}</p></div>}
+                  {client.panNumber && <div className="rounded-lg border p-4"><p className="text-xs text-muted-foreground">PAN Number</p><p className="text-sm font-mono font-medium mt-1">{client.panNumber}</p></div>}
                 </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                  <Phone className="h-5 w-5 text-primary" />
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground">Phone</p>
-                  <p className="text-sm font-medium">{clientData.phone}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                  <MapPin className="h-5 w-5 text-primary" />
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground">Location</p>
-                  <p className="text-sm font-medium">{clientData.city}, {clientData.state}</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="rounded-lg border p-4">
-              <p className="text-xs text-muted-foreground mb-1">Address</p>
-              <p className="text-sm">{clientData.address}</p>
-            </div>
-
-            <div className="grid gap-4 sm:grid-cols-3">
-              <div className="rounded-lg border p-4">
-                <p className="text-xs text-muted-foreground">GST Number</p>
-                <p className="text-sm font-mono font-medium mt-1">{clientData.gstNumber}</p>
-              </div>
-              <div className="rounded-lg border p-4">
-                <p className="text-xs text-muted-foreground">PAN Number</p>
-                <p className="text-sm font-mono font-medium mt-1">{clientData.panNumber}</p>
-              </div>
-              <div className="rounded-lg border p-4">
-                <p className="text-xs text-muted-foreground">Website</p>
-                <a href={clientData.website} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline mt-1 block">
-                  {clientData.website}
-                </a>
-              </div>
-            </div>
+              </>
+            )}
           </CardContent>
         </Card>
 
         <div className="space-y-6">
           <Card>
-            <CardHeader>
-              <CardTitle className="text-base">Client Summary</CardTitle>
-            </CardHeader>
+            <CardHeader><CardTitle className="text-base">Client Summary</CardTitle></CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Total Revenue</span>
-                <span className="text-lg font-bold">{formatCurrency(clientData.totalRevenue)}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Active Projects</span>
-                <span className="text-lg font-bold">{clientData.projectsCount}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Client Since</span>
-                <span className="text-sm font-medium">{formatDate(clientData.createdAt)}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Avg. Project Value</span>
-                <span className="text-sm font-medium">
-                  {formatCurrency(clientData.totalRevenue / clientData.projectsCount)}
-                </span>
-              </div>
+              <div className="flex items-center justify-between"><span className="text-sm text-muted-foreground">Total Projects</span><span className="text-lg font-bold">{client.projects.length}</span></div>
+              <div className="flex items-center justify-between"><span className="text-sm text-muted-foreground">Total Leads</span><span className="text-lg font-bold">{client.leads.length}</span></div>
+              <div className="flex items-center justify-between"><span className="text-sm text-muted-foreground">Client Since</span><span className="text-sm font-medium">{formatDate(client.createdAt)}</span></div>
             </CardContent>
           </Card>
 
           <Card>
-            <CardHeader>
-              <CardTitle className="text-base">Quick Actions</CardTitle>
-            </CardHeader>
+            <CardHeader><CardTitle className="text-base">Quick Actions</CardTitle></CardHeader>
             <CardContent className="space-y-2">
-              <Button variant="outline" className="w-full justify-start" size="sm">
-                <FileText className="mr-2 h-4 w-4" />
-                Create Proposal
+              <Button variant="outline" className="w-full justify-start" size="sm" onClick={() => window.location.href = `mailto:${client.email}`}>
+                <Mail className="mr-2 h-4 w-4" />Send Email
               </Button>
-              <Button variant="outline" className="w-full justify-start" size="sm">
-                <Receipt className="mr-2 h-4 w-4" />
-                Generate Invoice
+              <Button variant="outline" className="w-full justify-start" size="sm" onClick={() => window.location.href = `tel:${client.phone}`}>
+                <Phone className="mr-2 h-4 w-4" />Call
               </Button>
-              <Button variant="outline" className="w-full justify-start" size="sm">
-                <FolderOpen className="mr-2 h-4 w-4" />
-                New Project
-              </Button>
-              <Button variant="outline" className="w-full justify-start" size="sm">
-                <Download className="mr-2 h-4 w-4" />
-                Export Data
+              <Button variant="outline" className="w-full justify-start" size="sm" asChild>
+                <Link href="/projects/new"><FolderOpen className="mr-2 h-4 w-4" />New Project</Link>
               </Button>
             </CardContent>
           </Card>
         </div>
       </div>
 
-      <Tabs defaultValue="projects" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="projects" className="gap-2">
-            <FolderOpen className="h-4 w-4" />
-            Projects
-          </TabsTrigger>
-          <TabsTrigger value="invoices" className="gap-2">
-            <Receipt className="h-4 w-4" />
-            Invoices
-          </TabsTrigger>
-          <TabsTrigger value="documents" className="gap-2">
-            <FileText className="h-4 w-4" />
-            Documents
-          </TabsTrigger>
-          <TabsTrigger value="activity" className="gap-2">
-            <Activity className="h-4 w-4" />
-            Activity
-          </TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="projects" className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {clientProjects.map((project) => (
-              <Card key={project.id} className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => window.location.href = `/projects/${project.id}`}>
-                <CardHeader className="pb-3">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <CardTitle className="text-sm">{project.name}</CardTitle>
-                      <p className="text-xs text-muted-foreground font-mono mt-0.5">{project.code}</p>
-                    </div>
-                    <Badge variant={statusVariantMap[project.status] || "secondary"}>
-                      {project.status}
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-muted-foreground">Progress</span>
-                    <span className="font-medium">{project.progress}%</span>
-                  </div>
-                  <Progress value={project.progress} className="h-1.5" />
-                  <div className="grid grid-cols-2 gap-2 text-xs">
-                    <div>
-                      <p className="text-muted-foreground">Budget</p>
-                      <p className="font-medium">{formatCurrency(project.budget)}</p>
-                    </div>
-                    <div>
-                      <p className="text-muted-foreground">End Date</p>
-                      <p className="font-medium">{formatDate(project.endDate)}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2 pt-1 border-t">
-                    <Avatar className="h-5 w-5">
-                      <AvatarFallback className="text-[8px] bg-primary/10 text-primary">
-                        {project.managerInitials}
-                      </AvatarFallback>
-                    </Avatar>
-                    <span className="text-xs text-muted-foreground">{project.managerName}</span>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="invoices">
-          <Card>
-            <CardContent className="pt-6">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Invoice ID</TableHead>
-                    <TableHead>Description</TableHead>
-                    <TableHead>Date</TableHead>
-                    <TableHead className="text-right">Amount</TableHead>
-                    <TableHead className="text-center">Status</TableHead>
+      {client.projects.length > 0 && (
+        <Card>
+          <CardHeader><CardTitle className="text-base">Projects ({client.projects.length})</CardTitle></CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Project Name</TableHead>
+                  <TableHead>Code</TableHead>
+                  <TableHead className="text-center">Status</TableHead>
+                  <TableHead className="text-center">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {client.projects.map((project) => (
+                  <TableRow key={project.id}>
+                    <TableCell className="font-medium">{project.name}</TableCell>
+                    <TableCell className="font-mono text-sm">{project.code}</TableCell>
+                    <TableCell className="text-center"><Badge variant={statusVariantMap[project.status] || "secondary"}>{project.status}</Badge></TableCell>
+                    <TableCell className="text-center"><Button variant="ghost" size="sm" asChild><Link href={`/projects/${project.id}`}>View</Link></Button></TableCell>
                   </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {invoices.map((invoice) => (
-                    <TableRow key={invoice.id}>
-                      <TableCell className="font-mono text-sm">{invoice.id}</TableCell>
-                      <TableCell>{invoice.description}</TableCell>
-                      <TableCell>{formatDate(invoice.date)}</TableCell>
-                      <TableCell className="text-right font-medium">
-                        {formatCurrency(invoice.amount)}
-                      </TableCell>
-                      <TableCell className="text-center">
-                        <Badge variant={invoice.status === "Paid" ? "success" : "warning"}>
-                          {invoice.status}
-                        </Badge>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="documents">
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex flex-col items-center justify-center py-12 text-center">
-                <FileText className="h-12 w-12 text-muted-foreground/50" />
-                <h3 className="mt-4 text-lg font-semibold">No documents yet</h3>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  Upload contracts, proposals, and other client documents
-                </p>
-                <Button className="mt-4" size="sm">
-                  <Download className="mr-2 h-4 w-4" />
-                  Upload Document
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="activity">
-          <Card>
-            <CardContent className="pt-6">
-              <div className="relative space-y-6">
-                <div className="absolute left-4 top-0 bottom-0 w-px bg-border" />
-                {activityTimeline.map((item, index) => (
-                  <div key={index} className="relative flex gap-4">
-                    <div className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full border bg-background">
-                      <Activity className="h-4 w-4 text-muted-foreground" />
-                    </div>
-                    <div className="flex-1 pt-1">
-                      <p className="text-sm">{item.action}</p>
-                      <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
-                        <span>{item.user}</span>
-                        <span>&bull;</span>
-                        <span>{formatDate(item.date)}</span>
-                      </div>
-                    </div>
-                  </div>
                 ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      )}
+
+      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2"><AlertCircle className="h-5 w-5 text-destructive" />Delete Client</DialogTitle>
+            <DialogDescription>Are you sure you want to delete <strong>{client.companyName}</strong>? This cannot be undone.</DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setDeleteDialogOpen(false)}>Cancel</Button>
+            <Button variant="destructive" onClick={handleDelete}>Delete</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

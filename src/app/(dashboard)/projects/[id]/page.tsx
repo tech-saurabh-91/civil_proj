@@ -1,453 +1,347 @@
 "use client"
 
-import { useState, use } from "react"
+import { useState, useEffect, use, useCallback, useRef } from "react"
+import { useRouter } from "next/navigation"
 import Link from "next/link"
 import {
-  Activity,
-  ArrowLeft,
-  Building2,
-  Calendar,
-  CheckCircle2,
-  Clock,
-  Coins,
-  DollarSign,
-  Download,
-  Edit,
-  FileText,
-  FolderOpen,
-  GitBranch,
-  MapPin,
-  MoreHorizontal,
-  Settings,
-  Target,
-  TrendingUp,
-  Users,
+  Activity, AlertCircle, ArrowLeft, Building2, Clock, Coins, DollarSign,
+  Download, Edit, FileText, FolderOpen, Loader2, Save, Settings, Target,
+  TrendingUp, X, Upload, Eye, Trash2,
 } from "lucide-react"
 
-import { cn, formatCurrency, formatDate } from "@/lib/utils"
+import { cn, formatCurrency, formatDate, getInitials } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Progress } from "@/components/ui/progress"
 import { PageHeader } from "@/components/ui/page-header"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { toast } from "sonner"
 
-const projectData = {
-  id: "PRJ-001",
-  name: "Worli Sky Residences Tower A",
-  code: "PRJ-2024-001",
-  status: "In Progress",
-  type: "Residential Tower",
-  description:
-    "Premium 42-floor residential tower with 240 luxury apartments, 3-level basement parking, rooftop amenities, and ground-floor retail space. Located in the heart of Worli, Mumbai with panoramic sea views.",
-  client: {
-    id: "CLT-001",
-    name: "L&T Realty",
-    contactPerson: "Rajesh Kumar",
-  },
-  manager: {
-    name: "Amit Deshmukh",
-    initials: "AD",
-    role: "Senior Project Manager",
-  },
-  team: [
-    { name: "Priya Nair", initials: "PN", role: "Site Engineer" },
-    { name: "Ravi Shankar", initials: "RS", role: "Surveyor" },
-    { name: "Neha Kulkarni", initials: "NK", role: "Architect" },
-    { name: "Vikram Desai", initials: "VD", role: "Quality Manager" },
-  ],
-  budget: 12500000,
-  spent: 8125000,
-  estimatedCost: 11800000,
-  progress: 65,
-  startDate: "2024-01-15",
-  endDate: "2025-06-30",
-  daysLeft: 345,
-  area: 285000,
-  floors: 42,
-  location: {
-    address: "Plot No. B-16, Worli Sea Face, Worli",
-    city: "Mumbai",
-    state: "Maharashtra",
-    country: "India",
-    lat: "19.0035",
-    lng: "72.8146",
-  },
-  surveys: {
-    total: 12,
-    completed: 8,
-    pending: 4,
-  },
+interface ProjectData {
+  id: string; name: string; code: string; description?: string | null; type: string; status: string
+  startDate?: string | null; endDate?: string | null; budget?: number | null; actualCost?: number | null
+  address?: string | null; city?: string | null; state?: string | null; area?: number | null; floors?: number | null
+  client?: { id: string; companyName: string; contactPerson: string; email: string; phone: string } | null
+  manager?: { id: string; firstName: string; lastName: string; email: string } | null
+  surveys?: { id: string; title: string; status: string; scheduledDate?: string | null }[]
+  boqItems?: { id: string; serialNumber: number; description: string; category: string; quantity: number; unitRate: number; amount: number }[]
 }
 
-const surveyData = [
-  { id: "SRV-001", name: "Topographic Survey", status: "Completed", date: "2024-01-20", surveyor: "Ravi Shankar" },
-  { id: "SRV-002", name: "Soil Investigation", status: "Completed", date: "2024-01-25", surveyor: "Ravi Shankar" },
-  { id: "SRV-003", name: "Boundary Survey", status: "Completed", date: "2024-02-01", surveyor: "Ravi Shankar" },
-  { id: "SRV-004", name: "Level Survey - Foundation", status: "Completed", date: "2024-03-10", surveyor: "Sanjay Kulkarni" },
-  { id: "SRV-005", name: "Structural Load Survey", status: "Completed", date: "2024-04-05", surveyor: "Ravi Shankar" },
-  { id: "SRV-006", name: "Utility Mapping", status: "Completed", date: "2024-04-20", surveyor: "Sanjay Kulkarni" },
-  { id: "SRV-007", name: "Level Survey - Podium", status: "Completed", date: "2024-05-15", surveyor: "Ravi Shankar" },
-  { id: "SRV-008", name: "As-Built Survey - Basement", status: "Completed", date: "2024-06-01", surveyor: "Sanjay Kulkarni" },
-  { id: "SRV-009", name: "Level Survey - Floor 12", status: "In Progress", date: "2024-07-15", surveyor: "Ravi Shankar" },
-  { id: "SRV-010", name: "Progress Photogrammetry", status: "In Progress", date: "2024-07-20", surveyor: "Sanjay Kulkarni" },
-  { id: "SRV-011", name: "Level Survey - Floor 24", status: "Scheduled", date: "2024-09-01", surveyor: "Ravi Shankar" },
-  { id: "SRV-012", name: "Final As-Built Survey", status: "Scheduled", date: "2025-05-01", surveyor: "Ravi Shankar" },
-]
-
-const boqItems = [
-  { id: 1, item: "Earthwork Excavation", unit: "Cum", qty: 45000, rate: 350, amount: 15750000 },
-  { id: 2, item: "PCC (1:4:8)", unit: "Cum", qty: 2800, rate: 4500, amount: 12600000 },
-  { id: 3, item: "RCC (M30)", unit: "Cum", qty: 18500, rate: 6500, amount: 120250000 },
-  { id: 4, item: "Steel Reinforcement", unit: "MT", qty: 3200, rate: 72000, amount: 230400000 },
-  { id: 5, item: "Formwork (Scaffolding)", unit: "Sq.m", qty: 95000, rate: 850, amount: 80750000 },
-  { id: 6, item: "Brickwork", unit: "Cum", qty: 12000, rate: 5200, amount: 62400000 },
-  { id: 7, item: "Plastering", unit: "Sq.m", qty: 180000, rate: 280, amount: 50400000 },
-  { id: 8, item: "Flooring (Vitrified)", unit: "Sq.m", qty: 75000, rate: 1200, amount: 90000000 },
-]
-
-const activityTimeline = [
-  { date: "2024-07-10", action: "Floor 12 slab casting completed", user: "Amit Deshmukh", type: "milestone" },
-  { date: "2024-07-08", action: "Survey SRV-009 started - Level Survey Floor 12", user: "Ravi Shankar", type: "survey" },
-  { date: "2024-07-05", action: "Monthly progress report submitted to client", user: "Amit Deshmukh", type: "report" },
-  { date: "2024-07-01", action: "Material procurement: 500 MT steel ordered", user: "Procurement Team", type: "procurement" },
-  { date: "2024-06-28", action: "Quality audit passed for basement levels", user: "Vikram Desai", type: "quality" },
-  { date: "2024-06-25", action: "Safety inspection completed", user: "Safety Officer", type: "safety" },
-  { date: "2024-06-20", action: "Client review meeting - design changes approved", user: "Rajesh Kumar", type: "meeting" },
-  { date: "2024-06-15", action: "Invoice INV-003 raised - Phase 2 payment", user: "Accounts Team", type: "finance" },
-  { date: "2024-06-10", action: "Floor 10 slab casting completed", user: "Amit Deshmukh", type: "milestone" },
-  { date: "2024-06-05", action: "Survey SRV-008 completed - As-Built Basement", user: "Sanjay Kulkarni", type: "survey" },
-]
-
-const statusVariantMap: Record<string, "success" | "info" | "warning" | "destructive" | "secondary"> = {
-  "In Progress": "success",
-  Planning: "info",
-  "On Hold": "warning",
-  Completed: "secondary",
-  Cancelled: "destructive",
+const statusVariant: Record<string, "success" | "info" | "warning" | "destructive" | "secondary"> = {
+  PLANNING: "info", IN_PROGRESS: "success", ON_HOLD: "warning", COMPLETED: "secondary", CANCELLED: "destructive",
+  DRAFT: "secondary", ASSIGNED: "info", SUBMITTED: "info", UNDER_REVIEW: "warning", APPROVED: "success", REJECTED: "destructive",
 }
+const statusLabel: Record<string, string> = { PLANNING: "Planning", IN_PROGRESS: "In Progress", ON_HOLD: "On Hold", COMPLETED: "Completed", CANCELLED: "Cancelled" }
+const typeLabel: Record<string, string> = { RESIDENTIAL: "Residential", COMMERCIAL: "Commercial", INDUSTRIAL: "Industrial", INFRASTRUCTURE: "Infrastructure", INTERIOR: "Interior", MEP: "MEP", RENOVATION: "Renovation" }
 
 export default function ProjectDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)
+  const router = useRouter()
   const [activeTab, setActiveTab] = useState("overview")
+  const [project, setProject] = useState<ProjectData | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [isEditing, setIsEditing] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [deleting, setDeleting] = useState(false)
+  const [documents, setDocuments] = useState<any[]>([])
+  const [uploadingDoc, setUploadingDoc] = useState(false)
+  const [viewingDoc, setViewingDoc] = useState<any>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const emptyForm = { name: "", description: "", type: "", status: "", startDate: "", endDate: "", budget: "", actualCost: "", address: "", city: "", state: "", area: "", floors: "" }
+  const [editForm, setEditForm] = useState(emptyForm)
 
-  const budgetPercentage = Math.round((projectData.spent / projectData.budget) * 100)
-  const remaining = projectData.budget - projectData.spent
+  const fetchProject = useCallback(async () => {
+    try {
+      setLoading(true); setError(null)
+      const res = await fetch(`/api/projects/${id}`)
+      const json = await res.json()
+      if (!json.success || !json.data) { setError(json.error || "Project not found"); return }
+      setProject(json.data)
+    } catch { setError("Failed to load project") } finally { setLoading(false) }
+  }, [id])
+
+  useEffect(() => { fetchProject() }, [fetchProject])
+
+  const fetchDocuments = useCallback(async () => {
+    try {
+      const res = await fetch(`/api/documents?projectId=${id}`)
+      const json = await res.json()
+      setDocuments(json.data || [])
+    } catch {}
+  }, [id])
+
+  useEffect(() => { fetchDocuments() }, [fetchDocuments])
+
+  const handleUploadDoc = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (!files || files.length === 0) return
+    setUploadingDoc(true)
+    for (const file of Array.from(files)) {
+      try {
+        const reader = new FileReader()
+        const fileData = await new Promise<string>((resolve) => {
+          reader.onload = () => resolve(reader.result as string)
+          reader.readAsDataURL(file)
+        })
+        const res = await fetch("/api/documents", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            projectId: id,
+            title: file.name.replace(/\.[^/.]+$/, ""),
+            type: "OTHER",
+            filename: file.name,
+            fileData,
+            fileSize: file.size,
+          }),
+        })
+        if (res.ok) toast.success(`${file.name} uploaded`)
+        else toast.error(`Failed to upload ${file.name}`)
+      } catch { toast.error("Upload failed") }
+    }
+    setUploadingDoc(false)
+    fetchDocuments()
+    if (e.target) e.target.value = ""
+  }
+
+  const startEditing = () => {
+    if (!project) return
+    setEditForm({
+      name: project.name || "", description: project.description || "", type: project.type || "RESIDENTIAL",
+      status: project.status || "PLANNING", startDate: project.startDate ? project.startDate.split("T")[0] : "",
+      endDate: project.endDate ? project.endDate.split("T")[0] : "", budget: project.budget ? String(project.budget) : "",
+      actualCost: project.actualCost ? String(project.actualCost) : "", address: project.address || "",
+      city: project.city || "", state: project.state || "", area: project.area ? String(project.area) : "",
+      floors: project.floors ? String(project.floors) : "",
+    })
+    setIsEditing(true)
+  }
+
+  const saveEdits = async () => {
+    try {
+      setSaving(true)
+      const res = await fetch(`/api/projects/${id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(editForm) })
+      const json = await res.json()
+      if (json.success) { setIsEditing(false); await fetchProject() }
+    } catch {} finally { setSaving(false) }
+  }
+
+  const deleteProject = async () => {
+    if (!confirm("Are you sure you want to delete this project?")) return
+    try {
+      setDeleting(true)
+      const res = await fetch(`/api/projects/${id}`, { method: "DELETE" })
+      const json = await res.json()
+      if (json.success) router.push("/projects")
+    } catch {} finally { setDeleting(false) }
+  }
+
+  if (loading) return (
+    <div className="flex items-center justify-center min-h-[60vh]">
+      <div className="flex flex-col items-center gap-3">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <p className="text-sm text-muted-foreground">Loading project...</p>
+      </div>
+    </div>
+  )
+
+  if (error || !project) return (
+    <div className="flex items-center justify-center min-h-[60vh]">
+      <div className="flex flex-col items-center gap-3 text-center">
+        <AlertCircle className="h-12 w-12 text-destructive" />
+        <h2 className="text-lg font-semibold">Project Not Found</h2>
+        <p className="text-sm text-muted-foreground">{error || "The project you're looking for doesn't exist."}</p>
+        <Button asChild variant="outline" className="mt-2">
+          <Link href="/projects"><ArrowLeft className="mr-2 h-4 w-4" />Back to Projects</Link>
+        </Button>
+      </div>
+    </div>
+  )
+
+  const budget = project.budget || 0
+  const spent = project.actualCost || 0
+  const pct = budget > 0 ? Math.round((spent / budget) * 100) : 0
+  const remaining = budget - spent
+  const mgrInit = project.manager ? getInitials(project.manager.firstName, project.manager.lastName) : "—"
+  const mgrName = project.manager ? `${project.manager.firstName} ${project.manager.lastName}` : "Unassigned"
+  const srvDone = (project.surveys || []).filter(s => s.status === "APPROVED").length
+  const srvTotal = (project.surveys || []).length
+  const daysLeft = project.endDate ? Math.max(0, Math.ceil((new Date(project.endDate).getTime() - Date.now()) / 864e5)) : null
 
   return (
     <div className="space-y-6">
       <PageHeader
-        title={projectData.name}
-        description={projectData.code}
-        breadcrumbs={[
-          { label: "Dashboard", href: "/" },
-          { label: "Projects", href: "/projects" },
-          { label: projectData.name },
-        ]}
+        title={project.name} description={project.code}
+        breadcrumbs={[{ label: "Dashboard", href: "/" }, { label: "Projects", href: "/projects" }, { label: project.name }]}
         actions={
           <div className="flex items-center gap-2">
-            <Button variant="outline" asChild>
-              <Link href="/projects">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Back
-              </Link>
-            </Button>
-            <Button variant="outline">
-              <Edit className="mr-2 h-4 w-4" />
-              Edit
-            </Button>
-            <Button>
-              <Download className="mr-2 h-4 w-4" />
-              Export Report
-            </Button>
+            <Button variant="outline" asChild><Link href="/projects"><ArrowLeft className="mr-2 h-4 w-4" />Back</Link></Button>
+            {isEditing ? (
+              <>
+                <Button variant="outline" onClick={() => setIsEditing(false)} disabled={saving}><X className="mr-2 h-4 w-4" />Cancel</Button>
+                <Button onClick={saveEdits} disabled={saving}>{saving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}Save</Button>
+              </>
+            ) : (
+              <>
+                <Button variant="outline" onClick={startEditing}><Edit className="mr-2 h-4 w-4" />Edit</Button>
+                <Button variant="destructive" onClick={deleteProject} disabled={deleting}>{deleting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : "Delete"}</Button>
+              </>
+            )}
           </div>
         }
       />
 
       <div className="flex flex-wrap items-center gap-3">
-        <Badge variant={statusVariantMap[projectData.status] || "secondary"} className="text-sm px-3 py-1">
-          {projectData.status}
-        </Badge>
-        <Badge variant="outline" className="text-sm px-3 py-1">
-          {projectData.type}
-        </Badge>
-        <span className="text-sm text-muted-foreground">
-          {projectData.client.name}
-        </span>
+        <Badge variant={statusVariant[project.status] || "secondary"} className="text-sm px-3 py-1">{statusLabel[project.status] || project.status}</Badge>
+        <Badge variant="outline" className="text-sm px-3 py-1">{typeLabel[project.type] || project.type}</Badge>
+        {project.client && <span className="text-sm text-muted-foreground">{project.client.companyName}</span>}
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-        <MetricCard
-          icon={<DollarSign className="h-5 w-5" />}
-          label="Budget"
-          value={formatCurrency(projectData.budget)}
-          color="text-blue-600 bg-blue-50"
-        />
-        <MetricCard
-          icon={<Coins className="h-5 w-5" />}
-          label="Spent"
-          value={formatCurrency(projectData.spent)}
-          subtext={`${budgetPercentage}% utilized`}
-          color="text-amber-600 bg-amber-50"
-        />
-        <MetricCard
-          icon={<TrendingUp className="h-5 w-5" />}
-          label="Remaining"
-          value={formatCurrency(remaining)}
-          color="text-emerald-600 bg-emerald-50"
-        />
-        <MetricCard
-          icon={<Target className="h-5 w-5" />}
-          label="Progress"
-          value={`${projectData.progress}%`}
-          color="text-violet-600 bg-violet-50"
-        />
-        <MetricCard
-          icon={<Clock className="h-5 w-5" />}
-          label="Days Left"
-          value={String(projectData.daysLeft)}
-          color="text-rose-600 bg-rose-50"
-        />
-        <MetricCard
-          icon={<CheckCircle2 className="h-5 w-5" />}
-          label="Surveys"
-          value={`${projectData.surveys.completed}/${projectData.surveys.total}`}
-          subtext={`${projectData.surveys.pending} pending`}
-          color="text-teal-600 bg-teal-50"
-        />
+        <MetricCard icon={<DollarSign className="h-5 w-5" />} label="Budget" value={formatCurrency(budget)} color="text-blue-600 bg-blue-50" />
+        <MetricCard icon={<Coins className="h-5 w-5" />} label="Spent" value={formatCurrency(spent)} subtext={`${pct}% utilized`} color="text-amber-600 bg-amber-50" />
+        <MetricCard icon={<TrendingUp className="h-5 w-5" />} label="Remaining" value={formatCurrency(remaining)} color="text-emerald-600 bg-emerald-50" />
+        <MetricCard icon={<Target className="h-5 w-5" />} label="Surveys" value={`${srvDone}/${srvTotal}`} subtext={`${srvTotal - srvDone} pending`} color="text-teal-600 bg-teal-50" />
+        <MetricCard icon={<FileText className="h-5 w-5" />} label="BOQ Items" value={String((project.boqItems || []).length)} color="text-violet-600 bg-violet-50" />
+        {daysLeft !== null && <MetricCard icon={<Clock className="h-5 w-5" />} label="Days Left" value={String(daysLeft)} color="text-rose-600 bg-rose-50" />}
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
         <TabsList className="flex-wrap h-auto gap-1">
-          <TabsTrigger value="overview" className="gap-2">
-            <Building2 className="h-4 w-4" />
-            Overview
-          </TabsTrigger>
-          <TabsTrigger value="surveys" className="gap-2">
-            <Target className="h-4 w-4" />
-            Surveys
-          </TabsTrigger>
-          <TabsTrigger value="boq" className="gap-2">
-            <FileText className="h-4 w-4" />
-            BOQ
-          </TabsTrigger>
-          <TabsTrigger value="documents" className="gap-2">
-            <FolderOpen className="h-4 w-4" />
-            Documents
-          </TabsTrigger>
-          <TabsTrigger value="workflows" className="gap-2">
-            <GitBranch className="h-4 w-4" />
-            Workflows
-          </TabsTrigger>
-          <TabsTrigger value="activity" className="gap-2">
-            <Activity className="h-4 w-4" />
-            Activity
-          </TabsTrigger>
-          <TabsTrigger value="settings" className="gap-2">
-            <Settings className="h-4 w-4" />
-            Settings
-          </TabsTrigger>
+          <TabsTrigger value="overview" className="gap-2"><Building2 className="h-4 w-4" />Overview</TabsTrigger>
+          <TabsTrigger value="surveys" className="gap-2"><Target className="h-4 w-4" />Surveys</TabsTrigger>
+          <TabsTrigger value="boq" className="gap-2"><FileText className="h-4 w-4" />BOQ</TabsTrigger>
+          <TabsTrigger value="documents" className="gap-2"><FolderOpen className="h-4 w-4" />Documents</TabsTrigger>
+          <TabsTrigger value="activity" className="gap-2"><Activity className="h-4 w-4" />Activity</TabsTrigger>
+          <TabsTrigger value="settings" className="gap-2"><Settings className="h-4 w-4" />Settings</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
           <div className="grid gap-6 lg:grid-cols-3">
             <Card className="lg:col-span-2">
-              <CardHeader>
-                <CardTitle>Project Information</CardTitle>
-              </CardHeader>
+              <CardHeader><CardTitle>Project Information</CardTitle></CardHeader>
               <CardContent className="space-y-4">
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {projectData.description}
-                </p>
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                  <InfoItem label="Client" value={projectData.client.name} />
-                  <InfoItem label="Contact" value={projectData.client.contactPerson} />
-                  <InfoItem label="Area" value={`${Number(projectData.area).toLocaleString("en-IN")} sq.ft`} />
-                  <InfoItem label="Floors" value={`${projectData.floors} floors`} />
-                  <InfoItem label="Start Date" value={formatDate(projectData.startDate)} />
-                  <InfoItem label="End Date" value={formatDate(projectData.endDate)} />
-                </div>
+                {isEditing ? (
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label>Description</Label>
+                      <Textarea value={editForm.description} onChange={e => setEditForm(f => ({ ...f, description: e.target.value }))} rows={3} />
+                    </div>
+                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                      <div className="space-y-2"><Label>Area (sq.ft)</Label><Input type="number" value={editForm.area} onChange={e => setEditForm(f => ({ ...f, area: e.target.value }))} /></div>
+                      <div className="space-y-2"><Label>Floors</Label><Input type="number" value={editForm.floors} onChange={e => setEditForm(f => ({ ...f, floors: e.target.value }))} /></div>
+                      <div className="space-y-2"><Label>Start Date</Label><Input type="date" value={editForm.startDate} onChange={e => setEditForm(f => ({ ...f, startDate: e.target.value }))} /></div>
+                      <div className="space-y-2"><Label>End Date</Label><Input type="date" value={editForm.endDate} onChange={e => setEditForm(f => ({ ...f, endDate: e.target.value }))} /></div>
+                      <div className="space-y-2"><Label>Budget (INR)</Label><Input type="number" value={editForm.budget} onChange={e => setEditForm(f => ({ ...f, budget: e.target.value }))} /></div>
+                      <div className="space-y-2"><Label>Actual Cost (INR)</Label><Input type="number" value={editForm.actualCost} onChange={e => setEditForm(f => ({ ...f, actualCost: e.target.value }))} /></div>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    {project.description && <p className="text-sm text-muted-foreground leading-relaxed">{project.description}</p>}
+                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                      {project.client && (<><InfoItem label="Client" value={project.client.companyName} /><InfoItem label="Contact" value={project.client.contactPerson} /></>)}
+                      {project.area != null && <InfoItem label="Area" value={`${Number(project.area).toLocaleString("en-IN")} sq.ft`} />}
+                      {project.floors != null && <InfoItem label="Floors" value={`${project.floors} floors`} />}
+                      {project.startDate && <InfoItem label="Start Date" value={formatDate(project.startDate)} />}
+                      {project.endDate && <InfoItem label="End Date" value={formatDate(project.endDate)} />}
+                    </div>
+                  </>
+                )}
               </CardContent>
             </Card>
-
             <div className="space-y-6">
               <Card>
-                <CardHeader>
-                  <CardTitle className="text-base">Project Manager</CardTitle>
-                </CardHeader>
+                <CardHeader><CardTitle className="text-base">Project Manager</CardTitle></CardHeader>
                 <CardContent>
                   <div className="flex items-center gap-3">
-                    <Avatar className="h-12 w-12">
-                      <AvatarFallback className="bg-primary/10 text-primary font-bold">
-                        {projectData.manager.initials}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="font-medium">{projectData.manager.name}</p>
-                      <p className="text-sm text-muted-foreground">{projectData.manager.role}</p>
-                    </div>
+                    <Avatar className="h-12 w-12"><AvatarFallback className="bg-primary/10 text-primary font-bold">{mgrInit}</AvatarFallback></Avatar>
+                    <div><p className="font-medium">{mgrName}</p>{project.manager && <p className="text-sm text-muted-foreground">{project.manager.email}</p>}</div>
                   </div>
                 </CardContent>
               </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-base">Team Members</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  {projectData.team.map((member) => (
-                    <div key={member.initials} className="flex items-center gap-3">
-                      <Avatar className="h-8 w-8">
-                        <AvatarFallback className="text-xs bg-primary/10 text-primary">
-                          {member.initials}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <p className="text-sm font-medium">{member.name}</p>
-                        <p className="text-xs text-muted-foreground">{member.role}</p>
-                      </div>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
+              {project.client && (
+                <Card>
+                  <CardHeader><CardTitle className="text-base">Client Info</CardTitle></CardHeader>
+                  <CardContent className="space-y-2">
+                    <p className="font-medium">{project.client.companyName}</p>
+                    <p className="text-sm text-muted-foreground">{project.client.contactPerson}</p>
+                    <p className="text-sm text-muted-foreground">{project.client.email}</p>
+                    <p className="text-sm text-muted-foreground">{project.client.phone}</p>
+                  </CardContent>
+                </Card>
+              )}
             </div>
           </div>
-
           <Card>
-            <CardHeader>
-              <CardTitle>Budget vs Actual</CardTitle>
-              <CardDescription>Budget utilization and cost tracking</CardDescription>
-            </CardHeader>
+            <CardHeader><CardTitle>Budget vs Actual</CardTitle><CardDescription>Budget utilization and cost tracking</CardDescription></CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Budget Utilization</span>
-                  <span className="font-medium">{budgetPercentage}%</span>
-                </div>
-                <Progress value={budgetPercentage} className="h-3" />
+                <div className="flex items-center justify-between text-sm"><span className="text-muted-foreground">Budget Utilization</span><span className="font-medium">{pct}%</span></div>
+                <Progress value={pct} className="h-3" />
               </div>
-              <div className="grid gap-4 sm:grid-cols-3">
-                <div className="rounded-lg border p-4">
-                  <p className="text-xs text-muted-foreground">Approved Budget</p>
-                  <p className="text-lg font-bold mt-1">{formatCurrency(projectData.budget)}</p>
-                </div>
-                <div className="rounded-lg border p-4">
-                  <p className="text-xs text-muted-foreground">Amount Spent</p>
-                  <p className="text-lg font-bold mt-1">{formatCurrency(projectData.spent)}</p>
-                </div>
-                <div className="rounded-lg border p-4">
-                  <p className="text-xs text-muted-foreground">Estimated Cost</p>
-                  <p className="text-lg font-bold mt-1">{formatCurrency(projectData.estimatedCost)}</p>
-                </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="rounded-lg border p-4"><p className="text-xs text-muted-foreground">Approved Budget</p><p className="text-lg font-bold mt-1">{formatCurrency(budget)}</p></div>
+                <div className="rounded-lg border p-4"><p className="text-xs text-muted-foreground">Amount Spent</p><p className="text-lg font-bold mt-1">{formatCurrency(spent)}</p></div>
               </div>
             </CardContent>
           </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Project Timeline</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="relative">
-                <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-border" />
-                <div className="space-y-6 pl-6">
-                  {[
-                    { date: "2024-01-15", event: "Project Kickoff", status: "completed" },
-                    { date: "2024-03-01", event: "Foundation Work Started", status: "completed" },
-                    { date: "2024-06-01", event: "Basement Levels Completed", status: "completed" },
-                    { date: "2024-07-10", event: "Floor 12 Slab Completed", status: "current" },
-                    { date: "2024-09-01", event: "Floor 24 Target", status: "upcoming" },
-                    { date: "2025-01-01", event: "Superstructure Completion", status: "upcoming" },
-                    { date: "2025-04-01", event: "Interior Finishing", status: "upcoming" },
-                    { date: "2025-06-30", event: "Project Handover", status: "upcoming" },
-                  ].map((item, index) => (
-                    <div key={index} className="relative flex items-start gap-4">
-                      <div
-                        className={cn(
-                          "absolute left-[-26px] h-3 w-3 rounded-full border-2 bg-background",
-                          item.status === "completed" && "border-primary bg-primary",
-                          item.status === "current" && "border-primary bg-primary/50",
-                          item.status === "upcoming" && "border-muted-foreground/30"
-                        )}
-                      />
-                      <div>
-                        <p className="text-sm font-medium">{item.event}</p>
-                        <p className="text-xs text-muted-foreground">{formatDate(item.date)}</p>
+          {project.startDate && project.endDate && (
+            <Card>
+              <CardHeader><CardTitle>Project Timeline</CardTitle></CardHeader>
+              <CardContent>
+                <div className="relative">
+                  <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-border" />
+                  <div className="space-y-6 pl-6">
+                    {[{ date: project.startDate, event: "Project Start", status: "completed" }, { date: project.endDate, event: "Project End", status: "upcoming" }].map((item, i) => (
+                      <div key={i} className="relative flex items-start gap-4">
+                        <div className={cn("absolute left-[-26px] h-3 w-3 rounded-full border-2 bg-background", item.status === "completed" && "border-primary bg-primary", item.status === "upcoming" && "border-muted-foreground/30")} />
+                        <div><p className="text-sm font-medium">{item.event}</p><p className="text-xs text-muted-foreground">{formatDate(item.date)}</p></div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          )}
         </TabsContent>
 
         <TabsContent value="surveys" className="space-y-4">
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle>Surveys ({surveyData.length})</CardTitle>
-                  <CardDescription>
-                    {projectData.surveys.completed} completed, {projectData.surveys.pending} pending
-                  </CardDescription>
-                </div>
-                <Button size="sm">
-                  <Target className="mr-2 h-4 w-4" />
-                  New Survey
-                </Button>
+                <div><CardTitle>Surveys ({srvTotal})</CardTitle><CardDescription>{srvDone} completed, {srvTotal - srvDone} pending</CardDescription></div>
               </div>
             </CardHeader>
             <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Survey ID</TableHead>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Surveyor</TableHead>
-                    <TableHead>Date</TableHead>
-                    <TableHead className="text-center">Status</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {surveyData.map((survey) => (
-                    <TableRow key={survey.id}>
-                      <TableCell className="font-mono text-sm">{survey.id}</TableCell>
-                      <TableCell className="font-medium">{survey.name}</TableCell>
-                      <TableCell className="text-sm">{survey.surveyor}</TableCell>
-                      <TableCell className="text-sm text-muted-foreground">
-                        {formatDate(survey.date)}
-                      </TableCell>
-                      <TableCell className="text-center">
-                        <StatusBadge status={survey.status} />
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+              {srvTotal === 0 ? (
+                <div className="flex flex-col items-center justify-center py-12 text-center">
+                  <Target className="h-12 w-12 text-muted-foreground/50" />
+                  <h3 className="mt-4 text-lg font-semibold">No surveys yet</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">Surveys will appear here once created for this project.</p>
+                </div>
+              ) : (
+                <Table>
+                  <TableHeader><TableRow><TableHead>Survey</TableHead><TableHead>Date</TableHead><TableHead className="text-center">Status</TableHead></TableRow></TableHeader>
+                  <TableBody>
+                    {(project.surveys || []).map(s => (
+                      <TableRow key={s.id}>
+                        <TableCell className="font-medium">{s.title}</TableCell>
+                        <TableCell className="text-sm text-muted-foreground">{s.scheduledDate ? formatDate(s.scheduledDate) : "—"}</TableCell>
+                        <TableCell className="text-center"><Badge variant={statusVariant[s.status] || "secondary"}>{s.status.replace(/_/g, " ")}</Badge></TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
@@ -456,53 +350,37 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ id: st
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle>Bill of Quantities (BOQ)</CardTitle>
-                  <CardDescription>Material and work quantity breakdown</CardDescription>
-                </div>
-                <Button size="sm" variant="outline">
-                  <Download className="mr-2 h-4 w-4" />
-                  Export BOQ
-                </Button>
+                <div><CardTitle>Bill of Quantities (BOQ)</CardTitle><CardDescription>Material and work quantity breakdown</CardDescription></div>
               </div>
             </CardHeader>
             <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="w-12">#</TableHead>
-                    <TableHead>Item Description</TableHead>
-                    <TableHead className="text-center">Unit</TableHead>
-                    <TableHead className="text-right">Quantity</TableHead>
-                    <TableHead className="text-right">Rate (INR)</TableHead>
-                    <TableHead className="text-right">Amount (INR)</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {boqItems.map((item) => (
-                    <TableRow key={item.id}>
-                      <TableCell className="text-muted-foreground">{item.id}</TableCell>
-                      <TableCell className="font-medium">{item.item}</TableCell>
-                      <TableCell className="text-center text-sm">{item.unit}</TableCell>
-                      <TableCell className="text-right text-sm">
-                        {item.qty.toLocaleString("en-IN")}
-                      </TableCell>
-                      <TableCell className="text-right text-sm">
-                        {item.rate.toLocaleString("en-IN")}
-                      </TableCell>
-                      <TableCell className="text-right text-sm font-medium">
-                        {formatCurrency(item.amount)}
-                      </TableCell>
+              {(project.boqItems || []).length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-12 text-center">
+                  <FileText className="h-12 w-12 text-muted-foreground/50" />
+                  <h3 className="mt-4 text-lg font-semibold">No BOQ items</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">BOQ items will appear here once added to this project.</p>
+                </div>
+              ) : (
+                <Table>
+                  <TableHeader><TableRow><TableHead className="w-12">#</TableHead><TableHead>Description</TableHead><TableHead>Category</TableHead><TableHead className="text-right">Quantity</TableHead><TableHead className="text-right">Rate (INR)</TableHead><TableHead className="text-right">Amount (INR)</TableHead></TableRow></TableHeader>
+                  <TableBody>
+                    {(project.boqItems || []).map(item => (
+                      <TableRow key={item.id}>
+                        <TableCell className="text-muted-foreground">{item.serialNumber}</TableCell>
+                        <TableCell className="font-medium">{item.description}</TableCell>
+                        <TableCell className="text-sm">{item.category}</TableCell>
+                        <TableCell className="text-right text-sm">{item.quantity.toLocaleString("en-IN")}</TableCell>
+                        <TableCell className="text-right text-sm">{item.unitRate.toLocaleString("en-IN")}</TableCell>
+                        <TableCell className="text-right text-sm font-medium">{formatCurrency(item.amount)}</TableCell>
+                      </TableRow>
+                    ))}
+                    <TableRow className="border-t-2 font-bold">
+                      <TableCell colSpan={5}>Total</TableCell>
+                      <TableCell className="text-right">{formatCurrency((project.boqItems || []).reduce((s, i) => s + i.amount, 0))}</TableCell>
                     </TableRow>
-                  ))}
-                  <TableRow className="border-t-2 font-bold">
-                    <TableCell colSpan={5}>Total</TableCell>
-                    <TableCell className="text-right">
-                      {formatCurrency(boqItems.reduce((sum, item) => sum + item.amount, 0))}
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
+                  </TableBody>
+                </Table>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
@@ -510,103 +388,167 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ id: st
         <TabsContent value="documents" className="space-y-4">
           <Card>
             <CardContent className="pt-6">
-              <div className="flex flex-col items-center justify-center py-12 text-center">
-                <FolderOpen className="h-12 w-12 text-muted-foreground/50" />
-                <h3 className="mt-4 text-lg font-semibold">No documents uploaded</h3>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  Upload drawings, specifications, contracts, and other project documents
-                </p>
-                <Button className="mt-4" size="sm">
-                  <Download className="mr-2 h-4 w-4" />
+              <div className="flex items-center justify-between mb-4">
+                <p className="text-sm text-muted-foreground">{documents.length} document(s) uploaded</p>
+                <Button size="sm" onClick={() => fileInputRef.current?.click()} disabled={uploadingDoc}>
+                  {uploadingDoc ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Upload className="mr-2 h-4 w-4" />}
                   Upload Document
                 </Button>
+                <input ref={fileInputRef} type="file" className="hidden" multiple onChange={handleUploadDoc} />
               </div>
+              {documents.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-12 text-center">
+                  <FolderOpen className="h-12 w-12 text-muted-foreground/50" />
+                  <h3 className="mt-4 text-lg font-semibold">No documents uploaded</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">Upload drawings, specifications, contracts, and other project documents</p>
+                  <Button className="mt-4" size="sm" onClick={() => fileInputRef.current?.click()}>
+                    <Upload className="mr-2 h-4 w-4" />Upload Document
+                  </Button>
+                </div>
+              ) : (
+                <div className="rounded-md border">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Name</TableHead>
+                        <TableHead>Type</TableHead>
+                        <TableHead>Size</TableHead>
+                        <TableHead>Date</TableHead>
+                        <TableHead className="w-24">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {documents.map((doc) => (
+                        <TableRow key={doc.id}>
+                          <TableCell className="font-medium flex items-center gap-2">
+                            <FileText className="h-4 w-4 text-muted-foreground" />
+                            {doc.title}
+                          </TableCell>
+                          <TableCell>
+                            <Badge variant="outline" className="text-[10px]">{doc.type}</Badge>
+                          </TableCell>
+                          <TableCell className="text-muted-foreground text-sm">
+                            {doc.fileSize ? `${(doc.fileSize / 1024).toFixed(1)} KB` : "—"}
+                          </TableCell>
+                          <TableCell className="text-muted-foreground text-sm">
+                            {doc.createdAt ? new Date(doc.createdAt).toLocaleDateString("en-IN") : "—"}
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center gap-1">
+                              {doc.fileUrl && doc.fileUrl.startsWith("data:") && (
+                                <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => setViewingDoc(doc)}>
+                                  <Eye className="h-3.5 w-3.5" />
+                                </Button>
+                              )}
+                              {doc.fileUrl && doc.fileUrl.startsWith("data:") && (
+                                <Button variant="ghost" size="icon" className="h-7 w-7" asChild>
+                                  <a href={doc.fileUrl} download={doc.filename}>
+                                    <Download className="h-3.5 w-3.5" />
+                                  </a>
+                                </Button>
+                              )}
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              )}
             </CardContent>
           </Card>
-        </TabsContent>
 
-        <TabsContent value="workflows" className="space-y-4">
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex flex-col items-center justify-center py-12 text-center">
-                <GitBranch className="h-12 w-12 text-muted-foreground/50" />
-                <h3 className="mt-4 text-lg font-semibold">No active workflows</h3>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  Set up approval workflows for this project
-                </p>
-                <Button className="mt-4" size="sm">
-                  Create Workflow
-                </Button>
+          {viewingDoc && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onClick={() => setViewingDoc(null)}>
+              <div className="bg-background rounded-xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-hidden" onClick={(e) => e.stopPropagation()}>
+                <div className="sticky top-0 bg-background border-b p-4 flex items-center justify-between">
+                  <div>
+                    <h3 className="font-semibold">{viewingDoc.title}</h3>
+                    <p className="text-xs text-muted-foreground">{viewingDoc.filename}</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Button variant="outline" size="sm" asChild>
+                      <a href={viewingDoc.fileUrl} download={viewingDoc.filename}>
+                        <Download className="mr-2 h-4 w-4" />Download
+                      </a>
+                    </Button>
+                    <Button variant="ghost" size="sm" onClick={() => setViewingDoc(null)}>
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+                <div className="p-4 overflow-auto max-h-[75vh]">
+                  {viewingDoc.fileUrl?.startsWith("data:image") ? (
+                    <img src={viewingDoc.fileUrl} alt={viewingDoc.title} className="max-w-full h-auto rounded" />
+                  ) : viewingDoc.fileUrl?.startsWith("data:application/pdf") ? (
+                    <iframe src={viewingDoc.fileUrl} className="w-full h-[600px] rounded border" />
+                  ) : (
+                    <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
+                      <FileText className="h-12 w-12 mb-3" />
+                      <p>Preview not available for this file type</p>
+                      <Button variant="outline" size="sm" className="mt-3" asChild>
+                        <a href={viewingDoc.fileUrl} download={viewingDoc.filename}>
+                          <Download className="mr-2 h-4 w-4" />Download to view
+                        </a>
+                      </Button>
+                    </div>
+                  )}
+                </div>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          )}
         </TabsContent>
 
         <TabsContent value="activity" className="space-y-4">
-          <Card>
-            <CardContent className="pt-6">
-              <div className="relative space-y-6">
-                <div className="absolute left-4 top-0 bottom-0 w-px bg-border" />
-                {activityTimeline.map((item, index) => (
-                  <div key={index} className="relative flex gap-4">
-                    <div
-                      className={cn(
-                        "relative z-10 flex h-8 w-8 items-center justify-center rounded-full border bg-background",
-                        item.type === "milestone" && "border-primary bg-primary/10",
-                        item.type === "survey" && "border-blue-400 bg-blue-50",
-                        item.type === "quality" && "border-emerald-400 bg-emerald-50",
-                        item.type === "safety" && "border-amber-400 bg-amber-50",
-                        item.type === "finance" && "border-violet-400 bg-violet-50",
-                      )}
-                    >
-                      <Activity className="h-4 w-4 text-muted-foreground" />
-                    </div>
-                    <div className="flex-1 pt-1">
-                      <p className="text-sm">{item.action}</p>
-                      <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
-                        <span>{item.user}</span>
-                        <span>&bull;</span>
-                        <span>{formatDate(item.date)}</span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+          <Card><CardContent className="pt-6">
+            <div className="flex flex-col items-center justify-center py-12 text-center">
+              <Activity className="h-12 w-12 text-muted-foreground/50" />
+              <h3 className="mt-4 text-lg font-semibold">No activity recorded</h3>
+              <p className="mt-1 text-sm text-muted-foreground">Activity will appear here as the project progresses.</p>
+            </div>
+          </CardContent></Card>
         </TabsContent>
 
         <TabsContent value="settings" className="space-y-4">
           <Card>
-            <CardHeader>
-              <CardTitle>Project Settings</CardTitle>
-              <CardDescription>Manage project configuration and preferences</CardDescription>
-            </CardHeader>
+            <CardHeader><CardTitle>Project Settings</CardTitle><CardDescription>Manage project configuration and preferences</CardDescription></CardHeader>
             <CardContent className="space-y-4">
               <div className="grid gap-4 sm:grid-cols-2">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Project Code</label>
-                  <Input value={projectData.code} disabled className="font-mono" />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Status</label>
-                  <Select defaultValue="in-progress">
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
+                <div className="space-y-2"><Label>Project Code</Label><Input value={project.code} disabled className="font-mono" /></div>
+                <div className="space-y-2"><Label>Status</Label>
+                  <Select value={editForm.status} onValueChange={val => setEditForm(f => ({ ...f, status: val }))}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="planning">Planning</SelectItem>
-                      <SelectItem value="in-progress">In Progress</SelectItem>
-                      <SelectItem value="on-hold">On Hold</SelectItem>
-                      <SelectItem value="completed">Completed</SelectItem>
-                      <SelectItem value="cancelled">Cancelled</SelectItem>
+                      <SelectItem value="PLANNING">Planning</SelectItem>
+                      <SelectItem value="IN_PROGRESS">In Progress</SelectItem>
+                      <SelectItem value="ON_HOLD">On Hold</SelectItem>
+                      <SelectItem value="COMPLETED">Completed</SelectItem>
+                      <SelectItem value="CANCELLED">Cancelled</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
+              <div className="space-y-2"><Label>Type</Label>
+                <Select value={editForm.type} onValueChange={val => setEditForm(f => ({ ...f, type: val }))}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="RESIDENTIAL">Residential</SelectItem>
+                    <SelectItem value="COMMERCIAL">Commercial</SelectItem>
+                    <SelectItem value="INDUSTRIAL">Industrial</SelectItem>
+                    <SelectItem value="INFRASTRUCTURE">Infrastructure</SelectItem>
+                    <SelectItem value="INTERIOR">Interior</SelectItem>
+                    <SelectItem value="MEP">MEP</SelectItem>
+                    <SelectItem value="RENOVATION">Renovation</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-2"><Label>Address</Label><Input value={editForm.address} onChange={e => setEditForm(f => ({ ...f, address: e.target.value }))} /></div>
+                <div className="space-y-2"><Label>City</Label><Input value={editForm.city} onChange={e => setEditForm(f => ({ ...f, city: e.target.value }))} /></div>
+                <div className="space-y-2"><Label>State</Label><Input value={editForm.state} onChange={e => setEditForm(f => ({ ...f, state: e.target.value }))} /></div>
+              </div>
               <div className="flex items-center gap-2 pt-4 border-t">
-                <Button>Save Changes</Button>
-                <Button variant="destructive">Archive Project</Button>
+                <Button onClick={saveEdits} disabled={saving}>{saving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}Save Changes</Button>
               </div>
             </CardContent>
           </Card>
@@ -616,52 +558,17 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ id: st
   )
 }
 
-function MetricCard({
-  icon,
-  label,
-  value,
-  subtext,
-  color,
-}: {
-  icon: React.ReactNode
-  label: string
-  value: string
-  subtext?: string
-  color: string
-}) {
+function MetricCard({ icon, label, value, subtext, color }: { icon: React.ReactNode; label: string; value: string; subtext?: string; color: string }) {
   return (
-    <Card>
-      <CardContent className="p-4">
-        <div className={cn("flex h-10 w-10 items-center justify-center rounded-lg", color)}>
-          {icon}
-        </div>
-        <p className="text-xs text-muted-foreground mt-3">{label}</p>
-        <p className="text-lg font-bold mt-0.5">{value}</p>
-        {subtext && <p className="text-xs text-muted-foreground mt-0.5">{subtext}</p>}
-      </CardContent>
-    </Card>
+    <Card><CardContent className="p-4">
+      <div className={cn("flex h-10 w-10 items-center justify-center rounded-lg", color)}>{icon}</div>
+      <p className="text-xs text-muted-foreground mt-3">{label}</p>
+      <p className="text-lg font-bold mt-0.5">{value}</p>
+      {subtext && <p className="text-xs text-muted-foreground mt-0.5">{subtext}</p>}
+    </CardContent></Card>
   )
 }
 
 function InfoItem({ label, value }: { label: string; value: string }) {
-  return (
-    <div>
-      <p className="text-xs text-muted-foreground">{label}</p>
-      <p className="text-sm font-medium mt-0.5">{value}</p>
-    </div>
-  )
-}
-
-function StatusBadge({ status }: { status: string }) {
-  const variantMap: Record<string, "success" | "info" | "warning" | "destructive" | "secondary"> = {
-    Completed: "success",
-    "In Progress": "info",
-    Scheduled: "secondary",
-    Cancelled: "destructive",
-  }
-  return (
-    <Badge variant={variantMap[status] || "secondary"}>
-      {status}
-    </Badge>
-  )
+  return <div><p className="text-xs text-muted-foreground">{label}</p><p className="text-sm font-medium mt-0.5">{value}</p></div>
 }

@@ -3,23 +3,18 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useSession } from 'next-auth/react'
 import {
-  MapPin,
-  Clock,
-  Users,
-  RefreshCw,
-  LocateFixed,
-  Route,
-  Shield,
-  Timer,
-  Battery,
-  Gauge,
-  Circle,
+  MapPin, Clock, Users, RefreshCw, LocateFixed, Route, Shield, Timer,
+  Battery, Gauge, Circle, AlertTriangle, Navigation, CalendarCheck,
+  FileText, Eye, Phone, Camera, CheckCircle2, CircleDot, ArrowRight,
+  ChevronRight, X, Filter, Bell, Briefcase, Signal, ClipboardList,
+  UserCheck, LogIn, MapPinned,
 } from 'lucide-react'
 import { PageHeader } from '@/components/ui/page-header'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { StatCard } from '@/components/ui/stat-card'
+import { cn } from '@/lib/utils'
 
 interface ActiveUser {
   userId: string
@@ -69,6 +64,31 @@ interface GeofenceSummary {
   durationMinutes: number
 }
 
+interface EngineerData {
+  userId: string
+  userName: string
+  latitude: number
+  longitude: number
+  accuracy: number | null
+  speed: number | null
+  batteryLevel: number | null
+  isMoving: boolean
+  timestamp: string
+  minutesAgo: number
+  status: 'active' | 'idle' | 'offline'
+  projectName: string
+  projectId: string | null
+  fieldStatus: 'On Site' | 'Travelling' | 'Outside Geofence' | 'Offline'
+  lastCheckin: string
+  phone: string
+  role: string
+}
+
+const TIMELINE_STEPS = [
+  'Assigned', 'Started Travel', 'Reached Site', 'Survey Started',
+  'Survey Completed', 'Left Site', 'Returned',
+]
+
 export default function GpsTrackingPage() {
   const { data: session } = useSession()
   const sessionUser = session?.user as any
@@ -86,6 +106,12 @@ export default function GpsTrackingPage() {
   const [showRoutes, setShowRoutes] = useState(true)
   const [showGeofences, setShowGeofences] = useState(true)
   const [selectedUser, setSelectedUser] = useState<string | null>(null)
+  const [showProfile, setShowProfile] = useState<string | null>(null)
+  const [filterProject, setFilterProject] = useState('all')
+  const [filterStatus, setFilterStatus] = useState('all')
+  const [showFilters, setShowFilters] = useState(false)
+  const [allEngineers, setAllEngineers] = useState<any[]>([])
+  const [siteVisits, setSiteVisits] = useState<any[]>([])
 
   const mapRef = useRef<any>(null)
   const mapContainerRef = useRef<HTMLDivElement>(null)
@@ -93,6 +119,98 @@ export default function GpsTrackingPage() {
   const routeLayersRef = useRef<any>({})
   const geofenceLayersRef = useRef<any>({})
   const LRef = useRef<any>(null)
+
+  const fetchEngineers = useCallback(async () => {
+    try {
+      const res = await fetch('/api/users?role=ENGINEER')
+      const data = await res.json()
+      const engineers = data.data ?? data.users ?? []
+      setAllEngineers(engineers)
+    } catch {}
+  }, [])
+
+  const fetchSiteVisits = useCallback(async () => {
+    try {
+      const today = new Date().toISOString().split('T')[0]
+      const res = await fetch(`/api/site-visits?date=${today}`)
+      const data = await res.json()
+      setSiteVisits(data.data ?? [])
+    } catch {}
+  }, [])
+
+  const getDisplayUsers = useCallback((): EngineerData[] => {
+    const base: EngineerData[] = activeUsers.map((u) => {
+      const engineer = allEngineers.find((e: any) => e.id === u.userId)
+      const fieldStatus =
+        u.status === 'offline'
+          ? ('Offline' as const)
+          : geofenceSummary.find((g) => g.userId === u.userId && g.currentInside)
+            ? ('On Site' as const)
+            : u.isMoving
+              ? ('Travelling' as const)
+              : ('Outside Geofence' as const)
+      return {
+        userId: u.userId,
+        userName: u.userName,
+        latitude: u.latitude,
+        longitude: u.longitude,
+        accuracy: u.accuracy,
+        speed: u.speed,
+        batteryLevel: u.batteryLevel,
+        isMoving: u.isMoving,
+        timestamp: u.timestamp,
+        minutesAgo: u.minutesAgo,
+        status: u.status,
+        projectName: u.projectName,
+        projectId: u.projectId,
+        fieldStatus,
+        lastCheckin: engineer?.lastLoginAt
+          ? new Date(engineer.lastLoginAt).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })
+          : `${u.minutesAgo}m ago`,
+        phone: engineer?.phone || '',
+        role: engineer?.role || 'ENGINEER',
+      }
+    })
+
+    if (base.length === 0) {
+      return allEngineers
+        .filter((e: any) => e.role === 'ENGINEER' || e.role === 'SURVEYOR')
+        .map((e: any) => ({
+          userId: e.id,
+          userName: `${e.firstName} ${e.lastName}`,
+          latitude: 20.5937,
+          longitude: 78.9629,
+          accuracy: null,
+          speed: null,
+          batteryLevel: null,
+          isMoving: false,
+          timestamp: e.lastLoginAt || new Date().toISOString(),
+          minutesAgo: e.lastLoginAt
+            ? Math.round((Date.now() - new Date(e.lastLoginAt).getTime()) / 60000)
+            : 999,
+          status: 'offline' as const,
+          projectName: 'Unassigned',
+          projectId: null,
+          fieldStatus: 'Offline' as const,
+          lastCheckin: e.lastLoginAt
+            ? new Date(e.lastLoginAt).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })
+            : 'Never',
+          phone: e.phone || '',
+          role: e.role,
+        }))
+    }
+
+    let filtered = base
+    if (filterProject !== 'all') {
+      filtered = filtered.filter((e) => e.projectId === filterProject)
+    }
+    if (filterStatus !== 'all') {
+      filtered = filtered.filter((e) => e.fieldStatus === filterStatus)
+    }
+    return filtered
+  }, [activeUsers, geofenceSummary, allEngineers, filterProject, filterStatus])
+
+  const displayUsers = getDisplayUsers()
 
   const fetchData = useCallback(async () => {
     try {
@@ -104,9 +222,7 @@ export default function GpsTrackingPage() {
       setGeofenceSummary(data.geofenceSummary || [])
       setTotalLocations(data.total || 0)
       updateMap(data.activeUsers || [], data.routes || {}, data.geofences || [])
-    } catch {
-      // silently fail
-    }
+    } catch {}
   }, [])
 
   const updateMap = (
@@ -119,10 +235,8 @@ export default function GpsTrackingPage() {
 
     Object.values(markersRef.current).forEach((m: any) => mapRef.current.removeLayer(m))
     markersRef.current = {}
-
     Object.values(routeLayersRef.current).forEach((l: any) => mapRef.current.removeLayer(l))
     routeLayersRef.current = {}
-
     Object.values(geofenceLayersRef.current).forEach((l: any) => mapRef.current.removeLayer(l))
     geofenceLayersRef.current = {}
 
@@ -142,9 +256,13 @@ export default function GpsTrackingPage() {
       }
     }
 
+    const statusColor: Record<string, string> = {
+      active: '#22c55e',
+      idle: '#eab308',
+      offline: '#94a3b8',
+    }
     for (const u of users) {
-      const color =
-        u.status === 'active' ? '#22c55e' : u.status === 'idle' ? '#eab308' : '#94a3b8'
+      const color = statusColor[u.status] || '#94a3b8'
       const icon = L.divIcon({
         className: 'custom-marker',
         html: `<div style="width:32px;height:32px;border-radius:50%;background:${color};border:3px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.35);display:flex;align-items:center;justify-content:center;position:relative">
@@ -154,7 +272,6 @@ export default function GpsTrackingPage() {
         iconSize: [32, 32],
         iconAnchor: [16, 16],
       })
-
       markersRef.current[u.userId] = L.marker([u.latitude, u.longitude], { icon })
         .addTo(mapRef.current)
         .bindPopup(
@@ -187,16 +304,18 @@ export default function GpsTrackingPage() {
   }
 
   useEffect(() => {
+    fetchEngineers()
+    fetchSiteVisits()
     fetchData()
     const interval = setInterval(fetchData, 12000)
-    return () => clearInterval(interval)
-  }, [fetchData])
+    const engineerInterval = setInterval(fetchEngineers, 30000)
+    return () => { clearInterval(interval); clearInterval(engineerInterval) }
+  }, [fetchData, fetchEngineers, fetchSiteVisits])
 
   useEffect(() => {
     if (typeof window === 'undefined') return
     const L = require('leaflet')
     LRef.current = L
-
     if (mapContainerRef.current && !mapRef.current) {
       const map = L.map(mapContainerRef.current, {
         center: [20.5937, 78.9629],
@@ -221,7 +340,6 @@ export default function GpsTrackingPage() {
       setError('Geolocation not supported by your browser')
       return
     }
-
     setError('')
     const id = navigator.geolocation.watchPosition(
       async (pos) => {
@@ -231,19 +349,11 @@ export default function GpsTrackingPage() {
           const b = await (navigator as any).getBattery?.()
           if (b) battery = Math.round(b.level * 100)
         } catch {}
-
         try {
           await fetch('/api/gps', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              userId: currentUserId,
-              latitude,
-              longitude,
-              accuracy,
-              speed,
-              batteryLevel: battery,
-            }),
+            body: JSON.stringify({ userId: currentUserId, latitude, longitude, accuracy, speed, batteryLevel: battery }),
           })
           setLastSent(new Date().toLocaleTimeString())
           fetchData()
@@ -252,7 +362,6 @@ export default function GpsTrackingPage() {
       (err) => setError(`Location error: ${err.message}`),
       { enableHighAccuracy: true, maximumAge: 8000, timeout: 12000 }
     )
-
     setWatchId(id)
     setIsTracking(true)
   }
@@ -267,7 +376,7 @@ export default function GpsTrackingPage() {
     if (currentUserId && !isTracking) startTracking()
   }, [currentUserId])
 
-  const focusUser = (user: ActiveUser) => {
+  const focusUser = (user: EngineerData) => {
     setSelectedUser(user.userId)
     if (mapRef.current) {
       mapRef.current.setView([user.latitude, user.longitude], 15)
@@ -275,11 +384,22 @@ export default function GpsTrackingPage() {
     }
   }
 
-  const activeCount = activeUsers.filter((u) => u.status === 'active').length
-  const idleCount = activeUsers.filter((u) => u.status === 'idle').length
-  const offlineCount = activeUsers.filter((u) => u.status === 'offline').length
-  const movingCount = activeUsers.filter((u) => u.isMoving).length
-  const insideGeofence = geofenceSummary.filter((g) => g.currentInside).length
+  const uniqueProjects = [...new Set(displayUsers.map((e) => ({ id: e.projectId, name: e.projectName })).filter((v) => v.id))].filter(
+    (v, i, a) => a.findIndex((t) => t.id === v.id) === i
+  )
+  const uniqueStatuses = ['On Site', 'Travelling', 'Outside Geofence', 'Offline']
+
+  const activeCount = displayUsers.filter((u) => u.fieldStatus !== 'Offline').length
+  const onSiteCount = displayUsers.filter((u) => u.fieldStatus === 'On Site').length
+  const outsideCount = displayUsers.filter((u) => u.fieldStatus === 'Outside Geofence').length
+  const offlineCount = displayUsers.filter((u) => u.fieldStatus === 'Offline').length
+  const totalSiteVisits = siteVisits.length
+  const avgSiteTime = siteVisits.length > 0
+    ? `${Math.round(siteVisits.reduce((s: number, v: any) => s + (v.durationMinutes || 0), 0) / siteVisits.length)}m`
+    : '0m'
+  const gpsViolations = displayUsers.filter((u) => u.accuracy && u.accuracy > 50).length
+
+  const selectedEngineer = displayUsers.find((u) => u.userId === showProfile)
 
   return (
     <div className="space-y-6">
@@ -289,6 +409,9 @@ export default function GpsTrackingPage() {
         breadcrumbs={[{ label: 'Dashboard', href: '/' }, { label: 'GPS Tracking' }]}
         actions={
           <div className="flex gap-2">
+            <Button variant="outline" onClick={() => setShowFilters(!showFilters)}>
+              <Filter className="mr-2 h-4 w-4" />Filters
+            </Button>
             <Button variant="outline" onClick={fetchData}>
               <RefreshCw className="mr-2 h-4 w-4" />Refresh
             </Button>
@@ -310,12 +433,51 @@ export default function GpsTrackingPage() {
         </div>
       )}
 
-      <div className="grid gap-4 grid-cols-2 lg:grid-cols-5">
-        <StatCard icon={<Users className="h-6 w-6" />} label="Active" value={activeCount} color="success" />
-        <StatCard icon={<Gauge className="h-6 w-6" />} label="Moving" value={movingCount} color="info" />
-        <StatCard icon={<Clock className="h-6 w-6" />} label="Idle" value={idleCount} color="warning" />
-        <StatCard icon={<Shield className="h-6 w-6" />} label="On-Site" value={insideGeofence} color="success" />
-        <StatCard icon={<MapPin className="h-6 w-6" />} label="Total Pings" value={totalLocations} color="info" />
+      {showFilters && (
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex flex-wrap items-center gap-4">
+              <div className="flex items-center gap-2">
+                <Filter className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm font-medium">Filters:</span>
+              </div>
+              <select
+                value={filterProject}
+                onChange={(e) => setFilterProject(e.target.value)}
+                className="rounded-md border bg-background px-3 py-1.5 text-sm"
+              >
+                <option value="all">All Projects</option>
+                {uniqueProjects.map((p) => (
+                  <option key={p.id} value={p.id!}>{p.name}</option>
+                ))}
+              </select>
+              <select
+                value={filterStatus}
+                onChange={(e) => setFilterStatus(e.target.value)}
+                className="rounded-md border bg-background px-3 py-1.5 text-sm"
+              >
+                <option value="all">All Status</option>
+                {uniqueStatuses.map((s) => (
+                  <option key={s} value={s}>{s}</option>
+                ))}
+              </select>
+              {(filterProject !== 'all' || filterStatus !== 'all') && (
+                <Button variant="ghost" size="sm" onClick={() => { setFilterProject('all'); setFilterStatus('all') }}>
+                  <X className="mr-1 h-3 w-3" />Clear
+                </Button>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-6">
+        <StatCard icon={<Users className="h-6 w-6" />} label="Engineers Active" value={activeCount} color="success" />
+        <StatCard icon={<MapPin className="h-6 w-6" />} label="On Site" value={onSiteCount} color="info" />
+        <StatCard icon={<AlertTriangle className="h-6 w-6" />} label="Outside Geofence" value={outsideCount} color="danger" />
+        <StatCard icon={<ClipboardList className="h-6 w-6" />} label="Site Visits Today" value={totalSiteVisits} color="info" />
+        <StatCard icon={<Timer className="h-6 w-6" />} label="Avg Site Time" value={avgSiteTime} color="default" />
+        <StatCard icon={<Shield className="h-6 w-6" />} label="GPS Violations" value={gpsViolations} color="danger" />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
@@ -327,18 +489,10 @@ export default function GpsTrackingPage() {
                   <MapPin className="h-5 w-5 text-blue-600" />Live Map
                 </CardTitle>
                 <div className="flex gap-2">
-                  <Button
-                    variant={showRoutes ? 'default' : 'outline'}
-                    size="sm"
-                    onClick={() => setShowRoutes(!showRoutes)}
-                  >
+                  <Button variant={showRoutes ? 'default' : 'outline'} size="sm" onClick={() => setShowRoutes(!showRoutes)}>
                     <Route className="h-4 w-4 mr-1" />Routes
                   </Button>
-                  <Button
-                    variant={showGeofences ? 'default' : 'outline'}
-                    size="sm"
-                    onClick={() => setShowGeofences(!showGeofences)}
-                  >
+                  <Button variant={showGeofences ? 'default' : 'outline'} size="sm" onClick={() => setShowGeofences(!showGeofences)}>
                     <Circle className="h-4 w-4 mr-1" />Geofences
                   </Button>
                 </div>
@@ -352,6 +506,58 @@ export default function GpsTrackingPage() {
               />
             </CardContent>
           </Card>
+
+          {siteVisits.length > 0 && (
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <ClipboardList className="h-5 w-5 text-blue-600" />Today&apos;s Attendance
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b text-left text-muted-foreground">
+                        <th className="pb-2 font-medium">Engineer</th>
+                        <th className="pb-2 font-medium">Project</th>
+                        <th className="pb-2 font-medium">Check-in</th>
+                        <th className="pb-2 font-medium">Check-out</th>
+                        <th className="pb-2 font-medium">Duration</th>
+                        <th className="pb-2 font-medium">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {siteVisits.slice(0, 10).map((visit: any) => (
+                        <tr key={visit.id} className="border-b last:border-0">
+                          <td className="py-2.5 font-medium">
+                            {visit.user?.firstName} {visit.user?.lastName}
+                          </td>
+                          <td className="py-2.5">{visit.project?.name || '—'}</td>
+                          <td className="py-2.5">
+                            {new Date(visit.checkInAt).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
+                          </td>
+                          <td className="py-2.5">
+                            {visit.checkOutAt
+                              ? new Date(visit.checkOutAt).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })
+                              : '—'}
+                          </td>
+                          <td className="py-2.5">
+                            {visit.durationMinutes != null ? `${visit.durationMinutes}m` : '—'}
+                          </td>
+                          <td className="py-2.5">
+                            <Badge variant={visit.status === 'CHECKED_OUT' ? 'secondary' : 'success'}>
+                              {visit.status === 'CHECKED_OUT' ? 'Checked Out' : 'On Site'}
+                            </Badge>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
           {geofenceSummary.length > 0 && (
             <Card>
@@ -388,78 +594,90 @@ export default function GpsTrackingPage() {
         <div className="space-y-4">
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-lg">Field Team</CardTitle>
+              <CardTitle className="text-lg flex items-center justify-between">
+                <span>Field Team</span>
+                <Badge variant="secondary" className="text-xs">
+                  {displayUsers.length} engineers
+                </Badge>
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              {activeUsers.length === 0 ? (
+              {displayUsers.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-12 text-center">
                   <MapPin className="h-10 w-10 text-muted-foreground/40" />
-                  <p className="mt-3 text-sm text-muted-foreground">No tracking data yet</p>
-                  <p className="text-xs text-muted-foreground mt-1">Tracking starts automatically</p>
+                  <p className="mt-3 text-sm text-muted-foreground">No engineers found</p>
+                  <p className="text-xs text-muted-foreground mt-1">Add engineers to start tracking</p>
                 </div>
               ) : (
-                <div className="space-y-3">
-                  {activeUsers.map((user) => (
-                    <div
-                      key={user.userId}
-                      className={`flex items-center gap-3 rounded-lg border p-3 transition-colors cursor-pointer ${
-                        selectedUser === user.userId
-                          ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/30'
-                          : 'border-border hover:bg-accent/50'
-                      }`}
-                      onClick={() => focusUser(user)}
-                    >
-                      <div className="relative">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-sm font-semibold text-white">
-                          {user.userName.split(' ').map((n: string) => n[0]).join('')}
+                <div className="space-y-3 max-h-[600px] overflow-y-auto pr-1">
+                  {displayUsers.map((user) => {
+                    const fieldStatusColor =
+                      user.fieldStatus === 'On Site' ? 'bg-emerald-500'
+                        : user.fieldStatus === 'Travelling' ? 'bg-orange-500'
+                          : user.fieldStatus === 'Outside Geofence' ? 'bg-red-500'
+                            : 'bg-gray-400'
+                    return (
+                      <div
+                        key={user.userId}
+                        className={cn(
+                          'rounded-lg border p-3 transition-colors cursor-pointer',
+                          selectedUser === user.userId
+                            ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/30'
+                            : 'border-border hover:bg-accent/50'
+                        )}
+                        onClick={() => focusUser(user)}
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className="relative shrink-0">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-sm font-semibold text-white">
+                              {user.userName.split(' ').map((n: string) => n[0]).join('')}
+                            </div>
+                            <span className={cn('absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-background', fieldStatusColor)} />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between">
+                              <p className="text-sm font-medium truncate">{user.userName}</p>
+                              <Badge
+                                variant={
+                                  user.fieldStatus === 'On Site' ? 'success'
+                                    : user.fieldStatus === 'Travelling' ? 'warning'
+                                      : user.fieldStatus === 'Outside Geofence' ? 'destructive'
+                                        : 'secondary'
+                                }
+                                className="text-[9px] px-1.5 shrink-0"
+                              >
+                                {user.fieldStatus}
+                              </Badge>
+                            </div>
+                            <p className="text-xs text-muted-foreground truncate flex items-center gap-1">
+                              <Briefcase className="h-3 w-3 shrink-0" />{user.projectName}
+                            </p>
+                            <div className="flex items-center gap-3 mt-1.5">
+                              <span className="flex items-center gap-0.5 text-[10px] text-muted-foreground">
+                                <LogIn className="h-3 w-3" />{user.lastCheckin}
+                              </span>
+                              <span className="flex items-center gap-0.5 text-[10px] text-muted-foreground">
+                                <Battery className="h-3 w-3" />
+                                {user.batteryLevel != null ? `${user.batteryLevel}%` : '—'}
+                              </span>
+                              <span className="flex items-center gap-0.5 text-[10px] text-muted-foreground">
+                                <Signal className="h-3 w-3" />
+                                {user.accuracy ? `${user.accuracy}m` : '—'}
+                              </span>
+                            </div>
+                          </div>
                         </div>
-                        <span
-                          className={`absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-background ${
-                            user.status === 'active'
-                              ? 'bg-emerald-500'
-                              : user.status === 'idle'
-                                ? 'bg-yellow-500'
-                                : 'bg-gray-400'
-                          }`}
-                        />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium truncate">{user.userName}</p>
-                        <p className="text-xs text-muted-foreground truncate">{user.projectName}</p>
-                        <div className="flex items-center gap-2 mt-1">
-                          {user.isMoving && (
-                            <Badge variant="success" className="text-[9px] px-1 py-0">
-                              Moving
-                            </Badge>
-                          )}
-                          {user.batteryLevel != null && (
-                            <span className="flex items-center gap-0.5 text-[10px] text-muted-foreground">
-                              <Battery className="h-3 w-3" />
-                              {user.batteryLevel}%
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <Badge
-                          variant={
-                            user.status === 'active'
-                              ? 'success'
-                              : user.status === 'idle'
-                                ? 'warning'
-                                : 'secondary'
-                          }
-                          className="text-[10px]"
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="w-full mt-2 text-xs h-7"
+                          onClick={(e) => { e.stopPropagation(); setShowProfile(user.userId) }}
                         >
-                          {user.status === 'active'
-                            ? `${user.minutesAgo}m ago`
-                            : user.status === 'idle'
-                              ? `${user.minutesAgo}m`
-                              : 'Offline'}
-                        </Badge>
+                          View Profile <ChevronRight className="h-3 w-3 ml-1" />
+                        </Button>
                       </div>
-                    </div>
-                  ))}
+                    )
+                  })}
                 </div>
               )}
             </CardContent>
@@ -473,16 +691,19 @@ export default function GpsTrackingPage() {
             </CardHeader>
             <CardContent className="space-y-2 text-xs">
               <div className="flex items-center gap-2">
-                <span className="h-3 w-3 rounded-full bg-emerald-500" /> Active (moving)
+                <span className="h-3 w-3 rounded-full bg-emerald-500" /> On Site
               </div>
               <div className="flex items-center gap-2">
-                <span className="h-3 w-3 rounded-full bg-yellow-500" /> Idle (stationary)
+                <span className="h-3 w-3 rounded-full bg-orange-500" /> Travelling
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="h-3 w-3 rounded-full bg-red-500" /> Outside Geofence
               </div>
               <div className="flex items-center gap-2">
                 <span className="h-3 w-3 rounded-full bg-gray-400" /> Offline
               </div>
               <div className="flex items-center gap-2">
-                <span className="h-0.5 w-4 bg-blue-500" style={{ borderTop: '2px dashed #3b82f6' }} />
+                <span className="h-0.5 w-4" style={{ borderTop: '2px dashed #3b82f6' }} />
                 Travel route
               </div>
               <div className="flex items-center gap-2">
@@ -493,6 +714,60 @@ export default function GpsTrackingPage() {
           </Card>
         </div>
       </div>
+
+      {selectedEngineer && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => setShowProfile(null)}>
+          <div
+            className="bg-background rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="sticky top-0 bg-background border-b p-4 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-sm font-semibold text-white">
+                  {selectedEngineer.userName.split(' ').map((n: string) => n[0]).join('')}
+                </div>
+                <div>
+                  <h3 className="font-semibold">{selectedEngineer.userName}</h3>
+                  <p className="text-xs text-muted-foreground">{selectedEngineer.projectName}</p>
+                </div>
+              </div>
+              <Button variant="ghost" size="sm" onClick={() => setShowProfile(null)}>
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+            <div className="p-4 space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="rounded-lg border p-3">
+                  <p className="text-xs text-muted-foreground">Status</p>
+                  <Badge variant={selectedEngineer.fieldStatus === 'On Site' ? 'success' : 'secondary'} className="mt-1">
+                    {selectedEngineer.fieldStatus}
+                  </Badge>
+                </div>
+                <div className="rounded-lg border p-3">
+                  <p className="text-xs text-muted-foreground">Project</p>
+                  <p className="text-sm font-medium mt-1">{selectedEngineer.projectName}</p>
+                </div>
+                <div className="rounded-lg border p-3">
+                  <p className="text-xs text-muted-foreground">Last Seen</p>
+                  <p className="text-sm font-medium mt-1">{selectedEngineer.lastCheckin}</p>
+                </div>
+                <div className="rounded-lg border p-3">
+                  <p className="text-xs text-muted-foreground">GPS Accuracy</p>
+                  <p className="text-sm font-medium mt-1">{selectedEngineer.accuracy ? `${selectedEngineer.accuracy}m` : 'N/A'}</p>
+                </div>
+                {selectedEngineer.phone && (
+                  <div className="rounded-lg border p-3 col-span-2">
+                    <p className="text-xs text-muted-foreground">Contact</p>
+                    <p className="text-sm font-medium mt-1 flex items-center gap-1">
+                      <Phone className="h-3 w-3" />{selectedEngineer.phone}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

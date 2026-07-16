@@ -9,7 +9,11 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
       include: {
         client: { select: { id: true, companyName: true, contactPerson: true, email: true, phone: true } },
         manager: { select: { id: true, firstName: true, lastName: true, email: true } },
-        surveys: { where: { isDeleted: false }, select: { id: true, title: true, status: true, scheduledDate: true } },
+        surveys: {
+          where: { isDeleted: false },
+          select: { id: true, title: true, status: true, scheduledDate: true, completedDate: true, engineerId: true, type: true, gpsLatitude: true, gpsLongitude: true },
+          orderBy: { createdAt: 'desc' },
+        },
         boqItems: { where: { isDeleted: false }, select: { id: true, serialNumber: true, description: true, category: true, quantity: true, unitRate: true, amount: true } },
       },
     })
@@ -18,7 +22,28 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
       return NextResponse.json({ success: false, error: 'Project not found' }, { status: 404 })
     }
 
-    return NextResponse.json({ success: true, data: project })
+    const surveyIds = project.surveys.map((s: any) => s.id)
+
+    const [photos, measurements, risks, materials, activities] = await Promise.all([
+      surveyIds.length > 0
+        ? db.photo.findMany({ where: { surveyId: { in: surveyIds }, isDeleted: false }, orderBy: { createdAt: 'desc' }, take: 20 })
+        : [],
+      surveyIds.length > 0
+        ? db.measurement.findMany({ where: { surveyId: { in: surveyIds }, isDeleted: false }, orderBy: { createdAt: 'desc' }, take: 20 })
+        : [],
+      surveyIds.length > 0
+        ? db.riskAssessment.findMany({ where: { surveyId: { in: surveyIds }, isDeleted: false }, orderBy: { createdAt: 'desc' }, take: 20 })
+        : [],
+      surveyIds.length > 0
+        ? db.materialRequirement.findMany({ where: { surveyId: { in: surveyIds }, isDeleted: false }, orderBy: { createdAt: 'desc' }, take: 20 })
+        : [],
+      db.activity.findMany({ where: { projectId: id, isDeleted: false }, orderBy: { createdAt: 'desc' }, take: 20 }),
+    ])
+
+    return NextResponse.json({
+      success: true,
+      data: { ...project, photos, measurements, risks, materials, activities },
+    })
   } catch (error) {
     console.error('GET /api/projects/[id] error:', error)
     return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 })
@@ -44,7 +69,15 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
 
     if (name) updateData.name = name
     if (description !== undefined) updateData.description = description
-    if (type) updateData.type = type
+    if (type) {
+      const typeMap: Record<string, string> = {
+        'residential': 'RESIDENTIAL', 'commercial': 'COMMERCIAL', 'industrial': 'INDUSTRIAL',
+        'infrastructure': 'INFRASTRUCTURE', 'interior': 'INTERIOR', 'mep': 'MEP', 'renovation': 'RENOVATION',
+      }
+      const validTypes = ['RESIDENTIAL', 'COMMERCIAL', 'INDUSTRIAL', 'INFRASTRUCTURE', 'INTERIOR', 'MEP', 'RENOVATION']
+      const normalized = typeMap[type.toLowerCase()] || type
+      updateData.type = validTypes.includes(normalized) ? normalized : 'RESIDENTIAL'
+    }
     if (status) updateData.status = status
     if (startDate !== undefined) updateData.startDate = startDate ? new Date(startDate) : null
     if (endDate !== undefined) updateData.endDate = endDate ? new Date(endDate) : null
@@ -57,8 +90,12 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     if (longitude !== undefined) updateData.longitude = longitude ? parseFloat(longitude) : null
     if (area !== undefined) updateData.area = area ? parseFloat(area) : null
     if (floors !== undefined) updateData.floors = parseInt(floors, 10)
-    if (managerId !== undefined) updateData.managerId = managerId
-    if (leadUserId !== undefined) updateData.leadUserId = leadUserId
+    if (managerId !== undefined) {
+      updateData.manager = managerId ? { connect: { id: managerId } } : { disconnect: true }
+    }
+    if (leadUserId !== undefined) {
+      updateData.leadUser = leadUserId ? { connect: { id: leadUserId } } : { disconnect: true }
+    }
 
     const updated = await db.project.update({
       where: { id },

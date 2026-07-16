@@ -67,8 +67,8 @@ export async function POST(request: NextRequest) {
       data: {
         title,
         description,
-        surveyId,
-        identifiedById,
+        survey: { connect: { id: surveyId } },
+        identifiedBy: { connect: { id: identifiedById } },
         level: level || 'MEDIUM',
         mitigation: mitigation || null,
       },

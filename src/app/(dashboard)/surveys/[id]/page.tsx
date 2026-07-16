@@ -1,593 +1,811 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import Link from "next/link"
+import { useState, useEffect, useCallback } from 'react'
+import { useParams, useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
+import Link from 'next/link'
 import {
-  ArrowLeft, MapPin, Calendar, User, Cloud, FileText,
-  CheckCircle2, Clock, AlertTriangle, Camera, Video,
-  Mic, Pencil, Ruler, ChevronRight, Edit, MoreHorizontal,
-  Play, Pause, Download, Eye, Trash2, Upload, X, Plus,
-  AlertCircle, Star, Zap, Droplets, Flame, Building2, Route,
-  Copy
-} from "lucide-react"
-import { PageHeader } from "@/components/ui/page-header"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { StatusBadge } from "@/components/ui/status-badge"
-import { Progress } from "@/components/ui/progress"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import {
-  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
-} from "@/components/ui/table"
-import {
-  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu"
-import {
-  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
-} from "@/components/ui/select"
+  ArrowLeft, Calendar, User, Users, Cloud, FileText, CheckCircle2, Clock,
+  Camera, Mic, MapPin, PlayCircle, Send, Trash2, Loader2, AlertTriangle,
+  ChevronRight, Navigation, Upload, X, Plus, Printer,
+} from 'lucide-react'
+import { PageHeader } from '@/components/ui/page-header'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Progress } from '@/components/ui/progress'
+import { Textarea } from '@/components/ui/textarea'
+import { toast } from 'sonner'
+import { cn } from '@/lib/utils'
 
-const surveyData = {
-  id: "SUR-001",
-  title: "Foundation Inspection - Phase 1",
-  project: "Riverside Tower Complex",
-  projectId: "PRJ-001",
-  type: "Initial",
-  status: "in_progress",
-  description: "Comprehensive foundation inspection covering structural integrity, load distribution, and soil conditions for the first phase of the Riverside Tower Complex development.",
-  priority: "high",
-  engineer: { name: "Rajesh Kumar", initials: "RK", avatar: "", email: "rajesh.kumar@company.com", phone: "+91 98765 43210" },
-  scheduledDate: "2026-07-08",
-  startDate: "2026-07-08",
-  createdAt: "2026-07-01",
-  location: { latitude: 19.0760, longitude: 72.8777, address: "Bandra Kurla Complex, Mumbai, Maharashtra 400051" },
-  conditions: { weather: "Clear Sky", siteCondition: "Accessible", buildingType: "Commercial", constructionStage: "Foundation", floors: 12 },
-  infrastructure: {
-    electricity: { available: true, type: "3-Phase", load: "500 kVA" },
-    water: { available: true, source: "Municipal" },
-    drainage: { connected: true, type: "Both" },
-    fireSafety: { available: true, extinguishers: 8, sprinklers: 24, alarm: "Automatic" },
-    structureCondition: 4,
-  },
-  checklist: {
-    total: 18,
-    completed: 11,
-    items: [
-      { id: 1, category: "Structural", item: "Foundation condition assessment", completed: true, notes: "Found minor cracks on east side" },
-      { id: 2, category: "Structural", item: "Column and beam inspection", completed: true, notes: "" },
-      { id: 3, category: "Structural", item: "Load-bearing wall evaluation", completed: true, notes: "" },
-      { id: 4, category: "Structural", item: "Slab thickness verification", completed: true, notes: "Measured 200mm, within spec" },
-      { id: 5, category: "Structural", item: "Rebar placement verification", completed: true, notes: "" },
-      { id: 6, category: "Electrical", item: "Main distribution panel inspection", completed: true, notes: "" },
-      { id: 7, category: "Electrical", item: "Wiring and conduit assessment", completed: true, notes: "" },
-      { id: 8, category: "Electrical", item: "Grounding system verification", completed: true, notes: "" },
-      { id: 9, category: "Electrical", item: "Lighting fixture evaluation", completed: true, notes: "" },
-      { id: 10, category: "Plumbing", item: "Water supply line inspection", completed: true, notes: "" },
-      { id: 11, category: "Plumbing", item: "Drainage system assessment", completed: true, notes: "" },
-      { id: 12, category: "Plumbing", item: "Fire sprinkler system check", completed: false, notes: "" },
-      { id: 13, category: "Safety", item: "Fire exit accessibility check", completed: false, notes: "" },
-      { id: 14, category: "Safety", item: "Emergency lighting verification", completed: false, notes: "" },
-      { id: 15, category: "Safety", item: "PPE availability check", completed: false, notes: "" },
-      { id: 16, category: "Environmental", item: "Air quality assessment", completed: false, notes: "" },
-      { id: 17, category: "Environmental", item: "Noise level measurement", completed: false, notes: "" },
-      { id: 18, category: "Environmental", item: "Dust control measures", completed: false, notes: "" },
-    ],
-  },
-  photos: [
-    { id: 1, caption: "Foundation cracks - East side", date: "2026-07-08" },
-    { id: 2, caption: "Rebar inspection detail", date: "2026-07-08" },
-    { id: 3, caption: "Column base connection", date: "2026-07-08" },
-    { id: 4, caption: "Drainage pipe alignment", date: "2026-07-08" },
-    { id: 5, caption: "Electrical panel close-up", date: "2026-07-08" },
-  ],
-  videos: [
-    { id: 1, title: "Foundation walkthrough", duration: "5:32", date: "2026-07-08", size: "45 MB" },
-    { id: 2, title: "Crack measurement recording", duration: "2:15", date: "2026-07-08", size: "18 MB" },
-  ],
-  voiceNotes: [
-    { id: 1, title: "Observation notes - East section", duration: "1:45", date: "2026-07-08", transcription: "Noticed hairline cracks along the east foundation wall, approximately 2mm width. Need further investigation with crack monitoring gauges. Recommend structural engineer review before next concrete pour." },
-    { id: 2, title: "Safety concerns", duration: "0:58", date: "2026-07-08", transcription: "Temporary shoring appears adequate but recommend additional bracing before next concrete pour. PPE compliance is good across all workers on site." },
-  ],
-  measurements: [
-    { id: 1, category: "Foundation", description: "Main foundation depth", length: 12.5, width: 8.0, height: 2.0, unit: "m" },
-    { id: 2, category: "Foundation", description: "Footing width", length: 1.2, width: 0.6, height: 0.3, unit: "m" },
-    { id: 3, category: "Column", description: "C1 Column section", length: 0.6, width: 0.6, height: 3.2, unit: "m" },
-    { id: 4, category: "Slab", description: "First floor slab", length: 25.0, width: 15.0, height: 0.2, unit: "m" },
-  ],
-  risks: [
-    { id: 1, title: "Potential Foundation Settlement", description: "Minor cracks observed on east side. Recommend monitoring and further structural analysis.", severity: "medium", date: "2026-07-08" },
-    { id: 2, title: "Load Distribution Normal", description: "All load-bearing elements within acceptable parameters.", severity: "low", date: "2026-07-08" },
-    { id: 3, title: "Water Table Concern", description: "High water table detected at 3.2m depth. Dewatering may be required.", severity: "high", date: "2026-07-08" },
-  ],
-  materials: [
-    { id: 1, material: "Ready-Mix Concrete", specification: "M30 Grade", quantity: "45 m³", cost: "₹2,70,000", status: "approved" },
-    { id: 2, material: "Steel Rebar", specification: "Fe 500D, 16mm", quantity: "2.5 tonnes", cost: "₹2,12,500", status: "approved" },
-    { id: 3, material: "Waterproofing Membrane", specification: "Bituminous, 4mm", quantity: "200 m²", cost: "₹96,000", status: "pending" },
-    { id: 4, material: "PVC Pipes", specification: "110mm, Class 4", quantity: "120 m", cost: "₹18,000", status: "pending" },
-  ],
+interface SurveyDetail {
+  id: string
+  title: string
+  description: string | null
+  project: { id: string; name: string; code: string | null }
+  type: string
+  status: string
+  scheduledDate: string | null
+  completedDate: string | null
+  gpsLatitude: number | null
+  gpsLongitude: number | null
+  weatherCondition: string | null
+  siteCondition: string | null
+  accessDetails: string | null
+  notes: string | null
+  createdAt: string
+  currentApprovalLevel: number
+  assignedApproverId: string | null
+  engineer: { id: string; name: string; email: string; initials: string } | null
+  assignedApprover: { id: string; firstName: string; lastName: string; role: string } | null
+  checklistItems: { id: string; category: string; item: string; isCompleted: boolean; notes: string | null }[]
+  photos: { id: string; url: string; filename: string; caption: string | null }[]
+  voiceNotes: { id: string; filename: string; url: string; duration: number | null }[]
+  siteVisits: any[]
+  checklistCompleted: number
+  progress: number
+  _count: { checklistItems: number; photos: number; voiceNotes: number; videos: number }
 }
 
-const statusWorkflow = [
-  { status: "Draft", completed: true },
-  { status: "Assigned", completed: true },
-  { status: "In Progress", completed: false, current: true },
-  { status: "Submitted", completed: false },
-  { status: "Under Review", completed: false },
-  { status: "Approved", completed: false },
-]
+const STATUS_COLORS: Record<string, string> = {
+  DRAFT: 'bg-slate-100 text-slate-700',
+  ASSIGNED: 'bg-blue-100 text-blue-700',
+  IN_PROGRESS: 'bg-amber-100 text-amber-700',
+  SUBMITTED: 'bg-purple-100 text-purple-700',
+  UNDER_REVIEW: 'bg-indigo-100 text-indigo-700',
+  MANAGER_APPROVED: 'bg-teal-100 text-teal-700',
+  APPROVED: 'bg-emerald-100 text-emerald-700',
+  REJECTED: 'bg-red-100 text-red-700',
+  COMPLETED: 'bg-emerald-100 text-emerald-700',
+}
 
-const checklistCategories = ["Structural", "Electrical", "Plumbing", "Safety", "Environmental"]
+const STATUS_LABELS: Record<string, string> = {
+  DRAFT: 'Draft', ASSIGNED: 'Assigned', IN_PROGRESS: 'In Progress',
+  SUBMITTED: 'Submitted', UNDER_REVIEW: 'Under Review', MANAGER_APPROVED: 'Manager Approved',
+  APPROVED: 'Approved', REJECTED: 'Rejected', COMPLETED: 'Completed',
+}
 
 export default function SurveyDetailPage() {
-  const [activeTab, setActiveTab] = useState("overview")
-  const [newRiskTitle, setNewRiskTitle] = useState("")
-  const [newRiskDesc, setNewRiskDesc] = useState("")
-  const [newRiskSeverity, setNewRiskSeverity] = useState("medium")
-  const [newMaterialName, setNewMaterialName] = useState("")
-  const [newMaterialSpec, setNewMaterialSpec] = useState("")
-  const [newMaterialQty, setNewMaterialQty] = useState("")
-  const [newMeasurementCategory, setNewMeasurementCategory] = useState("Foundation")
-  const [newMeasurementDesc, setNewMeasurementDesc] = useState("")
+  const params = useParams()
+  const router = useRouter()
+  const id = params.id as string
+  const { data: session } = useSession()
+  const userRole = (session?.user as any)?.role as string | undefined
+  const userId = (session?.user as any)?.id as string | undefined
+  const canApprove = userRole === 'ADMIN' || userRole === 'MANAGER' || userRole === 'SUPER_ADMIN'
 
-  const checklistProgress = Math.round((surveyData.checklist.completed / surveyData.checklist.total) * 100)
+  const [survey, setSurvey] = useState<SurveyDetail | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [actionLoading, setActionLoading] = useState(false)
+  const [activeTab, setActiveTab] = useState('checklist')
+  const [photoFile, setPhotoFile] = useState<File | null>(null)
+  const [photoUploading, setPhotoUploading] = useState(false)
+  const [newItemCategory, setNewItemCategory] = useState('General')
+  const [newItemText, setNewItemText] = useState('')
+  const [addingItem, setAddingItem] = useState(false)
+  const [approvalLevels, setApprovalLevels] = useState<{ level: number; name: string; requiredRole: string; allowForward: boolean; allowEscalate: boolean; allowReverse: boolean }[]>([])
+  const [forwardDialogOpen, setForwardDialogOpen] = useState(false)
+  const [forwardUsers, setForwardUsers] = useState<{ id: string; firstName: string; lastName: string; role: string }[]>([])
+  const [forwardUserId, setForwardUserId] = useState('')
+  const [forwardNotes, setForwardNotes] = useState('')
+
+  const fetchSurvey = useCallback(async () => {
+    try {
+      setLoading(true)
+      const [surveyRes, levelsRes, usersRes] = await Promise.all([
+        fetch(`/api/surveys/${id}`),
+        fetch('/api/approval-levels?entityType=Survey'),
+        fetch('/api/users?limit=100'),
+      ])
+      const surveyJson = await surveyRes.json()
+      const levelsJson = await levelsRes.json()
+      const usersJson = await usersRes.json()
+      if (surveyJson.success) setSurvey(surveyJson.data)
+      else toast.error('Survey not found')
+      if (levelsJson.success) setApprovalLevels(levelsJson.data)
+      if (usersJson.users) setForwardUsers(usersJson.users)
+    } catch {
+      toast.error('Failed to load survey')
+    } finally {
+      setLoading(false)
+    }
+  }, [id])
+
+  useEffect(() => {
+    fetchSurvey()
+  }, [fetchSurvey])
+
+  const handleStatusChange = async (newStatus: string) => {
+    if (!survey) return
+    try {
+      setActionLoading(true)
+      const res = await fetch('/api/surveys', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: survey.id, status: newStatus }),
+      })
+      const json = await res.json()
+      if (json.success) {
+        setSurvey((prev) => prev ? { ...prev, status: newStatus } : prev)
+        toast.success(`Survey ${STATUS_LABELS[newStatus]?.toLowerCase() || newStatus.toLowerCase()}`)
+      } else {
+        toast.error(json.error || 'Failed to update')
+      }
+    } catch {
+      toast.error('Failed to update survey')
+    } finally {
+      setActionLoading(false)
+    }
+  }
+
+  const handleApprovalAction = async (action: string, toUserId?: string, notes?: string) => {
+    if (!survey) return
+    try {
+      setActionLoading(true)
+      const res = await fetch(`/api/surveys/${survey.id}/approval`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action, toUserId, notes }),
+      })
+      const json = await res.json()
+      if (json.success) {
+        toast.success(json.message)
+        setForwardDialogOpen(false)
+        setForwardUserId('')
+        setForwardNotes('')
+        fetchSurvey()
+      } else {
+        toast.error(json.error || 'Action failed')
+      }
+    } catch {
+      toast.error('Approval action failed')
+    } finally {
+      setActionLoading(false)
+    }
+  }
+
+  const toggleChecklistItem = async (itemId: string, completed: boolean) => {
+    try {
+      const res = await fetch(`/api/surveys/${id}/checklist/${itemId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ isCompleted: completed }),
+      })
+      const json = await res.json()
+      if (json.success) {
+        setSurvey((prev) => {
+          if (!prev) return prev
+          const items = prev.checklistItems.map((item) =>
+            item.id === itemId ? { ...item, isCompleted: completed } : item
+          )
+          const completedCount = items.filter((i) => i.isCompleted).length
+          return {
+            ...prev,
+            checklistItems: items,
+            checklistCompleted: completedCount,
+            progress: items.length > 0 ? Math.round((completedCount / items.length) * 100) : 0,
+          }
+        })
+      }
+    } catch {}
+  }
+
+  const handlePhotoUpload = async () => {
+    if (!photoFile || !survey) return
+    try {
+      setPhotoUploading(true)
+      const reader = new FileReader()
+      reader.onload = async () => {
+        const base64 = reader.result as string
+        const res = await fetch('/api/photos', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            surveyId: survey.id,
+            projectId: survey.project.id,
+            filename: photoFile.name,
+            fileData: base64,
+            caption: photoFile.name,
+          }),
+        })
+        const json = await res.json()
+        if (json.success) {
+          setSurvey((prev) => prev ? {
+            ...prev,
+            photos: [json.data, ...prev.photos],
+            _count: { ...prev._count, photos: prev._count.photos + 1 },
+          } : prev)
+          setPhotoFile(null)
+          toast.success('Photo uploaded')
+        } else {
+          toast.error(json.error || 'Upload failed')
+        }
+      }
+      reader.readAsDataURL(photoFile)
+    } catch {
+      toast.error('Upload failed')
+    } finally {
+      setPhotoUploading(false)
+    }
+  }
+
+  const addChecklistItem = async () => {
+    if (!newItemText.trim() || !survey) return
+    try {
+      setAddingItem(true)
+      const res = await fetch(`/api/surveys/${id}/checklist`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ category: newItemCategory, item: newItemText.trim() }),
+      })
+      const json = await res.json()
+      if (json.success) {
+        setSurvey((prev) => {
+          if (!prev) return prev
+          const items = [...prev.checklistItems, json.data]
+          return {
+            ...prev,
+            checklistItems: items,
+            _count: { ...prev._count, checklistItems: items.length },
+          }
+        })
+        setNewItemText('')
+        toast.success('Item added')
+      }
+    } catch {
+      toast.error('Failed to add item')
+    } finally {
+      setAddingItem(false)
+    }
+  }
+
+  const deleteChecklistItem = async (itemId: string) => {
+    try {
+      const res = await fetch(`/api/surveys/${id}/checklist/${itemId}`, { method: 'DELETE' })
+      const json = await res.json()
+      if (json.success) {
+        setSurvey((prev) => {
+          if (!prev) return prev
+          const items = prev.checklistItems.filter((i) => i.id !== itemId)
+          const completedCount = items.filter((i) => i.isCompleted).length
+          return {
+            ...prev,
+            checklistItems: items,
+            checklistCompleted: completedCount,
+            progress: items.length > 0 ? Math.round((completedCount / items.length) * 100) : 0,
+            _count: { ...prev._count, checklistItems: items.length },
+          }
+        })
+        toast.success('Item removed')
+      }
+    } catch {}
+  }
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <PageHeader
+          title="Survey Details"
+          description="Loading..."
+          breadcrumbs={[{ label: 'Dashboard', href: '/' }, { label: 'Surveys', href: '/surveys' }, { label: 'Details' }]}
+        />
+        <Card>
+          <CardContent className="flex items-center justify-center py-16">
+            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
+
+  if (!survey) {
+    return (
+      <div className="space-y-6">
+        <PageHeader
+          title="Survey Not Found"
+          description="The survey you're looking for doesn't exist."
+          breadcrumbs={[{ label: 'Dashboard', href: '/' }, { label: 'Surveys', href: '/surveys' }, { label: 'Not Found' }]}
+        />
+      </div>
+    )
+  }
+
+  const isLocked = survey.status === 'APPROVED' || survey.status === 'REJECTED' || survey.status === 'COMPLETED'
+  const isAssignedEngineer = userId && survey.engineer?.id === userId
+  const isAdmin = userRole === 'ADMIN' || userRole === 'SUPER_ADMIN'
+  const isPendingApproval = survey.status === 'SUBMITTED' || survey.status === 'MANAGER_APPROVED'
+  const currentLevelConfig = approvalLevels.find((l) => l.level === survey.currentApprovalLevel)
+  const canApproveCurrentLevel = currentLevelConfig
+    ? (currentLevelConfig.requiredRole === userRole || userRole === 'SUPER_ADMIN') && !isAssignedEngineer
+    : false
+
+  const groupedChecklist = survey.checklistItems.reduce((acc, item) => {
+    if (!acc[item.category]) acc[item.category] = []
+    acc[item.category].push(item)
+    return acc
+  }, {} as Record<string, typeof survey.checklistItems>)
 
   return (
     <div className="space-y-6">
       <PageHeader
-        title={surveyData.title}
+        title={survey.title}
+        description={survey.project?.name || ''}
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
-          { label: "Surveys", href: "/surveys" },
-          { label: surveyData.id },
+          { label: 'Dashboard', href: '/' },
+          { label: 'Surveys', href: '/surveys' },
+          { label: survey.title },
         ]}
         actions={
           <div className="flex items-center gap-2">
-            <Button variant="outline"><Download className="h-4 w-4 mr-2" /> PDF</Button>
-            <Button variant="outline" onClick={() => window.print()}><Printer className="h-4 w-4 mr-2" /> Print</Button>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="icon"><MoreHorizontal className="h-4 w-4" /></Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem><Play className="h-4 w-4 mr-2" /> Start Survey</DropdownMenuItem>
-                <DropdownMenuItem><Upload className="h-4 w-4 mr-2" /> Submit for Review</DropdownMenuItem>
-                <DropdownMenuItem><CheckCircle2 className="h-4 w-4 mr-2" /> Approve</DropdownMenuItem>
-                <DropdownMenuItem><Clock className="h-4 w-4 mr-2" /> Request Revision</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem><Copy className="h-4 w-4 mr-2" /> Duplicate</DropdownMenuItem>
-                <DropdownMenuItem className="text-destructive"><Trash2 className="h-4 w-4 mr-2" /> Reject</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <Button variant="outline" size="sm" onClick={() => router.push('/surveys')}>
+              <ArrowLeft className="h-4 w-4 mr-1.5" /> Back
+            </Button>
+
+            {isLocked && (
+              <Badge className="bg-emerald-100 text-emerald-700 text-xs">
+                <CheckCircle2 className="h-3 w-3 mr-1" /> Survey Finalized
+              </Badge>
+            )}
+
+            {!isLocked && (survey.status === 'DRAFT' || survey.status === 'ASSIGNED') && (isAssignedEngineer || canApprove) && (
+              <Button size="sm" disabled={actionLoading} onClick={() => handleStatusChange('IN_PROGRESS')}>
+                {actionLoading ? <Loader2 className="h-4 w-4 mr-1.5 animate-spin" /> : <PlayCircle className="h-4 w-4 mr-1.5" />}
+                Start Survey
+              </Button>
+            )}
+            {!isLocked && survey.status === 'IN_PROGRESS' && (isAssignedEngineer || canApprove) && (
+              <Button size="sm" disabled={actionLoading} onClick={() => handleStatusChange('SUBMITTED')}>
+                {actionLoading ? <Loader2 className="h-4 w-4 mr-1.5 animate-spin" /> : <Send className="h-4 w-4 mr-1.5" />}
+                Submit for Review
+              </Button>
+            )}
+
+            {isPendingApproval && survey.currentApprovalLevel > 0 && (
+              <>
+                {canApproveCurrentLevel && (
+                  <Button size="sm" disabled={actionLoading} onClick={() => handleApprovalAction('APPROVE')} className="bg-emerald-600 hover:bg-emerald-700">
+                    <CheckCircle2 className="h-4 w-4 mr-1.5" /> Approve
+                  </Button>
+                )}
+                {canApproveCurrentLevel && (
+                  <Button size="sm" variant="destructive" disabled={actionLoading} onClick={() => handleApprovalAction('REJECT')}>
+                    <AlertTriangle className="h-4 w-4 mr-1.5" /> Reject
+                  </Button>
+                )}
+                {canApproveCurrentLevel && currentLevelConfig?.allowForward && (
+                  <Button size="sm" variant="outline" disabled={actionLoading} onClick={() => setForwardDialogOpen(true)}>
+                    <Users className="h-4 w-4 mr-1.5" /> Forward
+                  </Button>
+                )}
+                {canApproveCurrentLevel && currentLevelConfig?.allowEscalate && (
+                  <Button size="sm" variant="outline" disabled={actionLoading} onClick={() => handleApprovalAction('ESCALATE')}>
+                    <Navigation className="h-4 w-4 mr-1.5" /> Escalate
+                  </Button>
+                )}
+                {canApproveCurrentLevel && currentLevelConfig?.allowReverse && (
+                  <Button size="sm" variant="outline" disabled={actionLoading} onClick={() => handleApprovalAction('REVERSE')}>
+                    <ArrowLeft className="h-4 w-4 mr-1.5" /> Reverse
+                  </Button>
+                )}
+                {!canApproveCurrentLevel && (
+                  <Badge className="bg-amber-100 text-amber-700 text-xs">
+                    <Clock className="h-3 w-3 mr-1" /> Level {survey.currentApprovalLevel} Pending
+                  </Badge>
+                )}
+              </>
+            )}
+            {isLocked && (
+              <>
+                <Button size="sm" variant="outline" onClick={() => router.push(`/surveys/${id}/report`)}>
+                  <FileText className="h-4 w-4 mr-1.5" /> View Report
+                </Button>
+                <Button size="sm" variant="outline" onClick={() => window.print()}>
+                  <Printer className="h-4 w-4 mr-1.5" /> Print
+                </Button>
+              </>
+            )}
           </div>
         }
       />
 
-      {/* Status Workflow */}
-      <Card className="p-4">
-        <div className="flex flex-col md:flex-row items-start md:items-center gap-2 overflow-x-auto">
-          {statusWorkflow.map((step, index) => (
-            <div key={step.status} className="flex items-center gap-2 shrink-0">
-              <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                step.current ? "bg-primary text-primary-foreground shadow-md" :
-                step.completed ? "bg-emerald-100 text-emerald-800" :
-                "bg-muted text-muted-foreground"
-              }`}>
-                {step.completed ? <CheckCircle2 className="h-4 w-4" /> :
-                 step.current ? <Clock className="h-4 w-4" /> : null}
-                {step.status}
-              </div>
-              {index < statusWorkflow.length - 1 && (
-                <ChevronRight className="h-4 w-4 text-muted-foreground/40 hidden md:block" />
-              )}
+      {/* Status Bar */}
+      <Card>
+        <CardContent className="p-4">
+          <div className="flex flex-wrap items-center gap-4 text-sm">
+            <Badge className={cn('text-xs', STATUS_COLORS[survey.status])}>
+              {STATUS_LABELS[survey.status] || survey.status}
+            </Badge>
+            <span className="flex items-center gap-1.5 text-muted-foreground">
+              <FileText className="h-4 w-4" /> {survey.type}
+            </span>
+            {survey.scheduledDate && (
+              <span className="flex items-center gap-1.5 text-muted-foreground">
+                <Calendar className="h-4 w-4" /> {survey.scheduledDate}
+              </span>
+            )}
+            {survey.engineer && (
+              <span className="flex items-center gap-1.5 text-muted-foreground">
+                <User className="h-4 w-4" /> {survey.engineer.name}
+              </span>
+            )}
+            {survey.weatherCondition && (
+              <span className="flex items-center gap-1.5 text-muted-foreground">
+                <Cloud className="h-4 w-4" /> {survey.weatherCondition}
+              </span>
+            )}
+            {survey.gpsLatitude && survey.gpsLongitude && (
+              <span className="flex items-center gap-1.5 text-emerald-600">
+                <Navigation className="h-4 w-4" /> GPS Logged
+              </span>
+            )}
+          </div>
+          <div className="mt-3">
+            <div className="flex items-center justify-between text-xs text-muted-foreground mb-1">
+              <span>Progress</span>
+              <span>{survey.checklistCompleted}/{survey._count.checklistItems} items ({survey.progress}%)</span>
             </div>
-          ))}
-        </div>
+            <Progress value={survey.progress} className="h-2" />
+          </div>
+        </CardContent>
       </Card>
+
+      {/* Approval Workflow Progress */}
+      {(survey.status === 'SUBMITTED' || survey.status === 'MANAGER_APPROVED' || survey.status === 'APPROVED') && survey.currentApprovalLevel > 0 && approvalLevels.length > 0 && (
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-semibold">Approval Workflow — Level {survey.currentApprovalLevel} of {approvalLevels.length}</CardTitle>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <div className="flex items-center gap-1">
+              {approvalLevels.map((level, idx) => (
+                <div key={level.level} className="flex items-center flex-1">
+                  <div className={cn(
+                    'flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold',
+                    level.level < survey.currentApprovalLevel && 'bg-emerald-500 text-white',
+                    level.level === survey.currentApprovalLevel && 'bg-amber-500 text-white animate-pulse',
+                    level.level > survey.currentApprovalLevel && 'bg-gray-200 text-gray-500'
+                  )}>
+                    {level.level < survey.currentApprovalLevel ? '✓' : level.level}
+                  </div>
+                  {idx < approvalLevels.length - 1 && (
+                    <div className={cn(
+                      'flex-1 h-1 mx-1',
+                      level.level < survey.currentApprovalLevel ? 'bg-emerald-500' : 'bg-gray-200'
+                    )} />
+                  )}
+                </div>
+              ))}
+            </div>
+            <div className="flex justify-between mt-2 text-xs text-muted-foreground">
+              {approvalLevels.map((level) => (
+                <span key={level.level}>{level.name}</span>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-3 md:grid-cols-9 h-auto">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="checklist">Checklist</TabsTrigger>
-          <TabsTrigger value="photos">Photos</TabsTrigger>
-          <TabsTrigger value="videos">Videos</TabsTrigger>
-          <TabsTrigger value="voice-notes">Voice Notes</TabsTrigger>
-          <TabsTrigger value="sketches">Sketches</TabsTrigger>
-          <TabsTrigger value="measurements">Measurements</TabsTrigger>
-          <TabsTrigger value="risks">Risks</TabsTrigger>
-          <TabsTrigger value="materials">Materials</TabsTrigger>
+        <TabsList>
+          <TabsTrigger value="checklist">
+            Checklist ({survey.checklistCompleted}/{survey._count.checklistItems})
+          </TabsTrigger>
+          <TabsTrigger value="photos">
+            Photos ({survey._count.photos})
+          </TabsTrigger>
+          <TabsTrigger value="voice">
+            Voice Notes ({survey._count.voiceNotes})
+          </TabsTrigger>
+          <TabsTrigger value="details">
+            Details
+          </TabsTrigger>
         </TabsList>
 
-        {/* Overview Tab */}
-        <TabsContent value="overview" className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <Card className="lg:col-span-2">
-              <CardHeader><CardTitle>Survey Information</CardTitle></CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div><p className="text-sm text-muted-foreground">Survey ID</p><p className="font-medium">{surveyData.id}</p></div>
-                  <div><p className="text-sm text-muted-foreground">Type</p><Badge>{surveyData.type}</Badge></div>
-                  <div><p className="text-sm text-muted-foreground">Status</p><StatusBadge status={surveyData.status} /></div>
-                  <div><p className="text-sm text-muted-foreground">Priority</p><Badge variant={surveyData.priority === "high" ? "warning" : "secondary"} className="capitalize">{surveyData.priority}</Badge></div>
-                  <div><p className="text-sm text-muted-foreground">Created</p><p className="font-medium">{surveyData.createdAt}</p></div>
-                  <div><p className="text-sm text-muted-foreground">Scheduled</p><div className="flex items-center gap-1"><Calendar className="h-4 w-4 text-muted-foreground" /><p className="font-medium">{surveyData.scheduledDate}</p></div></div>
-                  <div><p className="text-sm text-muted-foreground">Building Type</p><p className="font-medium">{surveyData.conditions.buildingType}</p></div>
-                  <div><p className="text-sm text-muted-foreground">Construction Stage</p><p className="font-medium">{surveyData.conditions.constructionStage}</p></div>
-                  <div><p className="text-sm text-muted-foreground">Floors</p><p className="font-medium">{surveyData.conditions.floors}</p></div>
-                </div>
-                <div><p className="text-sm text-muted-foreground mb-1">Description</p><p className="text-sm">{surveyData.description}</p></div>
-              </CardContent>
-            </Card>
-
-            <div className="space-y-6">
-              <Card>
-                <CardHeader><CardTitle>Assigned Engineer</CardTitle></CardHeader>
-                <CardContent>
-                  <div className="flex items-center gap-3">
-                    <Avatar className="h-12 w-12"><AvatarFallback>{surveyData.engineer.initials}</AvatarFallback></Avatar>
-                    <div>
-                      <p className="font-medium">{surveyData.engineer.name}</p>
-                      <p className="text-sm text-muted-foreground">{surveyData.engineer.email}</p>
-                      <p className="text-sm text-muted-foreground">{surveyData.engineer.phone}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader><CardTitle>Site Conditions</CardTitle></CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="flex items-center gap-2"><Cloud className="h-4 w-4 text-muted-foreground" /><span className="text-sm">Weather: {surveyData.conditions.weather}</span></div>
-                  <div className="flex items-center gap-2"><MapPin className="h-4 w-4 text-muted-foreground" /><span className="text-sm">Access: {surveyData.conditions.siteCondition}</span></div>
-                  <div className="flex items-center gap-2"><Star className="h-4 w-4 text-amber-400" /><span className="text-sm">Condition: {surveyData.infrastructure.structureCondition}/5</span></div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader><CardTitle>Location</CardTitle></CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="rounded-lg bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-700 p-6 text-center">
-                    <MapPin className="h-10 w-10 mx-auto text-muted-foreground" />
-                    <p className="text-sm text-muted-foreground mt-2">Interactive Map</p>
-                  </div>
-                  <p className="text-sm">{surveyData.location.address}</p>
-                  <p className="text-xs text-muted-foreground">Lat: {surveyData.location.latitude}, Lng: {surveyData.location.longitude}</p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader><CardTitle>Infrastructure</CardTitle></CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="flex items-center justify-between text-sm">
-                    <div className="flex items-center gap-2"><Zap className="h-4 w-4 text-yellow-500" /> Electricity</div>
-                    <Badge variant={surveyData.infrastructure.electricity.available ? "success" : "secondary"}>{surveyData.infrastructure.electricity.available ? surveyData.infrastructure.electricity.type : "N/A"}</Badge>
-                  </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <div className="flex items-center gap-2"><Droplets className="h-4 w-4 text-blue-500" /> Water</div>
-                    <Badge variant={surveyData.infrastructure.water.available ? "success" : "secondary"}>{surveyData.infrastructure.water.available ? surveyData.infrastructure.water.source : "N/A"}</Badge>
-                  </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <div className="flex items-center gap-2"><Droplets className="h-4 w-4 text-cyan-500" /> Drainage</div>
-                    <Badge variant={surveyData.infrastructure.drainage.connected ? "success" : "secondary"}>{surveyData.infrastructure.drainage.connected ? surveyData.infrastructure.drainage.type : "N/A"}</Badge>
-                  </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <div className="flex items-center gap-2"><Flame className="h-4 w-4 text-red-500" /> Fire Safety</div>
-                    <Badge variant={surveyData.infrastructure.fireSafety.available ? "success" : "secondary"}>{surveyData.infrastructure.fireSafety.available ? `${surveyData.infrastructure.fireSafety.extinguishers} extinguishers` : "N/A"}</Badge>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </TabsContent>
-
         {/* Checklist Tab */}
-        <TabsContent value="checklist" className="space-y-6">
+        <TabsContent value="checklist" className="space-y-4">
+          {/* Add new item form */}
+          {!isLocked && (
           <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between">
-                <span>Survey Checklist</span>
-                <Badge variant="secondary">{surveyData.checklist.completed}/{surveyData.checklist.total} completed</Badge>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Progress value={checklistProgress} showValue className="mb-6 h-3" />
-              <div className="space-y-6">
-                {checklistCategories.map(category => {
-                  const items = surveyData.checklist.items.filter(i => i.category === category)
-                  const catCompleted = items.filter(i => i.completed).length
-                  if (items.length === 0) return null
-                  return (
-                    <div key={category}>
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="text-sm font-semibold text-muted-foreground uppercase">{category}</h4>
-                        <span className="text-xs text-muted-foreground">{catCompleted}/{items.length}</span>
-                      </div>
-                      <Progress value={(catCompleted / items.length) * 100} className="h-1.5 mb-3" />
-                      <div className="space-y-1">
-                        {items.map(item => (
-                          <div key={item.id} className="flex items-start gap-3 p-2 rounded-lg hover:bg-muted/50">
-                            {item.completed ? (
-                              <CheckCircle2 className="h-5 w-5 text-emerald-500 mt-0.5 shrink-0" />
-                            ) : (
-                              <div className="h-5 w-5 rounded-full border-2 border-muted-foreground/30 mt-0.5 shrink-0" />
-                            )}
-                            <div className="flex-1">
-                              <span className={`text-sm ${item.completed ? "text-muted-foreground line-through" : ""}`}>{item.item}</span>
-                              {item.notes && <p className="text-xs text-muted-foreground mt-0.5 italic">{item.notes}</p>}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )
-                })}
+            <CardContent className="p-4">
+              <div className="flex items-center gap-2">
+                <select
+                  value={newItemCategory}
+                  onChange={(e) => setNewItemCategory(e.target.value)}
+                  className="h-9 rounded-md border bg-background px-3 text-sm"
+                >
+                  <option>General</option>
+                  <option>Structural</option>
+                  <option>Electrical</option>
+                  <option>Plumbing</option>
+                  <option>Safety</option>
+                  <option>Environmental</option>
+                </select>
+                <input
+                  value={newItemText}
+                  onChange={(e) => setNewItemText(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && addChecklistItem()}
+                  placeholder="Add new checklist item..."
+                  className="flex-1 h-9 rounded-md border bg-background px-3 text-sm"
+                />
+                <Button size="sm" onClick={addChecklistItem} disabled={!newItemText.trim() || addingItem}>
+                  {addingItem ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
+                </Button>
               </div>
             </CardContent>
           </Card>
+          )}
+
+          {Object.entries(groupedChecklist).map(([category, items]) => {
+            const catDone = items.filter((i) => i.isCompleted).length
+            return (
+              <Card key={category}>
+                <CardHeader className="pb-3">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-sm font-medium">{category}</CardTitle>
+                    <span className="text-xs text-muted-foreground">{catDone}/{items.length}</span>
+                  </div>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="space-y-2">
+                    {items.map((item) => (
+                      <div key={item.id} className="flex items-start gap-3 py-2 border-b last:border-0 group">
+                        <button
+                          onClick={() => !isLocked && toggleChecklistItem(item.id, !item.isCompleted)}
+                          disabled={isLocked}
+                          className={cn(
+                            'mt-0.5 h-5 w-5 rounded-full flex items-center justify-center shrink-0 transition-colors',
+                            item.isCompleted
+                              ? 'bg-emerald-500 text-white'
+                              : 'border-2 border-muted-foreground/30 hover:border-emerald-400',
+                            isLocked && 'opacity-60 cursor-not-allowed'
+                          )}
+                        >
+                          {item.isCompleted && <CheckCircle2 className="h-3 w-3" />}
+                        </button>
+                        <div className="flex-1 min-w-0">
+                          <p className={cn('text-sm', item.isCompleted && 'line-through text-muted-foreground')}>
+                            {item.item}
+                          </p>
+                          {item.notes && (
+                            <p className="text-xs text-muted-foreground mt-0.5">{item.notes}</p>
+                          )}
+                        </div>
+                        {!isLocked && (
+                        <button
+                          onClick={() => deleteChecklistItem(item.id)}
+                          className="opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-red-500"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )
+          })}
         </TabsContent>
 
         {/* Photos Tab */}
-        <TabsContent value="photos" className="space-y-6">
+        <TabsContent value="photos" className="space-y-4">
+          {!isLocked && (
           <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between">
-                <span>Survey Photos ({surveyData.photos.length})</span>
-                <Button size="sm"><Camera className="h-4 w-4 mr-2" /> Upload Photo</Button>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {surveyData.photos.map(photo => (
-                  <div key={photo.id} className="group relative rounded-lg border overflow-hidden">
-                    <div className="aspect-video bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-700 flex items-center justify-center">
-                      <Camera className="h-12 w-12 text-muted-foreground/50" />
-                    </div>
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100">
-                      <Button size="icon" className="h-9 w-9 bg-white/90 text-foreground hover:bg-white"><Eye className="h-4 w-4" /></Button>
-                      <Button size="icon" className="h-9 w-9 bg-white/90 text-foreground hover:bg-white"><Download className="h-4 w-4" /></Button>
-                      <Button size="icon" className="h-9 w-9 bg-destructive/90 text-destructive-foreground hover:bg-destructive"><Trash2 className="h-4 w-4" /></Button>
-                    </div>
-                    <div className="p-3">
-                      <p className="text-sm font-medium">{photo.caption}</p>
-                      <p className="text-xs text-muted-foreground">{photo.date}</p>
-                    </div>
-                  </div>
-                ))}
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  id="photo-upload"
+                  onChange={(e) => setPhotoFile(e.target.files?.[0] || null)}
+                />
+                <label htmlFor="photo-upload">
+                  <Button variant="outline" size="sm" asChild>
+                    <span><Upload className="h-4 w-4 mr-1.5" /> Select Photo</span>
+                  </Button>
+                </label>
+                {photoFile && (
+                  <>
+                    <span className="text-sm text-muted-foreground">{photoFile.name}</span>
+                    <Button size="sm" disabled={photoUploading} onClick={handlePhotoUpload}>
+                      {photoUploading ? <Loader2 className="h-4 w-4 mr-1.5 animate-spin" /> : <Camera className="h-4 w-4 mr-1.5" />}
+                      Upload
+                    </Button>
+                    <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setPhotoFile(null)}>
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </>
+                )}
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
+          )}
 
-        {/* Videos Tab */}
-        <TabsContent value="videos" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between">
-                <span>Survey Videos ({surveyData.videos.length})</span>
-                <Button size="sm"><Video className="h-4 w-4 mr-2" /> Upload Video</Button>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {surveyData.videos.map(video => (
-                <div key={video.id} className="flex items-center gap-4 p-4 rounded-lg border hover:bg-muted/50 transition-colors">
-                  <div className="h-16 w-24 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-700 rounded flex items-center justify-center shrink-0">
-                    <Play className="h-6 w-6 text-muted-foreground" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-medium">{video.title}</p>
-                    <div className="flex items-center gap-3 text-sm text-muted-foreground mt-1">
-                      <span>{video.duration}</span>
-                      <span>{video.size}</span>
-                      <span>{video.date}</span>
+          {survey.photos.length === 0 ? (
+            <Card>
+              <CardContent className="flex flex-col items-center justify-center py-12">
+                <Camera className="h-10 w-10 text-muted-foreground/50 mb-3" />
+                <p className="text-sm text-muted-foreground">No photos uploaded yet</p>
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {survey.photos.map((photo) => (
+                <div key={photo.id} className="aspect-square rounded-lg border overflow-hidden bg-muted">
+                  {photo.url.startsWith('data:image') ? (
+                    <img src={photo.url} alt={photo.filename} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <Camera className="h-8 w-8 text-muted-foreground/50" />
                     </div>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Button variant="ghost" size="icon" className="h-9 w-9"><Play className="h-4 w-4" /></Button>
-                    <Button variant="ghost" size="icon" className="h-9 w-9"><Download className="h-4 w-4" /></Button>
-                  </div>
+                  )}
                 </div>
               ))}
-            </CardContent>
-          </Card>
+            </div>
+          )}
         </TabsContent>
 
         {/* Voice Notes Tab */}
-        <TabsContent value="voice-notes" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between">
-                <span>Voice Notes ({surveyData.voiceNotes.length})</span>
-                <Button size="sm"><Mic className="h-4 w-4 mr-2" /> Record Note</Button>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {surveyData.voiceNotes.map(note => (
-                <div key={note.id} className="rounded-lg border p-4 space-y-3">
-                  <div className="flex items-center gap-4">
-                    <Button variant="outline" size="icon" className="h-12 w-12 rounded-full shrink-0"><Play className="h-5 w-5" /></Button>
+        <TabsContent value="voice" className="space-y-4">
+          {survey.voiceNotes.length === 0 ? (
+            <Card>
+              <CardContent className="flex flex-col items-center justify-center py-12">
+                <Mic className="h-10 w-10 text-muted-foreground/50 mb-3" />
+                <p className="text-sm text-muted-foreground">No voice notes recorded yet</p>
+                <Link href="/media/voice-notes">
+                  <Button variant="outline" size="sm" className="mt-3">
+                    <Mic className="h-4 w-4 mr-1.5" /> Record Voice Note
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="space-y-3">
+              {survey.voiceNotes.map((note) => (
+                <Card key={note.id}>
+                  <CardContent className="p-4 flex items-center gap-3">
+                    <Button variant="outline" size="icon" className="h-10 w-10 rounded-full shrink-0">
+                      <PlayCircle className="h-4 w-4" />
+                    </Button>
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between">
-                        <p className="font-medium">{note.title}</p>
-                        <span className="text-sm text-muted-foreground">{note.duration}</span>
-                      </div>
-                      <div className="flex items-center gap-1 mt-1 h-8">
-                        {Array.from({ length: 40 }).map((_, i) => (
-                          <div key={i} className="w-1 bg-primary/30 rounded-full" style={{ height: `${Math.random() * 24 + 8}px` }} />
-                        ))}
-                      </div>
+                      <p className="text-sm font-medium truncate">{note.filename}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {note.duration ? `${Math.floor(note.duration / 60)}:${String(Math.round(note.duration % 60)).padStart(2, '0')}` : 'Unknown duration'}
+                      </p>
                     </div>
-                  </div>
-                  <div className="text-sm text-muted-foreground bg-muted/50 rounded-lg p-3">
-                    <p className="font-medium text-foreground mb-1 text-xs uppercase tracking-wide">Transcription</p>
-                    {note.transcription}
-                  </div>
-                </div>
+                  </CardContent>
+                </Card>
               ))}
-            </CardContent>
-          </Card>
+            </div>
+          )}
         </TabsContent>
 
-        {/* Sketches Tab */}
-        <TabsContent value="sketches" className="space-y-6">
+        {/* Details Tab */}
+        <TabsContent value="details" className="space-y-4">
           <Card>
-            <CardHeader><CardTitle>Sketches</CardTitle></CardHeader>
-            <CardContent>
-              <div className="rounded-lg border border-dashed p-12 text-center">
-                <Pencil className="h-12 w-12 mx-auto text-muted-foreground" />
-                <p className="text-lg font-medium mt-4">No Sketches Yet</p>
-                <p className="text-sm text-muted-foreground mt-2">Create hand-drawn sketches to document site observations</p>
-                <Button className="mt-4"><Pencil className="h-4 w-4 mr-2" /> Open Sketch Pad</Button>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* Measurements Tab */}
-        <TabsContent value="measurements" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between">
-                <span>Measurements ({surveyData.measurements.length})</span>
-                <Button size="sm"><Plus className="h-4 w-4 mr-2" /> Add Measurement</Button>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Category</TableHead>
-                    <TableHead>Description</TableHead>
-                    <TableHead>Length</TableHead>
-                    <TableHead>Width</TableHead>
-                    <TableHead>Height</TableHead>
-                    <TableHead>Unit</TableHead>
-                    <TableHead>Volume/Area</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {surveyData.measurements.map(m => {
-                    const volume = m.length * m.width * m.height
-                    return (
-                      <TableRow key={m.id}>
-                        <TableCell><Badge variant="secondary">{m.category}</Badge></TableCell>
-                        <TableCell className="font-medium">{m.description}</TableCell>
-                        <TableCell>{m.length}</TableCell>
-                        <TableCell>{m.width}</TableCell>
-                        <TableCell>{m.height}</TableCell>
-                        <TableCell>{m.unit}</TableCell>
-                        <TableCell className="font-medium">{volume.toFixed(2)} m³</TableCell>
-                      </TableRow>
-                    )
-                  })}
-                </TableBody>
-              </Table>
-              <div className="mt-4 p-3 bg-muted/50 rounded-lg flex items-center justify-between">
-                <span className="text-sm font-medium">Total Volume:</span>
-                <span className="text-lg font-bold">{surveyData.measurements.reduce((sum, m) => sum + m.length * m.width * m.height, 0).toFixed(2)} m³</span>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* Risks Tab */}
-        <TabsContent value="risks" className="space-y-6">
-          <Card>
-            <CardHeader><CardTitle>Risk Assessment</CardTitle></CardHeader>
-            <CardContent className="space-y-4">
-              {surveyData.risks.map(risk => (
-                <div key={risk.id} className={`flex items-start gap-3 p-4 rounded-lg border ${
-                  risk.severity === "high" ? "border-red-200 bg-red-50" :
-                  risk.severity === "medium" ? "border-amber-200 bg-amber-50" :
-                  "border-emerald-200 bg-emerald-50"
-                }`}>
-                  {risk.severity === "high" ? <AlertTriangle className="h-5 w-5 text-red-600 mt-0.5 shrink-0" /> :
-                   risk.severity === "medium" ? <AlertCircle className="h-5 w-5 text-amber-600 mt-0.5 shrink-0" /> :
-                   <CheckCircle2 className="h-5 w-5 text-emerald-600 mt-0.5 shrink-0" />}
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between">
-                      <p className={`font-medium ${risk.severity === "high" ? "text-red-800" : risk.severity === "medium" ? "text-amber-800" : "text-emerald-800"}`}>{risk.title}</p>
-                      <Badge variant={risk.severity === "high" ? "destructive" : risk.severity === "medium" ? "warning" : "success"} className="capitalize">{risk.severity} Risk</Badge>
-                    </div>
-                    <p className={`text-sm mt-1 ${risk.severity === "high" ? "text-red-700" : risk.severity === "medium" ? "text-amber-700" : "text-emerald-700"}`}>{risk.description}</p>
-                    <p className="text-xs text-muted-foreground mt-2">{risk.date}</p>
-                  </div>
+            <CardContent className="p-4 space-y-4">
+              {survey.description && (
+                <div>
+                  <h4 className="text-sm font-medium mb-1">Description</h4>
+                  <p className="text-sm text-muted-foreground">{survey.description}</p>
                 </div>
-              ))}
-
-              <div className="pt-4 border-t">
-                <h4 className="font-medium mb-3">Add Risk</h4>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                  <Input placeholder="Risk title" value={newRiskTitle} onChange={(e) => setNewRiskTitle(e.target.value)} />
-                  <Input placeholder="Description" value={newRiskDesc} onChange={(e) => setNewRiskDesc(e.target.value)} />
-                  <div className="flex gap-2">
-                    <Select value={newRiskSeverity} onValueChange={setNewRiskSeverity}>
-                      <SelectTrigger className="w-[120px]"><SelectValue /></SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="low">Low</SelectItem>
-                        <SelectItem value="medium">Medium</SelectItem>
-                        <SelectItem value="high">High</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <Button><Plus className="h-4 w-4" /></Button>
-                  </div>
+              )}
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
+                <div>
+                  <span className="text-muted-foreground">Project:</span>{' '}
+                  <span>{survey.project?.name || '—'}</span>
+                </div>
+                <div>
+                  <span className="text-muted-foreground">Type:</span>{' '}
+                  <span>{survey.type}</span>
+                </div>
+                <div>
+                  <span className="text-muted-foreground">Status:</span>{' '}
+                  <Badge className={cn('text-[10px]', STATUS_COLORS[survey.status])}>
+                    {STATUS_LABELS[survey.status]}
+                  </Badge>
+                </div>
+                <div>
+                  <span className="text-muted-foreground">Engineer:</span>{' '}
+                  <span>{survey.engineer?.name || 'Unassigned'}</span>
+                </div>
+                <div>
+                  <span className="text-muted-foreground">Scheduled:</span>{' '}
+                  <span>{survey.scheduledDate || '—'}</span>
+                </div>
+                <div>
+                  <span className="text-muted-foreground">Weather:</span>{' '}
+                  <span>{survey.weatherCondition || '—'}</span>
+                </div>
+                <div>
+                  <span className="text-muted-foreground">Site Condition:</span>{' '}
+                  <span>{survey.siteCondition || '—'}</span>
+                </div>
+                <div>
+                  <span className="text-muted-foreground">GPS:</span>{' '}
+                  <span>
+                    {survey.gpsLatitude && survey.gpsLongitude
+                      ? `${survey.gpsLatitude.toFixed(4)}, ${survey.gpsLongitude.toFixed(4)}`
+                      : 'Not logged'}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-muted-foreground">Created:</span>{' '}
+                  <span>{new Date(survey.createdAt).toLocaleDateString('en-IN')}</span>
                 </div>
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* Materials Tab */}
-        <TabsContent value="materials" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between">
-                <span>Materials Inventory</span>
-                <Button size="sm"><Plus className="h-4 w-4 mr-2" /> Add Material</Button>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Material</TableHead>
-                    <TableHead>Specification</TableHead>
-                    <TableHead>Quantity</TableHead>
-                    <TableHead>Est. Cost</TableHead>
-                    <TableHead>Status</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {surveyData.materials.map(m => (
-                    <TableRow key={m.id}>
-                      <TableCell className="font-medium">{m.material}</TableCell>
-                      <TableCell>{m.specification}</TableCell>
-                      <TableCell>{m.quantity}</TableCell>
-                      <TableCell className="font-medium">{m.cost}</TableCell>
-                      <TableCell><StatusBadge status={m.status} /></TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-              <div className="mt-4 p-3 bg-muted/50 rounded-lg flex items-center justify-between">
-                <span className="text-sm font-medium">Estimated Total Cost:</span>
-                <span className="text-lg font-bold">₹5,96,500</span>
-              </div>
+              {survey.accessDetails && (
+                <div>
+                  <h4 className="text-sm font-medium mb-1">Access Details</h4>
+                  <p className="text-sm text-muted-foreground">{survey.accessDetails}</p>
+                </div>
+              )}
+              {survey.notes && (
+                <div>
+                  <h4 className="text-sm font-medium mb-1">Notes</h4>
+                  <p className="text-sm text-muted-foreground">{survey.notes}</p>
+                </div>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
       </Tabs>
-    </div>
-  )
-}
 
-function Printer(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
-      <polyline points="6 9 6 2 18 2 18 9" /><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" /><rect width="12" height="8" x="6" y="14" />
-    </svg>
+      {/* Forward Dialog */}
+      {forwardDialogOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md shadow-xl">
+            <h3 className="text-lg font-semibold mb-4">Forward to Another Approver</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Forward this survey to another user at Level {survey.currentApprovalLevel} ({currentLevelConfig?.name}).
+            </p>
+            <div className="space-y-3">
+              <div>
+                <label className="text-sm font-medium">Select User</label>
+                <select
+                  value={forwardUserId}
+                  onChange={(e) => setForwardUserId(e.target.value)}
+                  className="w-full mt-1 h-9 rounded-md border bg-background px-3 text-sm"
+                >
+                  <option value="">Choose a user...</option>
+                  {forwardUsers
+                    .filter((u) => u.id !== userId && (currentLevelConfig?.requiredRole === u.role || u.role === 'SUPER_ADMIN'))
+                    .map((u) => (
+                      <option key={u.id} value={u.id}>{u.firstName} {u.lastName} ({u.role})</option>
+                    ))}
+                </select>
+              </div>
+              <div>
+                <label className="text-sm font-medium">Notes (optional)</label>
+                <textarea
+                  value={forwardNotes}
+                  onChange={(e) => setForwardNotes(e.target.value)}
+                  placeholder="Reason for forwarding..."
+                  className="w-full mt-1 rounded-md border bg-background px-3 py-2 text-sm"
+                  rows={2}
+                />
+              </div>
+            </div>
+            <div className="flex justify-end gap-2 mt-6">
+              <Button variant="outline" size="sm" onClick={() => { setForwardDialogOpen(false); setForwardUserId(''); setForwardNotes('') }}>
+                Cancel
+              </Button>
+              <Button
+                size="sm"
+                disabled={!forwardUserId || actionLoading}
+                onClick={() => handleApprovalAction('FORWARD', forwardUserId, forwardNotes || undefined)}
+              >
+                {actionLoading ? <Loader2 className="h-4 w-4 mr-1.5 animate-spin" /> : <Users className="h-4 w-4 mr-1.5" />}
+                Forward
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   )
 }

@@ -56,6 +56,7 @@ export const ModelName = {
   Lead: 'Lead',
   Project: 'Project',
   Survey: 'Survey',
+  ApprovalLog: 'ApprovalLog',
   SurveyChecklistItem: 'SurveyChecklistItem',
   Photo: 'Photo',
   Video: 'Video',
@@ -84,13 +85,18 @@ export const ModelName = {
   Setting: 'Setting',
   ApiKey: 'ApiKey',
   GpsTracking: 'GpsTracking',
+  SiteVisit: 'SiteVisit',
   Meeting: 'Meeting',
   ChangeOrder: 'ChangeOrder',
   AuditTrail: 'AuditTrail',
   NotificationTemplate: 'NotificationTemplate',
   ReportTemplate: 'ReportTemplate',
   OfflineSync: 'OfflineSync',
-  AccessRequest: 'AccessRequest'
+  AccessRequest: 'AccessRequest',
+  Invoice: 'Invoice',
+  InvoiceItem: 'InvoiceItem',
+  ApprovalLevelConfig: 'ApprovalLevelConfig',
+  ApprovalLevelUser: 'ApprovalLevelUser'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -234,11 +240,27 @@ export const SurveyScalarFieldEnum = {
   updatedBy: 'updatedBy',
   isDeleted: 'isDeleted',
   version: 'version',
+  currentApprovalLevel: 'currentApprovalLevel',
+  assignedApproverId: 'assignedApproverId',
   projectId: 'projectId',
   engineerId: 'engineerId'
 } as const
 
 export type SurveyScalarFieldEnum = (typeof SurveyScalarFieldEnum)[keyof typeof SurveyScalarFieldEnum]
+
+
+export const ApprovalLogScalarFieldEnum = {
+  id: 'id',
+  surveyId: 'surveyId',
+  level: 'level',
+  action: 'action',
+  fromUserId: 'fromUserId',
+  toUserId: 'toUserId',
+  notes: 'notes',
+  createdAt: 'createdAt'
+} as const
+
+export type ApprovalLogScalarFieldEnum = (typeof ApprovalLogScalarFieldEnum)[keyof typeof ApprovalLogScalarFieldEnum]
 
 
 export const SurveyChecklistItemScalarFieldEnum = {
@@ -273,7 +295,8 @@ export const PhotoScalarFieldEnum = {
   updatedBy: 'updatedBy',
   isDeleted: 'isDeleted',
   version: 'version',
-  surveyId: 'surveyId'
+  surveyId: 'surveyId',
+  projectId: 'projectId'
 } as const
 
 export type PhotoScalarFieldEnum = (typeof PhotoScalarFieldEnum)[keyof typeof PhotoScalarFieldEnum]
@@ -646,6 +669,7 @@ export const DocumentScalarFieldEnum = {
   fileUrl: 'fileUrl',
   filename: 'filename',
   fileSize: 'fileSize',
+  mimeType: 'mimeType',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   createdBy: 'createdBy',
@@ -776,6 +800,9 @@ export const GpsTrackingScalarFieldEnum = {
   latitude: 'latitude',
   longitude: 'longitude',
   accuracy: 'accuracy',
+  speed: 'speed',
+  batteryLevel: 'batteryLevel',
+  isMoving: 'isMoving',
   timestamp: 'timestamp',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -788,6 +815,27 @@ export const GpsTrackingScalarFieldEnum = {
 } as const
 
 export type GpsTrackingScalarFieldEnum = (typeof GpsTrackingScalarFieldEnum)[keyof typeof GpsTrackingScalarFieldEnum]
+
+
+export const SiteVisitScalarFieldEnum = {
+  id: 'id',
+  checkInAt: 'checkInAt',
+  checkOutAt: 'checkOutAt',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  accuracy: 'accuracy',
+  notes: 'notes',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  createdBy: 'createdBy',
+  isDeleted: 'isDeleted',
+  userId: 'userId',
+  projectId: 'projectId',
+  surveyId: 'surveyId'
+} as const
+
+export type SiteVisitScalarFieldEnum = (typeof SiteVisitScalarFieldEnum)[keyof typeof SiteVisitScalarFieldEnum]
 
 
 export const MeetingScalarFieldEnum = {
@@ -903,6 +951,84 @@ export const AccessRequestScalarFieldEnum = {
 } as const
 
 export type AccessRequestScalarFieldEnum = (typeof AccessRequestScalarFieldEnum)[keyof typeof AccessRequestScalarFieldEnum]
+
+
+export const InvoiceScalarFieldEnum = {
+  id: 'id',
+  invoiceNumber: 'invoiceNumber',
+  title: 'title',
+  description: 'description',
+  totalAmount: 'totalAmount',
+  taxAmount: 'taxAmount',
+  discountAmount: 'discountAmount',
+  grandTotal: 'grandTotal',
+  dueDate: 'dueDate',
+  paidDate: 'paidDate',
+  status: 'status',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy',
+  isDeleted: 'isDeleted',
+  version: 'version',
+  projectId: 'projectId',
+  quotationId: 'quotationId'
+} as const
+
+export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeof InvoiceScalarFieldEnum]
+
+
+export const InvoiceItemScalarFieldEnum = {
+  id: 'id',
+  description: 'description',
+  unit: 'unit',
+  quantity: 'quantity',
+  unitRate: 'unitRate',
+  amount: 'amount',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy',
+  isDeleted: 'isDeleted',
+  version: 'version',
+  invoiceId: 'invoiceId'
+} as const
+
+export type InvoiceItemScalarFieldEnum = (typeof InvoiceItemScalarFieldEnum)[keyof typeof InvoiceItemScalarFieldEnum]
+
+
+export const ApprovalLevelConfigScalarFieldEnum = {
+  id: 'id',
+  entityType: 'entityType',
+  level: 'level',
+  name: 'name',
+  description: 'description',
+  requiredRole: 'requiredRole',
+  allowForward: 'allowForward',
+  allowEscalate: 'allowEscalate',
+  allowReverse: 'allowReverse',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy',
+  isDeleted: 'isDeleted',
+  version: 'version'
+} as const
+
+export type ApprovalLevelConfigScalarFieldEnum = (typeof ApprovalLevelConfigScalarFieldEnum)[keyof typeof ApprovalLevelConfigScalarFieldEnum]
+
+
+export const ApprovalLevelUserScalarFieldEnum = {
+  id: 'id',
+  configId: 'configId',
+  userId: 'userId',
+  isActive: 'isActive',
+  createdAt: 'createdAt'
+} as const
+
+export type ApprovalLevelUserScalarFieldEnum = (typeof ApprovalLevelUserScalarFieldEnum)[keyof typeof ApprovalLevelUserScalarFieldEnum]
 
 
 export const SortOrder = {

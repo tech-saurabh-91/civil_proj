@@ -1,922 +1,780 @@
 'use client'
 
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import Link from 'next/link'
+import { useSession } from 'next-auth/react'
 import {
-  PieChart,
-  Pie,
-  Cell,
-  ResponsiveContainer,
-  Tooltip,
-  Legend,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  LineChart,
-  Line,
-  Area,
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
+  ResponsiveContainer, PieChart, Pie, Cell,
 } from 'recharts'
 import {
-  FolderKanban,
-  ClipboardList,
-  IndianRupee,
-  Users,
-  FileText,
-  CalendarDays,
-  ArrowUpRight,
-  TrendingUp,
-  Clock,
-  Camera,
-  Mic,
-  Pencil,
-  Bell,
-  MapPin,
-  CheckCircle,
-  AlertTriangle,
-  Upload,
-  UserPlus,
-  DollarSign,
-  Send,
+  Bot, Search, FolderKanban, ClipboardList, IndianRupee, FileText,
+  Camera, AlertTriangle, Clock, Users, Package, FileCheck,
+  ShieldAlert, TrendingUp, UserPlus, Send, Bell, CheckCircle,
+  Sun, Cloud, CloudRain, CloudSnow, CloudLightning, CloudFog, CloudSun, Wind,
+  X, ChevronRight, ArrowUpRight, AlertCircle, Info, Zap,
 } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { StatCard } from '@/components/ui/stat-card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { cn, getInitials } from '@/lib/utils'
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
+import { cn } from '@/lib/utils'
+import { toast } from 'sonner'
 
-const stats = [
-  {
-    label: 'Active Projects',
-    value: 12,
-    change: 8,
-    trend: 'up' as const,
-    color: 'info' as const,
-    icon: <FolderKanban className="h-5 w-5" />,
-  },
-  {
-    label: 'Pending Surveys',
-    value: 8,
-    change: -3,
-    trend: 'down' as const,
-    color: 'warning' as const,
-    icon: <ClipboardList className="h-5 w-5" />,
-  },
-  {
-    label: 'Revenue This Month',
-    value: '₹45.2L',
-    change: 12,
-    trend: 'up' as const,
-    color: 'success' as const,
-    icon: <IndianRupee className="h-5 w-5" />,
-  },
-  {
-    label: 'BOQ Pending',
-    value: '₹1.2Cr',
-    change: 5,
-    trend: 'up' as const,
-    color: 'default' as const,
-    icon: <FileText className="h-5 w-5" />,
-  },
-  {
-    label: 'Approvals Pending',
-    value: 14,
-    change: -6,
-    trend: 'down' as const,
-    color: 'danger' as const,
-    icon: <AlertTriangle className="h-5 w-5" />,
-  },
-  {
-    label: 'Engineers Online',
-    value: '6/10',
-    change: 0,
-    trend: 'up' as const,
-    color: 'info' as const,
-    icon: <Users className="h-5 w-5" />,
-  },
-]
-
-const surveyTrendData = [
-  { month: 'Aug', completed: 18, scheduled: 22 },
-  { month: 'Sep', completed: 22, scheduled: 25 },
-  { month: 'Oct', completed: 15, scheduled: 20 },
-  { month: 'Nov', completed: 28, scheduled: 30 },
-  { month: 'Dec', completed: 20, scheduled: 18 },
-  { month: 'Jan', completed: 25, scheduled: 28 },
-  { month: 'Feb', completed: 30, scheduled: 32 },
-  { month: 'Mar', completed: 22, scheduled: 26 },
-  { month: 'Apr', completed: 35, scheduled: 38 },
-  { month: 'May', completed: 28, scheduled: 30 },
-  { month: 'Jun', completed: 32, scheduled: 35 },
-  { month: 'Jul', completed: 18, scheduled: 24 },
-]
-
-const projectStatusData = [
-  { name: 'In Progress', value: 10, color: '#10b981' },
-  { name: 'Planning', value: 5, color: '#3b82f6' },
-  { name: 'Completed', value: 6, color: '#8b5cf6' },
-  { name: 'On Hold', value: 2, color: '#f59e0b' },
-  { name: 'Cancelled', value: 1, color: '#ef4444' },
-]
-
-const monthlyRevenueData = [
-  { month: 'Jan', revenue: 32.5, expenses: 18.2 },
-  { month: 'Feb', revenue: 38.8, expenses: 22.1 },
-  { month: 'Mar', revenue: 28.2, expenses: 16.8 },
-  { month: 'Apr', revenue: 42.3, expenses: 24.5 },
-  { month: 'May', revenue: 48.1, expenses: 28.3 },
-  { month: 'Jun', revenue: 41.6, expenses: 23.2 },
-  { month: 'Jul', revenue: 45.2, expenses: 25.8 },
-]
-
-const engineerPerformanceData = [
-  { name: 'Raj Mehta', surveys: 42, avatar: 'RM' },
-  { name: 'Neha Gupta', surveys: 38, avatar: 'NG' },
-  { name: 'Amit Kumar', surveys: 35, avatar: 'AK' },
-  { name: 'Priya Sharma', surveys: 32, avatar: 'PS' },
-  { name: 'Vikram Singh', surveys: 28, avatar: 'VS' },
-]
-
-const upcomingSurveys = [
-  {
-    id: 'SRV-042',
-    title: 'Pre-Construction Survey',
-    project: 'Sunrise Enclave',
-    date: '2026-07-16',
-    time: '09:00 AM',
-    surveyor: 'Raj Mehta',
-    type: 'Topographical',
-    priority: 'high',
-  },
-  {
-    id: 'SRV-043',
-    title: 'Foundation Inspection',
-    project: 'Metro Residency',
-    date: '2026-07-16',
-    time: '02:00 PM',
-    surveyor: 'Neha Gupta',
-    type: 'Structural',
-    priority: 'medium',
-  },
-  {
-    id: 'SRV-044',
-    title: 'Progress Documentation',
-    project: 'Phoenix Tower',
-    date: '2026-07-17',
-    time: '10:00 AM',
-    surveyor: 'Amit Kumar',
-    type: 'Photographic',
-    priority: 'low',
-  },
-  {
-    id: 'SRV-045',
-    title: 'Material Quality Check',
-    project: 'Greenfield Estates',
-    date: '2026-07-17',
-    time: '11:30 AM',
-    surveyor: 'Raj Mehta',
-    type: 'Quality Control',
-    priority: 'critical',
-  },
-  {
-    id: 'SRV-046',
-    title: 'Final Handover Survey',
-    project: 'Cloudview Apartments',
-    date: '2026-07-18',
-    time: '09:00 AM',
-    surveyor: 'Neha Gupta',
-    type: 'Comprehensive',
-    priority: 'high',
-  },
-]
-
-const recentActivities = [
-  {
-    id: 'act-001',
-    type: 'survey_completed',
-    title: 'Survey Completed',
-    description: 'Foundation survey for Phoenix Tower completed with all checkpoints passed.',
-    user: { firstName: 'Raj', lastName: 'Mehta' },
-    timestamp: '2026-07-11T09:30:00',
-  },
-  {
-    id: 'act-002',
-    type: 'payment_received',
-    title: 'BOQ Approved',
-    description: 'BOQ for Greenfield Estates Phase 2 approved by client. Amount: ₹18,50,000.',
-    user: { firstName: 'Priya', lastName: 'Sharma' },
-    timestamp: '2026-07-11T08:15:00',
-  },
-  {
-    id: 'act-003',
-    type: 'report_submitted',
-    title: 'Report Submitted',
-    description: 'Structural assessment report for Metro Residency submitted for review.',
-    user: { firstName: 'Neha', lastName: 'Gupta' },
-    timestamp: '2026-07-10T17:45:00',
-  },
-  {
-    id: 'act-004',
-    type: 'file_uploaded',
-    title: 'Documents Uploaded',
-    description: '5 new site photos and 2 measurement reports uploaded to Cloudview Apartments.',
-    user: { firstName: 'Neha', lastName: 'Gupta' },
-    timestamp: '2026-07-10T15:20:00',
-  },
-  {
-    id: 'act-005',
-    type: 'alert',
-    title: 'Schedule Conflict Detected',
-    description: 'Two surveys scheduled for 15th July at the same location. Please review.',
-    user: { firstName: 'System', lastName: '' },
-    timestamp: '2026-07-10T14:00:00',
-  },
-  {
-    id: 'act-006',
-    type: 'proposal_sent',
-    title: 'Quotation Sent',
-    description: 'Detailed survey quotation sent to Urban Spaces Pvt. Ltd. for review.',
-    user: { firstName: 'Priya', lastName: 'Sharma' },
-    timestamp: '2026-07-10T11:30:00',
-  },
-  {
-    id: 'act-007',
-    type: 'lead_created',
-    title: 'New Lead Received',
-    description: 'New inquiry from Heritage Builders for a heritage restoration survey.',
-    user: { firstName: 'Saurabh', lastName: 'Verma' },
-    timestamp: '2026-07-10T10:00:00',
-  },
-  {
-    id: 'act-008',
-    type: 'task_completed',
-    title: 'Checklist Approved',
-    description: 'Soil testing checklist for Hillside Villas has been reviewed and approved.',
-    user: { firstName: 'Raj', lastName: 'Mehta' },
-    timestamp: '2026-07-09T18:00:00',
-  },
-]
-
-const topProjects = [
-  {
-    id: 'PRJ-2026-001',
-    name: 'Phoenix Tower',
-    code: 'PT-2026',
-    client: 'Meridian Constructions',
-    progress: 78,
-    daysRemaining: 12,
-    budgetUsed: 72,
-    status: 'In Progress',
-  },
-  {
-    id: 'PRJ-2026-004',
-    name: 'Greenfield Estates',
-    code: 'GE-2026',
-    client: 'Greenfield Developers',
-    progress: 45,
-    daysRemaining: 28,
-    budgetUsed: 38,
-    status: 'In Progress',
-  },
-  {
-    id: 'PRJ-2026-007',
-    name: 'Cloudview Apartments',
-    code: 'CA-2026',
-    client: 'Skyline Builders',
-    progress: 92,
-    daysRemaining: 4,
-    budgetUsed: 88,
-    status: 'In Progress',
-  },
-  {
-    id: 'PRJ-2026-002',
-    name: 'Metro Residency',
-    code: 'MR-2026',
-    client: 'Metro Housing Ltd.',
-    progress: 30,
-    daysRemaining: 45,
-    budgetUsed: 25,
-    status: 'Planning',
-  },
-]
-
-const notifications = [
-  {
-    id: 'n1',
-    title: 'Urgent: BOQ approval pending',
-    message: 'BOQ for Sunrise Enclave requires immediate approval',
-    time: '5 min ago',
-    type: 'urgent',
-  },
-  {
-    id: 'n2',
-    title: 'New survey assigned',
-    message: 'Foundation inspection assigned to you for Metro Residency',
-    time: '15 min ago',
-    type: 'info',
-  },
-  {
-    id: 'n3',
-    title: 'Report ready for review',
-    message: 'Structural assessment report for Phoenix Tower is ready',
-    time: '1 hour ago',
-    type: 'success',
-  },
-  {
-    id: 'n4',
-    title: 'Payment received',
-    message: '₹4,50,000 received from Greenfield Developers',
-    time: '2 hours ago',
-    type: 'success',
-  },
-  {
-    id: 'n5',
-    title: 'Document uploaded',
-    message: 'Site photos uploaded by Neha Gupta for Cloudview Apartments',
-    time: '3 hours ago',
-    type: 'info',
-  },
-]
-
-const quickStats = [
-  { label: 'Documents Uploaded', value: 24, icon: <Upload className="h-4 w-4" /> },
-  { label: 'Photos Captured', value: 156, icon: <Camera className="h-4 w-4" /> },
-  { label: 'Voice Notes', value: 12, icon: <Mic className="h-4 w-4" /> },
-  { label: 'Sketches', value: 8, icon: <Pencil className="h-4 w-4" /> },
-]
-
-const activityIconMap: Record<string, { icon: React.ElementType; color: string }> = {
-  survey_completed: { icon: CheckCircle, color: 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/40 dark:text-emerald-400' },
-  payment_received: { icon: DollarSign, color: 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/40 dark:text-emerald-400' },
-  report_submitted: { icon: FileText, color: 'bg-blue-100 text-blue-600 dark:bg-blue-900/40 dark:text-blue-400' },
-  file_uploaded: { icon: Upload, color: 'bg-amber-100 text-amber-600 dark:bg-amber-900/40 dark:text-amber-400' },
-  alert: { icon: AlertTriangle, color: 'bg-red-100 text-red-600 dark:bg-red-900/40 dark:text-red-400' },
-  proposal_sent: { icon: Send, color: 'bg-violet-100 text-violet-600 dark:bg-violet-900/40 dark:text-violet-400' },
-  lead_created: { icon: UserPlus, color: 'bg-blue-100 text-blue-600 dark:bg-blue-900/40 dark:text-blue-400' },
-  task_completed: { icon: CheckCircle, color: 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/40 dark:text-emerald-400' },
+interface Project {
+  id: string; name: string; code: string; status: string; budget: number;
+  actualCost: number; startDate: string; endDate: string; client: string;
+  manager: string; area: number; floors: number; city: string;
+}
+interface Survey {
+  id: string; title: string; status: string; scheduledDate: string;
+  completedDate: string | null; engineerId: string; projectId: string;
+}
+interface Notification {
+  id: string; title: string; message: string; type: string;
+  isRead: boolean; userId: string; createdAt: string;
+}
+interface Lead {
+  id: string; name: string; email: string; phone: string; company: string;
+  status: string; priority: string; estimatedValue: number | null;
+  source: string; assignedTo: { firstName: string; lastName: string } | null;
+  client: { id: string; companyName: string } | null;
+  convertedAt: string | null; createdAt: string;
+}
+interface Material {
+  id: string; materialName: string; quantity: number; unit: string;
+  estimatedCost: number; status: string; priority: string; supplierName: string;
+}
+interface WeatherData {
+  temperature: number; humidity: number; windSpeed: number;
+  description: string; icon: string; city: string;
+  daily: { date: string; max: number; min: number; description: string; icon: string }[];
 }
 
-const priorityStyles: Record<string, string> = {
-  critical: 'bg-red-100 text-red-800 border-red-300 dark:bg-red-900/40 dark:text-red-400 dark:border-red-800',
-  high: 'bg-orange-100 text-orange-800 border-orange-300 dark:bg-orange-900/40 dark:text-orange-400 dark:border-orange-800',
-  medium: 'bg-blue-100 text-blue-800 border-blue-300 dark:bg-blue-900/40 dark:text-blue-400 dark:border-blue-800',
-  low: 'bg-gray-100 text-gray-700 border-gray-300 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700',
+const quickActions = [
+  { label: 'New Project', href: '/projects/new', icon: <FolderKanban className="h-4 w-4" /> },
+  { label: 'Create DPR', href: '/reports/generate', icon: <ClipboardList className="h-4 w-4" /> },
+  { label: 'Purchase Order', href: '/boq', icon: <IndianRupee className="h-4 w-4" /> },
+  { label: 'Upload Site Photo', href: '/media/photos', icon: <Camera className="h-4 w-4" /> },
+  { label: 'Create BOQ', href: '/boq', icon: <FileText className="h-4 w-4" /> },
+  { label: 'New Lead', href: '/leads/new', icon: <UserPlus className="h-4 w-4" /> },
+  { label: 'Send Quotation', href: '/quotations/new', icon: <Send className="h-4 w-4" /> },
+]
+
+const statusColorMap: Record<string, string> = {
+  IN_PROGRESS: '#10b981', PLANNING: '#3b82f6', COMPLETED: '#8b5cf6',
+  ON_HOLD: '#f59e0b', CRITICAL: '#ef4444', NOT_STARTED: '#94a3b8', CANCELLED: '#6b7280',
+}
+const statusLabel: Record<string, string> = {
+  IN_PROGRESS: 'In Progress', PLANNING: 'Planning', COMPLETED: 'Completed',
+  ON_HOLD: 'On Hold', CRITICAL: 'Critical', NOT_STARTED: 'Not Started', CANCELLED: 'Cancelled',
+}
+const notifSeverityBorder: Record<string, string> = {
+  critical: 'border-l-red-500', warning: 'border-l-orange-500',
+  info: 'border-l-blue-500', completed: 'border-l-green-500',
+}
+const notifSeverityIcon: Record<string, { icon: React.ElementType; bg: string }> = {
+  critical: { icon: AlertTriangle, bg: 'bg-red-100 text-red-600 dark:bg-red-900/40 dark:text-red-400' },
+  warning: { icon: AlertCircle, bg: 'bg-orange-100 text-orange-600 dark:bg-orange-900/40 dark:text-orange-400' },
+  info: { icon: Info, bg: 'bg-blue-100 text-blue-600 dark:bg-blue-900/40 dark:text-blue-400' },
+  completed: { icon: CheckCircle, bg: 'bg-green-100 text-green-600 dark:bg-green-900/40 dark:text-green-400' },
+}
+const materialPriorityStyles: Record<string, string> = {
+  HIGH: 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-400',
+  MEDIUM: 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-400',
+  LOW: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-400',
 }
 
-const priorityDot: Record<string, string> = {
-  critical: 'bg-red-500',
-  high: 'bg-orange-500',
-  medium: 'bg-blue-500',
-  low: 'bg-gray-400',
+const formatCurrency = (v: number | null | undefined) => { if (v == null) return '₹0'; return v >= 10000000 ? `₹${(v / 10000000).toFixed(2)}Cr` : v >= 100000 ? `₹${(v / 100000).toFixed(1)}L` : `₹${v.toLocaleString('en-IN')}` }
+
+const STATUS_COLORS: Record<string, string> = {
+  DRAFT: 'bg-slate-100 text-slate-700',
+  ASSIGNED: 'bg-blue-100 text-blue-700',
+  IN_PROGRESS: 'bg-amber-100 text-amber-700',
+  SUBMITTED: 'bg-purple-100 text-purple-700',
+  MANAGER_APPROVED: 'bg-teal-100 text-teal-700',
+  APPROVED: 'bg-emerald-100 text-emerald-700',
+  REJECTED: 'bg-red-100 text-red-700',
 }
+
+const timeAgo = (d: string) => {
+  const m = Math.floor((Date.now() - new Date(d).getTime()) / 60000)
+  if (m < 60) return `${m} min ago`
+  const h = Math.floor(m / 60)
+  if (h < 24) return `${h} hour${h > 1 ? 's' : ''} ago`
+  return `${Math.floor(h / 24)} day${Math.floor(h / 24) > 1 ? 's' : ''} ago`
+}
+
+function getWeatherIcon(code: number) {
+  if (code <= 1) return Sun
+  if (code <= 3) return CloudSun
+  if (code <= 49) return Cloud
+  if (code <= 59) return CloudRain
+  if (code <= 69) return CloudSnow
+  if (code <= 79) return CloudSnow
+  if (code <= 82) return CloudRain
+  if (code <= 86) return CloudSnow
+  if (code <= 99) return CloudLightning
+  return Cloud
+}
+
+function getWeatherLabel(code: number) {
+  if (code <= 1) return 'Clear Sky'
+  if (code <= 3) return 'Partly Cloudy'
+  if (code <= 49) return 'Overcast'
+  if (code <= 59) return 'Drizzle'
+  if (code <= 69) return 'Rain'
+  if (code <= 79) return 'Snow'
+  if (code <= 82) return 'Rain Showers'
+  if (code <= 86) return 'Snow Showers'
+  if (code <= 99) return 'Thunderstorm'
+  return 'Cloudy'
+}
+
+const WMO_DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
 export default function DashboardPage() {
+  const { data: session } = useSession()
   const [currentTime, setCurrentTime] = useState<Date | null>(null)
+  const [notifTab, setNotifTab] = useState('all')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const searchRef = useRef<HTMLDivElement>(null)
+
+  const [projects, setProjects] = useState<Project[]>([])
+  const [surveys, setSurveys] = useState<Survey[]>([])
+  const [notifications, setNotifications] = useState<Notification[]>([])
+  const [leads, setLeads] = useState<Lead[]>([])
+  const [materials, setMaterials] = useState<Material[]>([])
+  const [weather, setWeather] = useState<WeatherData | null>(null)
+  const [pendingApprovals, setPendingApprovals] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     setCurrentTime(new Date())
+    Promise.all([
+      fetch('/api/projects').then(r => r.json()),
+      fetch('/api/surveys').then(r => r.json()),
+      fetch('/api/notifications').then(r => r.json()),
+      fetch('/api/leads?limit=100').then(r => r.json()),
+      fetch('/api/materials').then(r => r.json()),
+    ]).then(([projRes, survRes, notifRes, leadRes, matRes]) => {
+      if (projRes.success) setProjects(projRes.data)
+      if (survRes.success) {
+        setSurveys(survRes.data)
+        setPendingApprovals((survRes.data || []).filter((s: any) =>
+          s.status === 'SUBMITTED' || s.status === 'MANAGER_APPROVED'
+        ))
+      }
+      if (notifRes.success) setNotifications(notifRes.data)
+      if (leadRes.success) setLeads(leadRes.data ?? [])
+      if (matRes.success) setMaterials(matRes.data ?? [])
+    }).catch(() => {}).finally(() => setLoading(false))
+
+    const fetchWeather = (lat: number, lon: number, tz: string) => {
+      fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&daily=temperature_2m_max,temperature_2m_min,weather_code&timezone=${encodeURIComponent(tz)}&forecast_days=4`)
+        .then(r => r.json())
+        .then(data => {
+          if (data.current) {
+            const daily = data.daily
+            setWeather({
+              temperature: Math.round(data.current.temperature_2m),
+              humidity: data.current.relative_humidity_2m,
+              windSpeed: Math.round(data.current.wind_speed_10m),
+              description: getWeatherLabel(data.current.weather_code),
+              icon: String(data.current.weather_code),
+              daily: daily.time.map((d: string, i: number) => ({
+                date: d,
+                max: Math.round(daily.temperature_2m_max[i]),
+                min: Math.round(daily.temperature_2m_min[i]),
+                description: getWeatherLabel(daily.weather_code[i]),
+                icon: String(daily.weather_code[i]),
+              })),
+              city: data.timezone?.split('/')?.pop()?.replace('_', ' ') || 'Your Location',
+            })
+          }
+        }).catch(() => {})
+
+      reverseGeocode(lat, lon)
+    }
+
+    const reverseGeocode = async (lat: number, lon: number) => {
+      try {
+        const res = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=&latitude=${lat}&longitude=${lon}&count=1&language=en`)
+        const data = await res.json()
+        if (data.results?.[0]) {
+          setWeather((prev: any) => prev ? { ...prev, city: data.results[0].name } : prev)
+        }
+      } catch {}
+    }
+
+    const defaultLat = 21.1458
+    const defaultLon = 79.0882
+    const defaultTz = 'Asia/Kolkata'
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const lat = pos.coords.latitude
+          const lon = pos.coords.longitude
+          const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || defaultTz
+          fetchWeather(lat, lon, tz)
+        },
+        () => {
+          fetchWeather(defaultLat, defaultLon, defaultTz)
+        },
+        { timeout: 5000 }
+      )
+    } else {
+      fetchWeather(defaultLat, defaultLon, defaultTz)
+    }
   }, [])
+
+  useEffect(() => {
+    const timer = setInterval(() => setCurrentTime(new Date()), 60000)
+    return () => clearInterval(timer)
+  }, [])
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (searchRef.current && !searchRef.current.contains(e.target as Node)) setIsSearchOpen(false)
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  const userName = useMemo(() => session?.user?.name?.split(' ')[0] ?? 'User', [session])
 
   const greeting = useMemo(() => {
     if (!currentTime) return 'Good morning'
-    const hour = currentTime.getHours()
-    if (hour < 12) return 'Good morning'
-    if (hour < 17) return 'Good afternoon'
+    const h = currentTime.getHours()
+    if (h < 12) return 'Good morning'
+    if (h < 17) return 'Good afternoon'
     return 'Good evening'
   }, [currentTime])
 
+  const handleApprovalAction = async (surveyId: string, action: string) => {
+    try {
+      const res = await fetch(`/api/surveys/${surveyId}/approval`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action }),
+      })
+      const json = await res.json()
+      if (json.success) {
+        toast.success(json.message)
+        setPendingApprovals((prev) => prev.filter((s) => s.id !== surveyId))
+      } else {
+        toast.error(json.error || 'Action failed')
+      }
+    } catch {
+      toast.error('Action failed')
+    }
+  }
+
   const today = (currentTime ?? new Date()).toLocaleDateString('en-IN', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
   })
+
+  const kpis = useMemo(() => {
+    const active = projects.filter(p => p.status === 'IN_PROGRESS').length
+    const completed = projects.filter(p => p.status === 'COMPLETED').length
+    const totalBudget = projects.reduce((s, p) => s + (p.budget || 0), 0)
+    const totalSpent = projects.reduce((s, p) => s + (p.actualCost || 0), 0)
+    const surveysPending = surveys.filter(s => s.status !== 'APPROVED').length
+    const totalLeads = leads.length
+    const convertedLeads = leads.filter(l => l.status === 'WON').length
+    return [
+      { label: 'Total Projects', value: projects.length, color: 'info' as const, icon: <FolderKanban className="h-5 w-5" /> },
+      { label: 'Active Projects', value: active, color: 'success' as const, icon: <TrendingUp className="h-5 w-5" /> },
+      { label: 'Completed', value: completed, color: 'success' as const, icon: <CheckCircle className="h-5 w-5" /> },
+      { label: 'Total Budget', value: formatCurrency(totalBudget), color: 'info' as const, icon: <IndianRupee className="h-5 w-5" /> },
+      { label: 'Total Leads', value: totalLeads, color: 'info' as const, icon: <Users className="h-5 w-5" /> },
+      { label: 'Converted', value: convertedLeads, color: 'success' as const, icon: <CheckCircle className="h-5 w-5" /> },
+      { label: 'Surveys Pending', value: surveysPending, color: 'warning' as const, icon: <ClipboardList className="h-5 w-5" /> },
+      { label: 'Notifications', value: notifications.filter(n => !n.isRead).length, color: 'info' as const, icon: <Bell className="h-5 w-5" /> },
+    ]
+  }, [projects, surveys, notifications, leads])
+
+  const projectStatusData = useMemo(() => {
+    const counts: Record<string, number> = {}
+    projects.forEach(p => { counts[p.status] = (counts[p.status] || 0) + 1 })
+    return Object.entries(counts).map(([status, value]) => ({
+      name: statusLabel[status] || status, value, color: statusColorMap[status] || '#94a3b8',
+    }))
+  }, [projects])
+
+  const projectCards = useMemo(() => {
+    return projects.slice(0, 8).map(p => {
+      const budgetPct = p.budget > 0 ? Math.round((p.actualCost / p.budget) * 100) : 0
+      const end = new Date(p.endDate)
+      const daysLeft = Math.max(0, Math.ceil((end.getTime() - Date.now()) / 86400000))
+      const health = budgetPct > 100 ? 'Critical' : budgetPct > 85 ? 'At Risk' : 'Good'
+      return { ...p, budgetPct, daysLeft, health }
+    })
+  }, [projects])
+
+  const filteredNotifs = useMemo(() => {
+    const mapped = notifications.map(n => ({
+      ...n, category: n.type?.toLowerCase() || 'info',
+      severity: n.type?.toLowerCase() || 'info',
+      time: timeAgo(n.createdAt),
+    }))
+    if (notifTab === 'all') return mapped
+    return mapped.filter(n => n.category === notifTab)
+  }, [notifications, notifTab])
+
+  const searchResults = useMemo(() => {
+    if (!searchQuery) return []
+    const q = searchQuery.toLowerCase()
+    return projects
+      .filter(p => p.name.toLowerCase().includes(q) || p.code?.toLowerCase().includes(q) || p.city?.toLowerCase().includes(q))
+      .slice(0, 8)
+      .map(p => ({ category: 'Projects', name: p.name, detail: `${p.code} · ${statusLabel[p.status] || p.status}`, href: '/projects' }))
+  }, [searchQuery, projects])
+
+  const criticalMaterials = useMemo(() => {
+    return materials
+      .filter(m => m.status === 'CRITICAL' || m.status === 'LOW' || m.priority === 'HIGH')
+      .slice(0, 5)
+  }, [materials])
 
   return (
     <div className="space-y-6">
-      {/* Header Section */}
+      {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-            {greeting}, Rajesh Kumar
+            {greeting}, {userName}
           </h1>
-          <p className="text-muted-foreground">{today} — Here&apos;s what&apos;s happening with your projects.</p>
+          <p className="text-muted-foreground">{today} — Here&apos;s your project overview.</p>
         </div>
         <div className="flex items-center gap-2">
           <Button asChild size="sm" className="bg-emerald-600 hover:bg-emerald-700">
-            <Link href="/surveys/new">
-              <ClipboardList className="mr-1 h-4 w-4" />
-              New Survey
-            </Link>
+            <Link href="/surveys/new"><ClipboardList className="mr-1 h-4 w-4" />New Survey</Link>
           </Button>
           <Button asChild size="sm" className="bg-blue-600 hover:bg-blue-700">
-            <Link href="/projects/new">
-              <FolderKanban className="mr-1 h-4 w-4" />
-              New Project
-            </Link>
+            <Link href="/projects/new"><FolderKanban className="mr-1 h-4 w-4" />New Project</Link>
+          </Button>
+          <Button asChild size="sm" className="bg-violet-600 hover:bg-violet-700">
+            <Link href="/reports/generate"><ClipboardList className="mr-1 h-4 w-4" />Create DPR</Link>
+          </Button>
+          <Button asChild size="sm" className="bg-amber-600 hover:bg-amber-700">
+            <Link href="/boq"><FileText className="mr-1 h-4 w-4" />Create BOQ</Link>
           </Button>
           <Button asChild size="sm" variant="outline">
-            <Link href="/quotations/new">
-              <FileText className="mr-1 h-4 w-4" />
-              Create Quotation
-            </Link>
+            <Link href="/media/photos"><Camera className="mr-1 h-4 w-4" />Upload Photo</Link>
           </Button>
         </div>
       </div>
 
-      {/* KPI Row */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-        {stats.map((stat) => (
-          <StatCard
-            key={stat.label}
-            icon={stat.icon}
-            label={stat.label}
-            value={stat.value}
-            change={stat.change}
-            trend={stat.trend}
-            color={stat.color}
+      {/* Search */}
+      <div className="relative" ref={searchRef}>
+        <div className="relative max-w-xl">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <input
+            type="text" value={searchQuery}
+            onChange={(e) => { setSearchQuery(e.target.value); setIsSearchOpen(true) }}
+            onFocus={() => setIsSearchOpen(true)}
+            placeholder="Search projects, vendors, clients..."
+            className="w-full rounded-lg border bg-background pl-9 pr-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-ring transition-shadow"
           />
+          {searchQuery && (
+            <button onClick={() => { setSearchQuery(''); setIsSearchOpen(false) }}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+              <X className="h-4 w-4" />
+            </button>
+          )}
+        </div>
+        {isSearchOpen && searchQuery && (
+          <Card className="absolute top-full left-0 right-0 mt-2 z-50 max-h-[400px] overflow-y-auto shadow-lg">
+            <CardContent className="p-2">
+              {searchResults.length > 0 ? (
+                searchResults.map((r, i) => (
+                  <Link key={i} href={r.href}
+                    onClick={() => { setIsSearchOpen(false); setSearchQuery('') }}
+                    className="flex items-center justify-between rounded-md px-3 py-2 text-sm hover:bg-muted/50 transition-colors">
+                    <div className="min-w-0">
+                      <p className="font-medium truncate">{r.name}</p>
+                      <p className="text-xs text-muted-foreground truncate">{r.detail}</p>
+                    </div>
+                    <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" />
+                  </Link>
+                ))
+              ) : (
+                <p className="px-3 py-6 text-center text-sm text-muted-foreground">No results found</p>
+              )}
+            </CardContent>
+          </Card>
+        )}
+      </div>
+
+      {/* KPI Cards */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4">
+        {kpis.map((kpi) => (
+          <StatCard key={kpi.label} icon={kpi.icon} label={kpi.label} value={kpi.value} color={kpi.color} />
         ))}
       </div>
 
-      {/* Charts Section - 2 Columns */}
-      <div className="grid gap-6 lg:grid-cols-2">
-        {/* Left Column */}
-        <div className="space-y-6">
-          {/* Survey Trend Line Chart */}
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-base font-semibold">Survey Trend</CardTitle>
-              <Badge variant="info" className="text-[10px]">12 Months</Badge>
-            </CardHeader>
-            <CardContent>
-              <div className="h-[280px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={surveyTrendData}>
-                    <defs>
-                      <linearGradient id="completedGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.15} />
-                        <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
-                      </linearGradient>
-                      <linearGradient id="scheduledGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#10b981" stopOpacity={0.15} />
-                        <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                    <XAxis
-                      dataKey="month"
-                      tick={{ fontSize: 11, fill: '#94a3b8' }}
-                      axisLine={false}
-                      tickLine={false}
-                    />
-                    <YAxis
-                      tick={{ fontSize: 11, fill: '#94a3b8' }}
-                      axisLine={false}
-                      tickLine={false}
-                    />
-                    <Tooltip
-                      contentStyle={{
-                        borderRadius: '8px',
-                        border: '1px solid #e2e8f0',
-                        boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)',
-                      }}
-                    />
-                    <Legend
-                      verticalAlign="bottom"
-                      height={36}
-                      iconType="circle"
-                      iconSize={8}
-                    />
-                    <Area
-                      type="monotone"
-                      dataKey="completed"
-                      stroke="#3b82f6"
-                      strokeWidth={2}
-                      fill="url(#completedGrad)"
-                      name="Completed"
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="completed"
-                      stroke="#3b82f6"
-                      strokeWidth={2}
-                      dot={{ r: 3, fill: '#3b82f6' }}
-                      name="Completed"
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="scheduled"
-                      stroke="#10b981"
-                      strokeWidth={2}
-                      strokeDasharray="5 5"
-                      dot={{ r: 3, fill: '#10b981' }}
-                      name="Scheduled"
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-            </CardContent>
-          </Card>
+      {/* Quick Actions */}
+      <Card>
+        <CardContent className="p-4">
+          <div className="flex flex-wrap gap-2">
+            {quickActions.map((action) => (
+              <Button key={action.label} asChild variant="outline" size="sm" className="h-9 text-xs font-medium">
+                <Link href={action.href}>{action.icon}<span className="ml-1.5">{action.label}</span></Link>
+              </Button>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
 
-          {/* Project Status Distribution */}
+      {/* Recent Lead Conversions */}
+      {leads.filter(l => l.status === 'WON').length > 0 && (
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <div>
+              <CardTitle className="text-base font-semibold">Recent Lead Conversions</CardTitle>
+              <p className="text-xs text-muted-foreground">Leads converted to clients by your team</p>
+            </div>
+            <Button variant="ghost" size="sm" asChild>
+              <Link href="/leads">View All <ArrowUpRight className="ml-1 h-3 w-3" /></Link>
+            </Button>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {leads.filter(l => l.status === 'WON').slice(0, 5).map((lead) => (
+                <div key={lead.id} className="flex items-center gap-4 rounded-lg border p-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/40">
+                    <CheckCircle className="h-5 w-5 text-green-600" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <p className="text-sm font-semibold">{lead.name}</p>
+                      <Badge className="text-[10px] bg-green-100 text-green-800">Converted</Badge>
+                    </div>
+                    <p className="text-xs text-muted-foreground truncate">
+                      {lead.company && `${lead.company} · `}
+                      {lead.assignedTo ? `Assigned to ${lead.assignedTo.firstName} ${lead.assignedTo.lastName}` : 'Unassigned'}
+                      {lead.client?.companyName && ` → Client: ${lead.client.companyName}`}
+                    </p>
+                    <div className="flex items-center gap-3 mt-1 text-[10px] text-muted-foreground">
+                      {lead.estimatedValue && <span>Value: {formatCurrency(lead.estimatedValue)}</span>}
+                      {lead.convertedAt && <span>Converted: {new Date(lead.convertedAt).toLocaleDateString('en-IN')}</span>}
+                      {lead.source && <span>Source: {lead.source}</span>}
+                    </div>
+                  </div>
+                  <Button variant="ghost" size="sm" asChild className="shrink-0">
+                    <Link href={lead.client ? `/clients/${lead.client.id}` : `/leads/${lead.id}`}>
+                      {lead.client ? 'View Client' : 'View Lead'} <ChevronRight className="ml-1 h-3 w-3" />
+                    </Link>
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Pending Approvals */}
+      {pendingApprovals.length > 0 && (
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <div>
+              <CardTitle className="text-base font-semibold">Pending Approvals</CardTitle>
+              <p className="text-xs text-muted-foreground">Surveys waiting for your approval</p>
+            </div>
+            <Button variant="ghost" size="sm" asChild>
+              <Link href="/surveys">View All <ArrowUpRight className="ml-1 h-3 w-3" /></Link>
+            </Button>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {pendingApprovals.slice(0, 5).map((survey: any) => (
+                <div key={survey.id} className="flex items-center gap-4 rounded-lg border p-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-900/40">
+                    <Clock className="h-5 w-5 text-amber-600" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <p className="text-sm font-semibold">{survey.title}</p>
+                      <Badge className={`text-[10px] ${STATUS_COLORS[survey.status] || 'bg-gray-100'}`}>
+                        Level {survey.currentApprovalLevel || '?'}
+                      </Badge>
+                    </div>
+                    <p className="text-xs text-muted-foreground truncate">
+                      {survey.project || 'Unknown Project'}
+                      {survey.engineer?.name && ` · By ${survey.engineer.name}`}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-1 shrink-0">
+                    <Button size="sm" variant="ghost" className="h-8 text-emerald-600 hover:text-emerald-700" onClick={() => handleApprovalAction(survey.id, 'APPROVE')}>
+                      <CheckCircle className="h-4 w-4" />
+                    </Button>
+                    <Button size="sm" variant="ghost" className="h-8 text-red-600 hover:text-red-700" onClick={() => handleApprovalAction(survey.id, 'REJECT')}>
+                      <X className="h-4 w-4" />
+                    </Button>
+                    <Button variant="ghost" size="sm" asChild className="h-8">
+                      <Link href={`/surveys/${survey.id}`}><ChevronRight className="h-4 w-4" /></Link>
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Weather + Material Alerts */}
+      <div className="grid gap-6 lg:grid-cols-2">
+        {/* Live Weather */}
+        <Card>
+          <CardHeader className="pb-2">
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="text-base font-semibold">Weather — {weather?.city || 'Your Location'}</CardTitle>
+                <p className="text-xs text-muted-foreground">Live from Open-Meteo</p>
+              </div>
+              <Badge variant="outline" className="text-[10px]"><Wind className="mr-1 h-3 w-3" />Live</Badge>
+            </div>
+          </CardHeader>
+          <CardContent>
+            {weather ? (
+              <>
+                <div className="flex items-center gap-4 mb-4">
+                  {(() => { const Icon = getWeatherIcon(Number(weather.icon)); return <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-100 dark:bg-amber-900/30"><Icon className="h-8 w-8 text-amber-600" /></div> })()}
+                  <div>
+                    <p className="text-3xl font-bold">{weather.temperature}°C</p>
+                    <p className="text-sm text-muted-foreground">{weather.description}</p>
+                    <p className="text-xs text-muted-foreground">Humidity: {weather.humidity}% · Wind: {weather.windSpeed} km/h</p>
+                  </div>
+                </div>
+                {weather.daily.length > 1 && (
+                  <div className="grid grid-cols-3 gap-3 border-t pt-4">
+                    {weather.daily.slice(1, 4).map((day, i) => {
+                      const DayIcon = getWeatherIcon(Number(day.icon))
+                      const dayName = i === 0 ? 'Tomorrow' : WMO_DAYS[new Date(day.date).getDay()]
+                      return (
+                        <div key={day.date} className="text-center">
+                          <p className="text-[10px] text-muted-foreground mb-1">{dayName}</p>
+                          <DayIcon className="h-6 w-6 text-amber-500 mx-auto mb-1" />
+                          <p className="text-sm font-semibold">{day.max}°</p>
+                          <p className="text-[10px] text-muted-foreground">{day.min}°</p>
+                        </div>
+                      )
+                    })}
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="flex items-center justify-center py-8">
+                <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+                <span className="ml-2 text-sm text-muted-foreground">Loading weather...</span>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Material Alerts — Real Data */}
+        <Card>
+          <CardHeader className="pb-2">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-base font-semibold">Material Alerts</CardTitle>
+              {criticalMaterials.length > 0 && <Badge variant="destructive" className="text-[10px]">{criticalMaterials.length} Alert{criticalMaterials.length > 1 ? 's' : ''}</Badge>}
+            </div>
+          </CardHeader>
+          <CardContent>
+            {criticalMaterials.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-8 text-center">
+                <Package className="h-8 w-8 text-muted-foreground/50" />
+                <p className="mt-2 text-sm text-muted-foreground">No critical material alerts</p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {criticalMaterials.map((mat) => (
+                  <div key={mat.id} className="flex items-center gap-3 rounded-lg border p-3">
+                    <div className={cn('h-2 w-2 shrink-0 rounded-full', mat.status === 'CRITICAL' || mat.priority === 'HIGH' ? 'bg-red-500' : 'bg-amber-500')} />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between">
+                        <p className="text-sm font-medium truncate">{mat.materialName}</p>
+                        <Badge className={cn('text-[9px] px-1.5 py-0', materialPriorityStyles[mat.priority] || materialPriorityStyles.MEDIUM)}>
+                          {mat.status || mat.priority}
+                        </Badge>
+                      </div>
+                      <p className="text-xs text-muted-foreground">{mat.quantity} {mat.unit} — {formatCurrency(mat.estimatedCost)}</p>
+                      {mat.supplierName && <p className="text-[10px] text-muted-foreground mt-0.5">Supplier: {mat.supplierName}</p>}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Project Progress + Charts */}
+      <div className="grid gap-6 lg:grid-cols-3">
+        <Card className="lg:col-span-2">
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-base font-semibold">Project Progress</CardTitle>
+            <Button variant="ghost" size="sm" asChild>
+              <Link href="/projects">View All <ArrowUpRight className="ml-1 h-3 w-3" /></Link>
+            </Button>
+          </CardHeader>
+          <CardContent>
+            {loading ? (
+              <div className="py-12 text-center text-sm text-muted-foreground">Loading projects...</div>
+            ) : projectCards.length === 0 ? (
+              <div className="py-12 text-center text-sm text-muted-foreground">No projects found.</div>
+            ) : (
+              <div className="space-y-4">
+                {projectCards.map((p) => (
+                  <div key={p.id} className="rounded-lg border p-4 space-y-3">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-semibold truncate">{p.name}</p>
+                        <p className="text-xs text-muted-foreground">{p.client} · {p.city}</p>
+                      </div>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <Badge className={cn('text-[9px] border', p.health === 'Good' ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-400' : p.health === 'At Risk' ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-400' : 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-400')}>
+                          {p.health}
+                        </Badge>
+                        <Badge className={cn('text-[9px] px-1.5 py-0', p.status === 'IN_PROGRESS' ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-400' : 'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-400')}>
+                          {statusLabel[p.status] || p.status}
+                        </Badge>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="flex items-center justify-between text-[10px] mb-1">
+                        <span className="text-muted-foreground">Progress</span>
+                        <span className="font-semibold">{p.budgetPct}%</span>
+                      </div>
+                      <div className="h-2 rounded-full bg-muted overflow-hidden">
+                        <div className={cn('h-full rounded-full transition-all', p.budgetPct >= 80 ? 'bg-emerald-500' : p.budgetPct >= 50 ? 'bg-blue-500' : 'bg-amber-500')}
+                          style={{ width: `${Math.min(p.budgetPct, 100)}%` }} />
+                      </div>
+                    </div>
+                    <div>
+                      <div className="flex items-center justify-between text-[10px] mb-1">
+                        <span className="text-muted-foreground">Budget Used — {formatCurrency(p.actualCost)} of {formatCurrency(p.budget)}</span>
+                        <span className={cn('font-semibold', p.budgetPct > 95 ? 'text-red-600' : p.budgetPct > 80 ? 'text-amber-600' : 'text-emerald-600')}>
+                          {p.budgetPct}%
+                        </span>
+                      </div>
+                      <div className="h-1.5 rounded-full bg-muted overflow-hidden">
+                        <div className={cn('h-full rounded-full transition-all', p.budgetPct > 95 ? 'bg-red-500' : p.budgetPct > 80 ? 'bg-amber-500' : 'bg-emerald-500')}
+                          style={{ width: `${Math.min(p.budgetPct, 100)}%` }} />
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4 text-[10px] text-muted-foreground">
+                        <span className="flex items-center gap-1"><Clock className="h-3 w-3" />{p.daysLeft} days left</span>
+                        <span className="flex items-center gap-1"><Users className="h-3 w-3" />{p.manager}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        <div className="space-y-6">
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-base font-semibold">Project Status Distribution</CardTitle>
+              <CardTitle className="text-base font-semibold">Budget Overview</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="h-[280px]">
+              <div className="h-[260px]">
                 <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={projectStatusData}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={60}
-                      outerRadius={100}
-                      paddingAngle={4}
-                      dataKey="value"
-                      stroke="none"
-                    >
-                      {projectStatusData.map((entry, index) => (
-                        <Cell key={index} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <Tooltip
-                      contentStyle={{
-                        borderRadius: '8px',
-                        border: '1px solid #e2e8f0',
-                        boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)',
-                      }}
-                    />
-                    <Legend
-                      verticalAlign="bottom"
-                      height={36}
-                      iconType="circle"
-                      iconSize={8}
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Right Column */}
-        <div className="space-y-6">
-          {/* Monthly Revenue Bar Chart */}
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-base font-semibold">Monthly Revenue</CardTitle>
-              <div className="flex items-center gap-1 text-sm text-emerald-600">
-                <TrendingUp className="h-4 w-4" />
-                <span className="font-medium">+12%</span>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="h-[280px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={monthlyRevenueData} barGap={8}>
+                  <BarChart data={projectCards.slice(0, 6).map(p => ({ name: p.name.length > 12 ? p.name.slice(0, 12) + '…' : p.name, budget: Math.round(p.budget / 100000), spent: Math.round(p.actualCost / 100000) }))} barGap={8}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                    <XAxis
-                      dataKey="month"
-                      tick={{ fontSize: 11, fill: '#94a3b8' }}
-                      axisLine={false}
-                      tickLine={false}
-                    />
-                    <YAxis
-                      tick={{ fontSize: 11, fill: '#94a3b8' }}
-                      axisLine={false}
-                      tickLine={false}
-                      tickFormatter={(v) => `₹${v}L`}
-                    />
-                    <Tooltip
-                      contentStyle={{
-                        borderRadius: '8px',
-                        border: '1px solid #e2e8f0',
-                        boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)',
-                      }}
-                      formatter={(value: unknown) => [`₹${value}L`, '']}
-                    />
-                    <Legend
-                      verticalAlign="bottom"
-                      height={36}
-                      iconType="square"
-                      iconSize={10}
-                    />
-                    <Bar
-                      dataKey="revenue"
-                      fill="#3b82f6"
-                      radius={[4, 4, 0, 0]}
-                      name="Revenue"
-                    />
-                    <Bar
-                      dataKey="expenses"
-                      fill="#cbd5e1"
-                      radius={[4, 4, 0, 0]}
-                      name="Expenses"
-                    />
+                    <XAxis dataKey="name" tick={{ fontSize: 10, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
+                    <YAxis tick={{ fontSize: 11, fill: '#94a3b8' }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${v}L`} />
+                    <Tooltip contentStyle={{ borderRadius: '8px', border: '1px solid #e2e8f0' }} formatter={(value: unknown) => [`₹${value}L`, '']} />
+                    <Legend verticalAlign="bottom" height={36} iconType="square" iconSize={10} />
+                    <Bar dataKey="budget" fill="#3b82f6" radius={[4, 4, 0, 0]} name="Budget" />
+                    <Bar dataKey="spent" fill="#cbd5e1" radius={[4, 4, 0, 0]} name="Spent" />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
             </CardContent>
           </Card>
 
-          {/* Engineer Performance */}
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-base font-semibold">Engineer Performance</CardTitle>
+              <CardTitle className="text-base font-semibold">Project Status</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                {engineerPerformanceData.map((engineer) => (
-                  <div key={engineer.name} className="flex items-center gap-3">
-                    <Avatar className="h-8 w-8">
-                      <AvatarFallback className="bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400 text-xs font-semibold">
-                        {engineer.avatar}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-sm font-medium truncate">{engineer.name}</span>
-                        <span className="text-sm font-semibold text-blue-600">{engineer.surveys}</span>
-                      </div>
-                      <div className="h-2 rounded-full bg-muted overflow-hidden">
-                        <div
-                          className="h-full rounded-full bg-gradient-to-r from-blue-500 to-blue-400 transition-all"
-                          style={{ width: `${(engineer.surveys / 42) * 100}%` }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                ))}
+              <div className="h-[200px]">
+                {projectStatusData.length > 0 ? (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie data={projectStatusData} cx="50%" cy="50%" innerRadius={50} outerRadius={80} paddingAngle={4} dataKey="value" stroke="none">
+                        {projectStatusData.map((entry, index) => (
+                          <Cell key={index} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      <Tooltip contentStyle={{ borderRadius: '8px', border: '1px solid #e2e8f0' }} />
+                      <Legend verticalAlign="bottom" height={36} iconType="circle" iconSize={8} />
+                    </PieChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <div className="flex items-center justify-center h-full text-sm text-muted-foreground">No project data</div>
+                )}
               </div>
             </CardContent>
           </Card>
         </div>
       </div>
 
-      {/* Bottom Section - 3 Columns */}
-      <div className="grid gap-6 lg:grid-cols-3">
-        {/* Today's Schedule */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-base font-semibold">Today&apos;s Schedule</CardTitle>
-            <Button variant="ghost" size="sm" asChild>
-              <Link href="/calendar">
-                <CalendarDays className="mr-1 h-3 w-3" />
-                View Calendar
-              </Link>
-            </Button>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {upcomingSurveys.map((survey) => (
-                <div
-                  key={survey.id}
-                  className="flex items-start gap-3 rounded-lg border p-3 transition-colors hover:bg-muted/50"
-                >
-                  <div className={cn('mt-1 h-2 w-2 shrink-0 rounded-full', priorityDot[survey.priority])} />
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <p className="text-sm font-medium truncate">{survey.title}</p>
-                    </div>
-                    <p className="text-xs text-muted-foreground">{survey.project}</p>
-                    <div className="flex items-center gap-2 mt-1.5">
-                      <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                        <Clock className="h-3 w-3" />
-                        <span>{survey.time}</span>
+      {/* Notifications */}
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between pb-2">
+          <CardTitle className="text-base font-semibold">Notification Center</CardTitle>
+          <Button variant="ghost" size="sm" asChild>
+            <Link href="/notifications"><Bell className="mr-1 h-3 w-3" />View All</Link>
+          </Button>
+        </CardHeader>
+        <CardContent>
+          <Tabs value={notifTab} onValueChange={setNotifTab}>
+            <TabsList className="mb-3">
+              <TabsTrigger value="all" className="text-[11px] px-2.5 py-1">All</TabsTrigger>
+              <TabsTrigger value="project" className="text-[11px] px-2.5 py-1">Project</TabsTrigger>
+              <TabsTrigger value="procurement" className="text-[11px] px-2.5 py-1">Procurement</TabsTrigger>
+              <TabsTrigger value="finance" className="text-[11px] px-2.5 py-1">Finance</TabsTrigger>
+              <TabsTrigger value="safety" className="text-[11px] px-2.5 py-1">Safety</TabsTrigger>
+            </TabsList>
+            <TabsContent value={notifTab} className="mt-0">
+              <div className="space-y-3 max-h-[420px] overflow-y-auto">
+                {loading ? (
+                  <p className="py-6 text-center text-sm text-muted-foreground">Loading notifications...</p>
+                ) : filteredNotifs.length === 0 ? (
+                  <p className="py-6 text-center text-sm text-muted-foreground">No notifications in this category.</p>
+                ) : (
+                  filteredNotifs.map((notif) => {
+                    const sevConfig = notifSeverityIcon[notif.severity] || notifSeverityIcon.info
+                    const SevIcon = sevConfig.icon
+                    return (
+                      <div key={notif.id} className={cn('flex items-start gap-3 rounded-lg border p-3 border-l-2 transition-colors hover:bg-muted/50', notifSeverityBorder[notif.severity] || 'border-l-blue-500')}>
+                        <div className={cn('mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full', sevConfig.bg)}>
+                          <SevIcon className="h-3 w-3" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium leading-none mb-0.5">{notif.title}</p>
+                          <p className="text-xs text-muted-foreground line-clamp-2">{notif.message}</p>
+                          <p className="text-[10px] text-muted-foreground mt-1">{notif.time}</p>
+                        </div>
                       </div>
-                      <span className="text-muted-foreground">·</span>
-                      <span className="text-xs text-muted-foreground">{survey.surveyor}</span>
-                    </div>
-                  </div>
-                  <Badge className={cn('shrink-0 text-[10px] border', priorityStyles[survey.priority])}>
-                    {survey.priority}
-                  </Badge>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Recent Activities */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-base font-semibold">Recent Activities</CardTitle>
-            <Button variant="ghost" size="sm" asChild>
-              <Link href="/analytics">
-                View All
-                <ArrowUpRight className="ml-1 h-3 w-3" />
-              </Link>
-            </Button>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {recentActivities.map((activity) => {
-                const config = activityIconMap[activity.type] || activityIconMap.survey_completed
-                const Icon = config.icon
-                return (
-                  <div key={activity.id} className="flex items-start gap-3">
-                    <div className={cn('mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full', config.color)}>
-                      <Icon className="h-3.5 w-3.5" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium leading-none mb-0.5">{activity.title}</p>
-                      <p className="text-xs text-muted-foreground line-clamp-2">{activity.description}</p>
-                      <div className="flex items-center gap-1.5 mt-1">
-                        <Avatar className="h-4 w-4">
-                          <AvatarFallback className="bg-muted text-[8px] font-medium">
-                            {getInitials(activity.user.firstName, activity.user.lastName)}
-                          </AvatarFallback>
-                        </Avatar>
-                        <span className="text-[10px] text-muted-foreground">
-                          {activity.user.firstName} {activity.user.lastName}
-                        </span>
-                        <span className="text-[10px] text-muted-foreground">·</span>
-                        <span className="text-[10px] text-muted-foreground">
-                          {new Date(activity.timestamp).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Project Progress Cards */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-base font-semibold">Project Progress</CardTitle>
-            <Button variant="ghost" size="sm" asChild>
-              <Link href="/projects">
-                View All
-                <ArrowUpRight className="ml-1 h-3 w-3" />
-              </Link>
-            </Button>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {topProjects.map((project) => (
-                <div key={project.id} className="rounded-lg border p-3 space-y-2.5">
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm font-semibold truncate">{project.name}</p>
-                      <div className="flex items-center gap-1.5 mt-0.5">
-                        <Badge variant="outline" className="text-[9px] px-1.5 py-0">{project.code}</Badge>
-                        <span className="text-[10px] text-muted-foreground truncate">{project.client}</span>
-                      </div>
-                    </div>
-                    <Badge className={cn('text-[10px] shrink-0', project.status === 'In Progress' ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-400' : 'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-400')}>
-                      {project.status}
-                    </Badge>
-                  </div>
-                  <div>
-                    <div className="flex items-center justify-between text-[10px] mb-1">
-                      <span className="text-muted-foreground">Progress</span>
-                      <span className="font-semibold">{project.progress}%</span>
-                    </div>
-                    <div className="h-1.5 rounded-full bg-muted overflow-hidden">
-                      <div
-                        className={cn(
-                          'h-full rounded-full transition-all',
-                          project.progress >= 80 ? 'bg-emerald-500' : project.progress >= 50 ? 'bg-blue-500' : 'bg-amber-500'
-                        )}
-                        style={{ width: `${project.progress}%` }}
-                      />
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between text-[10px] text-muted-foreground">
-                    <div className="flex items-center gap-1">
-                      <Clock className="h-3 w-3" />
-                      <span>{project.daysRemaining} days left</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <IndianRupee className="h-3 w-3" />
-                      <span>Budget: {project.budgetUsed}%</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Additional Widgets Row */}
-      <div className="grid gap-6 lg:grid-cols-3">
-        {/* Quick Stats */}
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base font-semibold">Quick Stats</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 gap-3">
-              {quickStats.map((stat) => (
-                <div key={stat.label} className="flex items-center gap-3 rounded-lg border p-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-900/40 dark:text-blue-400">
-                    {stat.icon}
-                  </div>
-                  <div>
-                    <p className="text-lg font-bold">{stat.value}</p>
-                    <p className="text-[10px] text-muted-foreground">{stat.label}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Notification Center */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-base font-semibold">Notification Center</CardTitle>
-            <Button variant="ghost" size="sm" asChild>
-              <Link href="/notifications">
-                <Bell className="mr-1 h-3 w-3" />
-                View All
-              </Link>
-            </Button>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {notifications.map((notif) => (
-                <div
-                  key={notif.id}
-                  className={cn(
-                    'flex items-start gap-3 rounded-lg border p-3 transition-colors hover:bg-muted/50',
-                    notif.type === 'urgent' && 'border-l-2 border-l-red-500'
-                  )}
-                >
-                  <div className={cn(
-                    'mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full',
-                    notif.type === 'urgent' ? 'bg-red-100 text-red-600 dark:bg-red-900/40 dark:text-red-400' : notif.type === 'success' ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/40 dark:text-emerald-400' : 'bg-blue-100 text-blue-600 dark:bg-blue-900/40 dark:text-blue-400'
-                  )}>
-                    {notif.type === 'urgent' ? <AlertTriangle className="h-3 w-3" /> : notif.type === 'success' ? <CheckCircle className="h-3 w-3" /> : <Bell className="h-3 w-3" />}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium leading-none mb-0.5">{notif.title}</p>
-                    <p className="text-xs text-muted-foreground line-clamp-2">{notif.message}</p>
-                    <p className="text-[10px] text-muted-foreground mt-1">{notif.time}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Map View Placeholder */}
-        <Card className="overflow-hidden">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base font-semibold">Site Locations Map</CardTitle>
-          </CardHeader>
-          <CardContent className="p-0">
-            <div className="relative h-[320px] bg-gradient-to-br from-blue-100 via-blue-50 to-emerald-50 dark:from-blue-950/50 dark:via-blue-900/30 dark:to-emerald-950/50 flex items-center justify-center">
-              <div className="absolute inset-0 opacity-10">
-                <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-                  <defs>
-                    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#3b82f6" strokeWidth="0.5" />
-                    </pattern>
-                  </defs>
-                  <rect width="100%" height="100%" fill="url(#grid)" />
-                </svg>
+                    )
+                  })
+                )}
               </div>
-              <div className="relative z-10 text-center">
-                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-blue-500/10 mx-auto mb-3">
-                  <MapPin className="h-7 w-7 text-blue-600" />
-                </div>
-                <p className="text-sm font-semibold text-foreground">Site Locations Map</p>
-                <p className="text-xs text-muted-foreground mt-1">12 active project sites</p>
-                <div className="flex items-center justify-center gap-2 mt-3">
-                  <div className="flex items-center gap-1">
-                    <div className="h-2 w-2 rounded-full bg-emerald-500" />
-                    <span className="text-[10px] text-muted-foreground">Active</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <div className="h-2 w-2 rounded-full bg-amber-500" />
-                    <span className="text-[10px] text-muted-foreground">Planned</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <div className="h-2 w-2 rounded-full bg-gray-400" />
-                    <span className="text-[10px] text-muted-foreground">Completed</span>
-                  </div>
-                </div>
-              </div>
-              {/* Simulated map markers */}
-              <div className="absolute top-[20%] left-[30%] h-3 w-3 rounded-full bg-emerald-500 border-2 border-white shadow-md" />
-              <div className="absolute top-[40%] left-[60%] h-3 w-3 rounded-full bg-emerald-500 border-2 border-white shadow-md" />
-              <div className="absolute top-[60%] left-[25%] h-3 w-3 rounded-full bg-amber-500 border-2 border-white shadow-md" />
-              <div className="absolute top-[35%] left-[75%] h-3 w-3 rounded-full bg-emerald-500 border-2 border-white shadow-md" />
-              <div className="absolute top-[70%] left-[55%] h-3 w-3 rounded-full bg-emerald-500 border-2 border-white shadow-md" />
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+            </TabsContent>
+          </Tabs>
+        </CardContent>
+      </Card>
     </div>
   )
 }

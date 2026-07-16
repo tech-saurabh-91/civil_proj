@@ -307,6 +307,10 @@ export type UserWhereInput = {
   ledProjects?: Prisma.ProjectListRelationFilter
   managedProjects?: Prisma.ProjectListRelationFilter
   assignedSurveys?: Prisma.SurveyListRelationFilter
+  approvedSurveys?: Prisma.SurveyListRelationFilter
+  approvalLogsGiven?: Prisma.ApprovalLogListRelationFilter
+  approvalLogsReceived?: Prisma.ApprovalLogListRelationFilter
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserListRelationFilter
   auditLogs?: Prisma.AuditLogListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
   signatures?: Prisma.DigitalSignatureListRelationFilter
@@ -321,6 +325,7 @@ export type UserWhereInput = {
   changeOrdersRequested?: Prisma.ChangeOrderListRelationFilter
   changeOrdersApproved?: Prisma.ChangeOrderListRelationFilter
   leadsAssigned?: Prisma.LeadListRelationFilter
+  siteVisits?: Prisma.SiteVisitListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -343,6 +348,10 @@ export type UserOrderByWithRelationInput = {
   ledProjects?: Prisma.ProjectOrderByRelationAggregateInput
   managedProjects?: Prisma.ProjectOrderByRelationAggregateInput
   assignedSurveys?: Prisma.SurveyOrderByRelationAggregateInput
+  approvedSurveys?: Prisma.SurveyOrderByRelationAggregateInput
+  approvalLogsGiven?: Prisma.ApprovalLogOrderByRelationAggregateInput
+  approvalLogsReceived?: Prisma.ApprovalLogOrderByRelationAggregateInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserOrderByRelationAggregateInput
   auditLogs?: Prisma.AuditLogOrderByRelationAggregateInput
   notifications?: Prisma.NotificationOrderByRelationAggregateInput
   signatures?: Prisma.DigitalSignatureOrderByRelationAggregateInput
@@ -357,6 +366,7 @@ export type UserOrderByWithRelationInput = {
   changeOrdersRequested?: Prisma.ChangeOrderOrderByRelationAggregateInput
   changeOrdersApproved?: Prisma.ChangeOrderOrderByRelationAggregateInput
   leadsAssigned?: Prisma.LeadOrderByRelationAggregateInput
+  siteVisits?: Prisma.SiteVisitOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -382,6 +392,10 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   ledProjects?: Prisma.ProjectListRelationFilter
   managedProjects?: Prisma.ProjectListRelationFilter
   assignedSurveys?: Prisma.SurveyListRelationFilter
+  approvedSurveys?: Prisma.SurveyListRelationFilter
+  approvalLogsGiven?: Prisma.ApprovalLogListRelationFilter
+  approvalLogsReceived?: Prisma.ApprovalLogListRelationFilter
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserListRelationFilter
   auditLogs?: Prisma.AuditLogListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
   signatures?: Prisma.DigitalSignatureListRelationFilter
@@ -396,6 +410,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   changeOrdersRequested?: Prisma.ChangeOrderListRelationFilter
   changeOrdersApproved?: Prisma.ChangeOrderListRelationFilter
   leadsAssigned?: Prisma.LeadListRelationFilter
+  siteVisits?: Prisma.SiteVisitListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -464,6 +479,10 @@ export type UserCreateInput = {
   ledProjects?: Prisma.ProjectCreateNestedManyWithoutLeadUserInput
   managedProjects?: Prisma.ProjectCreateNestedManyWithoutManagerInput
   assignedSurveys?: Prisma.SurveyCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   signatures?: Prisma.DigitalSignatureCreateNestedManyWithoutUserInput
@@ -478,6 +497,7 @@ export type UserCreateInput = {
   changeOrdersRequested?: Prisma.ChangeOrderCreateNestedManyWithoutRequestedByInput
   changeOrdersApproved?: Prisma.ChangeOrderCreateNestedManyWithoutApprovedByInput
   leadsAssigned?: Prisma.LeadCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -500,6 +520,10 @@ export type UserUncheckedCreateInput = {
   ledProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutLeadUserInput
   managedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutManagerInput
   assignedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   signatures?: Prisma.DigitalSignatureUncheckedCreateNestedManyWithoutUserInput
@@ -514,6 +538,7 @@ export type UserUncheckedCreateInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutRequestedByInput
   changeOrdersApproved?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutApprovedByInput
   leadsAssigned?: Prisma.LeadUncheckedCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -536,6 +561,10 @@ export type UserUpdateInput = {
   ledProjects?: Prisma.ProjectUpdateManyWithoutLeadUserNestedInput
   managedProjects?: Prisma.ProjectUpdateManyWithoutManagerNestedInput
   assignedSurveys?: Prisma.SurveyUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   signatures?: Prisma.DigitalSignatureUpdateManyWithoutUserNestedInput
@@ -550,6 +579,7 @@ export type UserUpdateInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUpdateManyWithoutRequestedByNestedInput
   changeOrdersApproved?: Prisma.ChangeOrderUpdateManyWithoutApprovedByNestedInput
   leadsAssigned?: Prisma.LeadUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -572,6 +602,10 @@ export type UserUncheckedUpdateInput = {
   ledProjects?: Prisma.ProjectUncheckedUpdateManyWithoutLeadUserNestedInput
   managedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutManagerNestedInput
   assignedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   signatures?: Prisma.DigitalSignatureUncheckedUpdateManyWithoutUserNestedInput
@@ -586,6 +620,7 @@ export type UserUncheckedUpdateInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUncheckedUpdateManyWithoutRequestedByNestedInput
   changeOrdersApproved?: Prisma.ChangeOrderUncheckedUpdateManyWithoutApprovedByNestedInput
   leadsAssigned?: Prisma.LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -800,10 +835,26 @@ export type UserUpdateOneWithoutLedProjectsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutLedProjectsInput, Prisma.UserUpdateWithoutLedProjectsInput>, Prisma.UserUncheckedUpdateWithoutLedProjectsInput>
 }
 
+export type UserCreateNestedOneWithoutApprovedSurveysInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutApprovedSurveysInput, Prisma.UserUncheckedCreateWithoutApprovedSurveysInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutApprovedSurveysInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
 export type UserCreateNestedOneWithoutAssignedSurveysInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutAssignedSurveysInput, Prisma.UserUncheckedCreateWithoutAssignedSurveysInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutAssignedSurveysInput
   connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutApprovedSurveysNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutApprovedSurveysInput, Prisma.UserUncheckedCreateWithoutApprovedSurveysInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutApprovedSurveysInput
+  upsert?: Prisma.UserUpsertWithoutApprovedSurveysInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutApprovedSurveysInput, Prisma.UserUpdateWithoutApprovedSurveysInput>, Prisma.UserUncheckedUpdateWithoutApprovedSurveysInput>
 }
 
 export type UserUpdateOneWithoutAssignedSurveysNestedInput = {
@@ -814,6 +865,36 @@ export type UserUpdateOneWithoutAssignedSurveysNestedInput = {
   delete?: Prisma.UserWhereInput | boolean
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAssignedSurveysInput, Prisma.UserUpdateWithoutAssignedSurveysInput>, Prisma.UserUncheckedUpdateWithoutAssignedSurveysInput>
+}
+
+export type UserCreateNestedOneWithoutApprovalLogsGivenInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutApprovalLogsGivenInput, Prisma.UserUncheckedCreateWithoutApprovalLogsGivenInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutApprovalLogsGivenInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutApprovalLogsReceivedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutApprovalLogsReceivedInput, Prisma.UserUncheckedCreateWithoutApprovalLogsReceivedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutApprovalLogsReceivedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutApprovalLogsGivenNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutApprovalLogsGivenInput, Prisma.UserUncheckedCreateWithoutApprovalLogsGivenInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutApprovalLogsGivenInput
+  upsert?: Prisma.UserUpsertWithoutApprovalLogsGivenInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutApprovalLogsGivenInput, Prisma.UserUpdateWithoutApprovalLogsGivenInput>, Prisma.UserUncheckedUpdateWithoutApprovalLogsGivenInput>
+}
+
+export type UserUpdateOneWithoutApprovalLogsReceivedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutApprovalLogsReceivedInput, Prisma.UserUncheckedCreateWithoutApprovalLogsReceivedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutApprovalLogsReceivedInput
+  upsert?: Prisma.UserUpsertWithoutApprovalLogsReceivedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutApprovalLogsReceivedInput, Prisma.UserUpdateWithoutApprovalLogsReceivedInput>, Prisma.UserUncheckedUpdateWithoutApprovalLogsReceivedInput>
 }
 
 export type UserCreateNestedOneWithoutRiskAssessmentsIdentifiedInput = {
@@ -974,6 +1055,20 @@ export type UserUpdateOneRequiredWithoutGpsTrackingNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutGpsTrackingInput, Prisma.UserUpdateWithoutGpsTrackingInput>, Prisma.UserUncheckedUpdateWithoutGpsTrackingInput>
 }
 
+export type UserCreateNestedOneWithoutSiteVisitsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSiteVisitsInput, Prisma.UserUncheckedCreateWithoutSiteVisitsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSiteVisitsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSiteVisitsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSiteVisitsInput, Prisma.UserUncheckedCreateWithoutSiteVisitsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSiteVisitsInput
+  upsert?: Prisma.UserUpsertWithoutSiteVisitsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSiteVisitsInput, Prisma.UserUpdateWithoutSiteVisitsInput>, Prisma.UserUncheckedUpdateWithoutSiteVisitsInput>
+}
+
 export type UserCreateNestedOneWithoutChangeOrdersRequestedInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutChangeOrdersRequestedInput, Prisma.UserUncheckedCreateWithoutChangeOrdersRequestedInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutChangeOrdersRequestedInput
@@ -1004,6 +1099,20 @@ export type UserUpdateOneWithoutChangeOrdersApprovedNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutChangeOrdersApprovedInput, Prisma.UserUpdateWithoutChangeOrdersApprovedInput>, Prisma.UserUncheckedUpdateWithoutChangeOrdersApprovedInput>
 }
 
+export type UserCreateNestedOneWithoutApprovalLevelAssignmentsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutApprovalLevelAssignmentsInput, Prisma.UserUncheckedCreateWithoutApprovalLevelAssignmentsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutApprovalLevelAssignmentsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutApprovalLevelAssignmentsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutApprovalLevelAssignmentsInput, Prisma.UserUncheckedCreateWithoutApprovalLevelAssignmentsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutApprovalLevelAssignmentsInput
+  upsert?: Prisma.UserUpsertWithoutApprovalLevelAssignmentsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutApprovalLevelAssignmentsInput, Prisma.UserUpdateWithoutApprovalLevelAssignmentsInput>, Prisma.UserUncheckedUpdateWithoutApprovalLevelAssignmentsInput>
+}
+
 export type UserCreateWithoutLeadsAssignedInput = {
   id?: string
   email: string
@@ -1024,6 +1133,10 @@ export type UserCreateWithoutLeadsAssignedInput = {
   ledProjects?: Prisma.ProjectCreateNestedManyWithoutLeadUserInput
   managedProjects?: Prisma.ProjectCreateNestedManyWithoutManagerInput
   assignedSurveys?: Prisma.SurveyCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   signatures?: Prisma.DigitalSignatureCreateNestedManyWithoutUserInput
@@ -1037,6 +1150,7 @@ export type UserCreateWithoutLeadsAssignedInput = {
   riskAssessmentsIdentified?: Prisma.RiskAssessmentCreateNestedManyWithoutIdentifiedByInput
   changeOrdersRequested?: Prisma.ChangeOrderCreateNestedManyWithoutRequestedByInput
   changeOrdersApproved?: Prisma.ChangeOrderCreateNestedManyWithoutApprovedByInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutLeadsAssignedInput = {
@@ -1059,6 +1173,10 @@ export type UserUncheckedCreateWithoutLeadsAssignedInput = {
   ledProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutLeadUserInput
   managedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutManagerInput
   assignedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   signatures?: Prisma.DigitalSignatureUncheckedCreateNestedManyWithoutUserInput
@@ -1072,6 +1190,7 @@ export type UserUncheckedCreateWithoutLeadsAssignedInput = {
   riskAssessmentsIdentified?: Prisma.RiskAssessmentUncheckedCreateNestedManyWithoutIdentifiedByInput
   changeOrdersRequested?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutRequestedByInput
   changeOrdersApproved?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutLeadsAssignedInput = {
@@ -1110,6 +1229,10 @@ export type UserUpdateWithoutLeadsAssignedInput = {
   ledProjects?: Prisma.ProjectUpdateManyWithoutLeadUserNestedInput
   managedProjects?: Prisma.ProjectUpdateManyWithoutManagerNestedInput
   assignedSurveys?: Prisma.SurveyUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   signatures?: Prisma.DigitalSignatureUpdateManyWithoutUserNestedInput
@@ -1123,6 +1246,7 @@ export type UserUpdateWithoutLeadsAssignedInput = {
   riskAssessmentsIdentified?: Prisma.RiskAssessmentUpdateManyWithoutIdentifiedByNestedInput
   changeOrdersRequested?: Prisma.ChangeOrderUpdateManyWithoutRequestedByNestedInput
   changeOrdersApproved?: Prisma.ChangeOrderUpdateManyWithoutApprovedByNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLeadsAssignedInput = {
@@ -1145,6 +1269,10 @@ export type UserUncheckedUpdateWithoutLeadsAssignedInput = {
   ledProjects?: Prisma.ProjectUncheckedUpdateManyWithoutLeadUserNestedInput
   managedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutManagerNestedInput
   assignedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   signatures?: Prisma.DigitalSignatureUncheckedUpdateManyWithoutUserNestedInput
@@ -1158,6 +1286,7 @@ export type UserUncheckedUpdateWithoutLeadsAssignedInput = {
   riskAssessmentsIdentified?: Prisma.RiskAssessmentUncheckedUpdateManyWithoutIdentifiedByNestedInput
   changeOrdersRequested?: Prisma.ChangeOrderUncheckedUpdateManyWithoutRequestedByNestedInput
   changeOrdersApproved?: Prisma.ChangeOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutManagedProjectsInput = {
@@ -1179,6 +1308,10 @@ export type UserCreateWithoutManagedProjectsInput = {
   version?: number
   ledProjects?: Prisma.ProjectCreateNestedManyWithoutLeadUserInput
   assignedSurveys?: Prisma.SurveyCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   signatures?: Prisma.DigitalSignatureCreateNestedManyWithoutUserInput
@@ -1193,6 +1326,7 @@ export type UserCreateWithoutManagedProjectsInput = {
   changeOrdersRequested?: Prisma.ChangeOrderCreateNestedManyWithoutRequestedByInput
   changeOrdersApproved?: Prisma.ChangeOrderCreateNestedManyWithoutApprovedByInput
   leadsAssigned?: Prisma.LeadCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutManagedProjectsInput = {
@@ -1214,6 +1348,10 @@ export type UserUncheckedCreateWithoutManagedProjectsInput = {
   version?: number
   ledProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutLeadUserInput
   assignedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   signatures?: Prisma.DigitalSignatureUncheckedCreateNestedManyWithoutUserInput
@@ -1228,6 +1366,7 @@ export type UserUncheckedCreateWithoutManagedProjectsInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutRequestedByInput
   changeOrdersApproved?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutApprovedByInput
   leadsAssigned?: Prisma.LeadUncheckedCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutManagedProjectsInput = {
@@ -1254,6 +1393,10 @@ export type UserCreateWithoutLedProjectsInput = {
   version?: number
   managedProjects?: Prisma.ProjectCreateNestedManyWithoutManagerInput
   assignedSurveys?: Prisma.SurveyCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   signatures?: Prisma.DigitalSignatureCreateNestedManyWithoutUserInput
@@ -1268,6 +1411,7 @@ export type UserCreateWithoutLedProjectsInput = {
   changeOrdersRequested?: Prisma.ChangeOrderCreateNestedManyWithoutRequestedByInput
   changeOrdersApproved?: Prisma.ChangeOrderCreateNestedManyWithoutApprovedByInput
   leadsAssigned?: Prisma.LeadCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutLedProjectsInput = {
@@ -1289,6 +1433,10 @@ export type UserUncheckedCreateWithoutLedProjectsInput = {
   version?: number
   managedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutManagerInput
   assignedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   signatures?: Prisma.DigitalSignatureUncheckedCreateNestedManyWithoutUserInput
@@ -1303,6 +1451,7 @@ export type UserUncheckedCreateWithoutLedProjectsInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutRequestedByInput
   changeOrdersApproved?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutApprovedByInput
   leadsAssigned?: Prisma.LeadUncheckedCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutLedProjectsInput = {
@@ -1340,6 +1489,10 @@ export type UserUpdateWithoutManagedProjectsInput = {
   version?: Prisma.IntFieldUpdateOperationsInput | number
   ledProjects?: Prisma.ProjectUpdateManyWithoutLeadUserNestedInput
   assignedSurveys?: Prisma.SurveyUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   signatures?: Prisma.DigitalSignatureUpdateManyWithoutUserNestedInput
@@ -1354,6 +1507,7 @@ export type UserUpdateWithoutManagedProjectsInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUpdateManyWithoutRequestedByNestedInput
   changeOrdersApproved?: Prisma.ChangeOrderUpdateManyWithoutApprovedByNestedInput
   leadsAssigned?: Prisma.LeadUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutManagedProjectsInput = {
@@ -1375,6 +1529,10 @@ export type UserUncheckedUpdateWithoutManagedProjectsInput = {
   version?: Prisma.IntFieldUpdateOperationsInput | number
   ledProjects?: Prisma.ProjectUncheckedUpdateManyWithoutLeadUserNestedInput
   assignedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   signatures?: Prisma.DigitalSignatureUncheckedUpdateManyWithoutUserNestedInput
@@ -1389,6 +1547,7 @@ export type UserUncheckedUpdateWithoutManagedProjectsInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUncheckedUpdateManyWithoutRequestedByNestedInput
   changeOrdersApproved?: Prisma.ChangeOrderUncheckedUpdateManyWithoutApprovedByNestedInput
   leadsAssigned?: Prisma.LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutLedProjectsInput = {
@@ -1421,6 +1580,10 @@ export type UserUpdateWithoutLedProjectsInput = {
   version?: Prisma.IntFieldUpdateOperationsInput | number
   managedProjects?: Prisma.ProjectUpdateManyWithoutManagerNestedInput
   assignedSurveys?: Prisma.SurveyUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   signatures?: Prisma.DigitalSignatureUpdateManyWithoutUserNestedInput
@@ -1435,6 +1598,7 @@ export type UserUpdateWithoutLedProjectsInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUpdateManyWithoutRequestedByNestedInput
   changeOrdersApproved?: Prisma.ChangeOrderUpdateManyWithoutApprovedByNestedInput
   leadsAssigned?: Prisma.LeadUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLedProjectsInput = {
@@ -1456,6 +1620,10 @@ export type UserUncheckedUpdateWithoutLedProjectsInput = {
   version?: Prisma.IntFieldUpdateOperationsInput | number
   managedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutManagerNestedInput
   assignedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   signatures?: Prisma.DigitalSignatureUncheckedUpdateManyWithoutUserNestedInput
@@ -1470,6 +1638,92 @@ export type UserUncheckedUpdateWithoutLedProjectsInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUncheckedUpdateManyWithoutRequestedByNestedInput
   changeOrdersApproved?: Prisma.ChangeOrderUncheckedUpdateManyWithoutApprovedByNestedInput
   leadsAssigned?: Prisma.LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutApprovedSurveysInput = {
+  id?: string
+  email: string
+  password: string
+  firstName: string
+  lastName: string
+  phone?: string | null
+  avatar?: string | null
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy?: string | null
+  updatedBy?: string | null
+  isDeleted?: boolean
+  version?: number
+  ledProjects?: Prisma.ProjectCreateNestedManyWithoutLeadUserInput
+  managedProjects?: Prisma.ProjectCreateNestedManyWithoutManagerInput
+  assignedSurveys?: Prisma.SurveyCreateNestedManyWithoutEngineerInput
+  approvalLogsGiven?: Prisma.ApprovalLogCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  signatures?: Prisma.DigitalSignatureCreateNestedManyWithoutUserInput
+  workflowSteps?: Prisma.WorkflowStepCreateNestedManyWithoutAssignedToInput
+  approvalsRequested?: Prisma.ApprovalCreateNestedManyWithoutRequestedByInput
+  approvalsGiven?: Prisma.ApprovalCreateNestedManyWithoutApprovedByInput
+  activities?: Prisma.ActivityCreateNestedManyWithoutUserInput
+  reports?: Prisma.ReportCreateNestedManyWithoutGeneratedByInput
+  documentsUploaded?: Prisma.DocumentCreateNestedManyWithoutUploadedByInput
+  gpsTracking?: Prisma.GpsTrackingCreateNestedManyWithoutUserInput
+  riskAssessmentsIdentified?: Prisma.RiskAssessmentCreateNestedManyWithoutIdentifiedByInput
+  changeOrdersRequested?: Prisma.ChangeOrderCreateNestedManyWithoutRequestedByInput
+  changeOrdersApproved?: Prisma.ChangeOrderCreateNestedManyWithoutApprovedByInput
+  leadsAssigned?: Prisma.LeadCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutApprovedSurveysInput = {
+  id?: string
+  email: string
+  password: string
+  firstName: string
+  lastName: string
+  phone?: string | null
+  avatar?: string | null
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy?: string | null
+  updatedBy?: string | null
+  isDeleted?: boolean
+  version?: number
+  ledProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutLeadUserInput
+  managedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutManagerInput
+  assignedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutEngineerInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  signatures?: Prisma.DigitalSignatureUncheckedCreateNestedManyWithoutUserInput
+  workflowSteps?: Prisma.WorkflowStepUncheckedCreateNestedManyWithoutAssignedToInput
+  approvalsRequested?: Prisma.ApprovalUncheckedCreateNestedManyWithoutRequestedByInput
+  approvalsGiven?: Prisma.ApprovalUncheckedCreateNestedManyWithoutApprovedByInput
+  activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutUserInput
+  reports?: Prisma.ReportUncheckedCreateNestedManyWithoutGeneratedByInput
+  documentsUploaded?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  gpsTracking?: Prisma.GpsTrackingUncheckedCreateNestedManyWithoutUserInput
+  riskAssessmentsIdentified?: Prisma.RiskAssessmentUncheckedCreateNestedManyWithoutIdentifiedByInput
+  changeOrdersRequested?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutRequestedByInput
+  changeOrdersApproved?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  leadsAssigned?: Prisma.LeadUncheckedCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutApprovedSurveysInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutApprovedSurveysInput, Prisma.UserUncheckedCreateWithoutApprovedSurveysInput>
 }
 
 export type UserCreateWithoutAssignedSurveysInput = {
@@ -1491,6 +1745,10 @@ export type UserCreateWithoutAssignedSurveysInput = {
   version?: number
   ledProjects?: Prisma.ProjectCreateNestedManyWithoutLeadUserInput
   managedProjects?: Prisma.ProjectCreateNestedManyWithoutManagerInput
+  approvedSurveys?: Prisma.SurveyCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   signatures?: Prisma.DigitalSignatureCreateNestedManyWithoutUserInput
@@ -1505,6 +1763,7 @@ export type UserCreateWithoutAssignedSurveysInput = {
   changeOrdersRequested?: Prisma.ChangeOrderCreateNestedManyWithoutRequestedByInput
   changeOrdersApproved?: Prisma.ChangeOrderCreateNestedManyWithoutApprovedByInput
   leadsAssigned?: Prisma.LeadCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAssignedSurveysInput = {
@@ -1526,6 +1785,10 @@ export type UserUncheckedCreateWithoutAssignedSurveysInput = {
   version?: number
   ledProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutLeadUserInput
   managedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutManagerInput
+  approvedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   signatures?: Prisma.DigitalSignatureUncheckedCreateNestedManyWithoutUserInput
@@ -1540,11 +1803,103 @@ export type UserUncheckedCreateWithoutAssignedSurveysInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutRequestedByInput
   changeOrdersApproved?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutApprovedByInput
   leadsAssigned?: Prisma.LeadUncheckedCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAssignedSurveysInput = {
   where: Prisma.UserWhereUniqueInput
   create: Prisma.XOR<Prisma.UserCreateWithoutAssignedSurveysInput, Prisma.UserUncheckedCreateWithoutAssignedSurveysInput>
+}
+
+export type UserUpsertWithoutApprovedSurveysInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutApprovedSurveysInput, Prisma.UserUncheckedUpdateWithoutApprovedSurveysInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutApprovedSurveysInput, Prisma.UserUncheckedCreateWithoutApprovedSurveysInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutApprovedSurveysInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutApprovedSurveysInput, Prisma.UserUncheckedUpdateWithoutApprovedSurveysInput>
+}
+
+export type UserUpdateWithoutApprovedSurveysInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  ledProjects?: Prisma.ProjectUpdateManyWithoutLeadUserNestedInput
+  managedProjects?: Prisma.ProjectUpdateManyWithoutManagerNestedInput
+  assignedSurveys?: Prisma.SurveyUpdateManyWithoutEngineerNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  signatures?: Prisma.DigitalSignatureUpdateManyWithoutUserNestedInput
+  workflowSteps?: Prisma.WorkflowStepUpdateManyWithoutAssignedToNestedInput
+  approvalsRequested?: Prisma.ApprovalUpdateManyWithoutRequestedByNestedInput
+  approvalsGiven?: Prisma.ApprovalUpdateManyWithoutApprovedByNestedInput
+  activities?: Prisma.ActivityUpdateManyWithoutUserNestedInput
+  reports?: Prisma.ReportUpdateManyWithoutGeneratedByNestedInput
+  documentsUploaded?: Prisma.DocumentUpdateManyWithoutUploadedByNestedInput
+  gpsTracking?: Prisma.GpsTrackingUpdateManyWithoutUserNestedInput
+  riskAssessmentsIdentified?: Prisma.RiskAssessmentUpdateManyWithoutIdentifiedByNestedInput
+  changeOrdersRequested?: Prisma.ChangeOrderUpdateManyWithoutRequestedByNestedInput
+  changeOrdersApproved?: Prisma.ChangeOrderUpdateManyWithoutApprovedByNestedInput
+  leadsAssigned?: Prisma.LeadUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutApprovedSurveysInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  ledProjects?: Prisma.ProjectUncheckedUpdateManyWithoutLeadUserNestedInput
+  managedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutManagerNestedInput
+  assignedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutEngineerNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  signatures?: Prisma.DigitalSignatureUncheckedUpdateManyWithoutUserNestedInput
+  workflowSteps?: Prisma.WorkflowStepUncheckedUpdateManyWithoutAssignedToNestedInput
+  approvalsRequested?: Prisma.ApprovalUncheckedUpdateManyWithoutRequestedByNestedInput
+  approvalsGiven?: Prisma.ApprovalUncheckedUpdateManyWithoutApprovedByNestedInput
+  activities?: Prisma.ActivityUncheckedUpdateManyWithoutUserNestedInput
+  reports?: Prisma.ReportUncheckedUpdateManyWithoutGeneratedByNestedInput
+  documentsUploaded?: Prisma.DocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  gpsTracking?: Prisma.GpsTrackingUncheckedUpdateManyWithoutUserNestedInput
+  riskAssessmentsIdentified?: Prisma.RiskAssessmentUncheckedUpdateManyWithoutIdentifiedByNestedInput
+  changeOrdersRequested?: Prisma.ChangeOrderUncheckedUpdateManyWithoutRequestedByNestedInput
+  changeOrdersApproved?: Prisma.ChangeOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  leadsAssigned?: Prisma.LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutAssignedSurveysInput = {
@@ -1577,6 +1932,10 @@ export type UserUpdateWithoutAssignedSurveysInput = {
   version?: Prisma.IntFieldUpdateOperationsInput | number
   ledProjects?: Prisma.ProjectUpdateManyWithoutLeadUserNestedInput
   managedProjects?: Prisma.ProjectUpdateManyWithoutManagerNestedInput
+  approvedSurveys?: Prisma.SurveyUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   signatures?: Prisma.DigitalSignatureUpdateManyWithoutUserNestedInput
@@ -1591,6 +1950,7 @@ export type UserUpdateWithoutAssignedSurveysInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUpdateManyWithoutRequestedByNestedInput
   changeOrdersApproved?: Prisma.ChangeOrderUpdateManyWithoutApprovedByNestedInput
   leadsAssigned?: Prisma.LeadUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssignedSurveysInput = {
@@ -1612,6 +1972,10 @@ export type UserUncheckedUpdateWithoutAssignedSurveysInput = {
   version?: Prisma.IntFieldUpdateOperationsInput | number
   ledProjects?: Prisma.ProjectUncheckedUpdateManyWithoutLeadUserNestedInput
   managedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutManagerNestedInput
+  approvedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   signatures?: Prisma.DigitalSignatureUncheckedUpdateManyWithoutUserNestedInput
@@ -1626,6 +1990,359 @@ export type UserUncheckedUpdateWithoutAssignedSurveysInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUncheckedUpdateManyWithoutRequestedByNestedInput
   changeOrdersApproved?: Prisma.ChangeOrderUncheckedUpdateManyWithoutApprovedByNestedInput
   leadsAssigned?: Prisma.LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutApprovalLogsGivenInput = {
+  id?: string
+  email: string
+  password: string
+  firstName: string
+  lastName: string
+  phone?: string | null
+  avatar?: string | null
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy?: string | null
+  updatedBy?: string | null
+  isDeleted?: boolean
+  version?: number
+  ledProjects?: Prisma.ProjectCreateNestedManyWithoutLeadUserInput
+  managedProjects?: Prisma.ProjectCreateNestedManyWithoutManagerInput
+  assignedSurveys?: Prisma.SurveyCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsReceived?: Prisma.ApprovalLogCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  signatures?: Prisma.DigitalSignatureCreateNestedManyWithoutUserInput
+  workflowSteps?: Prisma.WorkflowStepCreateNestedManyWithoutAssignedToInput
+  approvalsRequested?: Prisma.ApprovalCreateNestedManyWithoutRequestedByInput
+  approvalsGiven?: Prisma.ApprovalCreateNestedManyWithoutApprovedByInput
+  activities?: Prisma.ActivityCreateNestedManyWithoutUserInput
+  reports?: Prisma.ReportCreateNestedManyWithoutGeneratedByInput
+  documentsUploaded?: Prisma.DocumentCreateNestedManyWithoutUploadedByInput
+  gpsTracking?: Prisma.GpsTrackingCreateNestedManyWithoutUserInput
+  riskAssessmentsIdentified?: Prisma.RiskAssessmentCreateNestedManyWithoutIdentifiedByInput
+  changeOrdersRequested?: Prisma.ChangeOrderCreateNestedManyWithoutRequestedByInput
+  changeOrdersApproved?: Prisma.ChangeOrderCreateNestedManyWithoutApprovedByInput
+  leadsAssigned?: Prisma.LeadCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutApprovalLogsGivenInput = {
+  id?: string
+  email: string
+  password: string
+  firstName: string
+  lastName: string
+  phone?: string | null
+  avatar?: string | null
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy?: string | null
+  updatedBy?: string | null
+  isDeleted?: boolean
+  version?: number
+  ledProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutLeadUserInput
+  managedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutManagerInput
+  assignedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  signatures?: Prisma.DigitalSignatureUncheckedCreateNestedManyWithoutUserInput
+  workflowSteps?: Prisma.WorkflowStepUncheckedCreateNestedManyWithoutAssignedToInput
+  approvalsRequested?: Prisma.ApprovalUncheckedCreateNestedManyWithoutRequestedByInput
+  approvalsGiven?: Prisma.ApprovalUncheckedCreateNestedManyWithoutApprovedByInput
+  activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutUserInput
+  reports?: Prisma.ReportUncheckedCreateNestedManyWithoutGeneratedByInput
+  documentsUploaded?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  gpsTracking?: Prisma.GpsTrackingUncheckedCreateNestedManyWithoutUserInput
+  riskAssessmentsIdentified?: Prisma.RiskAssessmentUncheckedCreateNestedManyWithoutIdentifiedByInput
+  changeOrdersRequested?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutRequestedByInput
+  changeOrdersApproved?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  leadsAssigned?: Prisma.LeadUncheckedCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutApprovalLogsGivenInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutApprovalLogsGivenInput, Prisma.UserUncheckedCreateWithoutApprovalLogsGivenInput>
+}
+
+export type UserCreateWithoutApprovalLogsReceivedInput = {
+  id?: string
+  email: string
+  password: string
+  firstName: string
+  lastName: string
+  phone?: string | null
+  avatar?: string | null
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy?: string | null
+  updatedBy?: string | null
+  isDeleted?: boolean
+  version?: number
+  ledProjects?: Prisma.ProjectCreateNestedManyWithoutLeadUserInput
+  managedProjects?: Prisma.ProjectCreateNestedManyWithoutManagerInput
+  assignedSurveys?: Prisma.SurveyCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogCreateNestedManyWithoutFromUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  signatures?: Prisma.DigitalSignatureCreateNestedManyWithoutUserInput
+  workflowSteps?: Prisma.WorkflowStepCreateNestedManyWithoutAssignedToInput
+  approvalsRequested?: Prisma.ApprovalCreateNestedManyWithoutRequestedByInput
+  approvalsGiven?: Prisma.ApprovalCreateNestedManyWithoutApprovedByInput
+  activities?: Prisma.ActivityCreateNestedManyWithoutUserInput
+  reports?: Prisma.ReportCreateNestedManyWithoutGeneratedByInput
+  documentsUploaded?: Prisma.DocumentCreateNestedManyWithoutUploadedByInput
+  gpsTracking?: Prisma.GpsTrackingCreateNestedManyWithoutUserInput
+  riskAssessmentsIdentified?: Prisma.RiskAssessmentCreateNestedManyWithoutIdentifiedByInput
+  changeOrdersRequested?: Prisma.ChangeOrderCreateNestedManyWithoutRequestedByInput
+  changeOrdersApproved?: Prisma.ChangeOrderCreateNestedManyWithoutApprovedByInput
+  leadsAssigned?: Prisma.LeadCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutApprovalLogsReceivedInput = {
+  id?: string
+  email: string
+  password: string
+  firstName: string
+  lastName: string
+  phone?: string | null
+  avatar?: string | null
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy?: string | null
+  updatedBy?: string | null
+  isDeleted?: boolean
+  version?: number
+  ledProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutLeadUserInput
+  managedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutManagerInput
+  assignedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutFromUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  signatures?: Prisma.DigitalSignatureUncheckedCreateNestedManyWithoutUserInput
+  workflowSteps?: Prisma.WorkflowStepUncheckedCreateNestedManyWithoutAssignedToInput
+  approvalsRequested?: Prisma.ApprovalUncheckedCreateNestedManyWithoutRequestedByInput
+  approvalsGiven?: Prisma.ApprovalUncheckedCreateNestedManyWithoutApprovedByInput
+  activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutUserInput
+  reports?: Prisma.ReportUncheckedCreateNestedManyWithoutGeneratedByInput
+  documentsUploaded?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  gpsTracking?: Prisma.GpsTrackingUncheckedCreateNestedManyWithoutUserInput
+  riskAssessmentsIdentified?: Prisma.RiskAssessmentUncheckedCreateNestedManyWithoutIdentifiedByInput
+  changeOrdersRequested?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutRequestedByInput
+  changeOrdersApproved?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  leadsAssigned?: Prisma.LeadUncheckedCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutApprovalLogsReceivedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutApprovalLogsReceivedInput, Prisma.UserUncheckedCreateWithoutApprovalLogsReceivedInput>
+}
+
+export type UserUpsertWithoutApprovalLogsGivenInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutApprovalLogsGivenInput, Prisma.UserUncheckedUpdateWithoutApprovalLogsGivenInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutApprovalLogsGivenInput, Prisma.UserUncheckedCreateWithoutApprovalLogsGivenInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutApprovalLogsGivenInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutApprovalLogsGivenInput, Prisma.UserUncheckedUpdateWithoutApprovalLogsGivenInput>
+}
+
+export type UserUpdateWithoutApprovalLogsGivenInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  ledProjects?: Prisma.ProjectUpdateManyWithoutLeadUserNestedInput
+  managedProjects?: Prisma.ProjectUpdateManyWithoutManagerNestedInput
+  assignedSurveys?: Prisma.SurveyUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  signatures?: Prisma.DigitalSignatureUpdateManyWithoutUserNestedInput
+  workflowSteps?: Prisma.WorkflowStepUpdateManyWithoutAssignedToNestedInput
+  approvalsRequested?: Prisma.ApprovalUpdateManyWithoutRequestedByNestedInput
+  approvalsGiven?: Prisma.ApprovalUpdateManyWithoutApprovedByNestedInput
+  activities?: Prisma.ActivityUpdateManyWithoutUserNestedInput
+  reports?: Prisma.ReportUpdateManyWithoutGeneratedByNestedInput
+  documentsUploaded?: Prisma.DocumentUpdateManyWithoutUploadedByNestedInput
+  gpsTracking?: Prisma.GpsTrackingUpdateManyWithoutUserNestedInput
+  riskAssessmentsIdentified?: Prisma.RiskAssessmentUpdateManyWithoutIdentifiedByNestedInput
+  changeOrdersRequested?: Prisma.ChangeOrderUpdateManyWithoutRequestedByNestedInput
+  changeOrdersApproved?: Prisma.ChangeOrderUpdateManyWithoutApprovedByNestedInput
+  leadsAssigned?: Prisma.LeadUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutApprovalLogsGivenInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  ledProjects?: Prisma.ProjectUncheckedUpdateManyWithoutLeadUserNestedInput
+  managedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutManagerNestedInput
+  assignedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  signatures?: Prisma.DigitalSignatureUncheckedUpdateManyWithoutUserNestedInput
+  workflowSteps?: Prisma.WorkflowStepUncheckedUpdateManyWithoutAssignedToNestedInput
+  approvalsRequested?: Prisma.ApprovalUncheckedUpdateManyWithoutRequestedByNestedInput
+  approvalsGiven?: Prisma.ApprovalUncheckedUpdateManyWithoutApprovedByNestedInput
+  activities?: Prisma.ActivityUncheckedUpdateManyWithoutUserNestedInput
+  reports?: Prisma.ReportUncheckedUpdateManyWithoutGeneratedByNestedInput
+  documentsUploaded?: Prisma.DocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  gpsTracking?: Prisma.GpsTrackingUncheckedUpdateManyWithoutUserNestedInput
+  riskAssessmentsIdentified?: Prisma.RiskAssessmentUncheckedUpdateManyWithoutIdentifiedByNestedInput
+  changeOrdersRequested?: Prisma.ChangeOrderUncheckedUpdateManyWithoutRequestedByNestedInput
+  changeOrdersApproved?: Prisma.ChangeOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  leadsAssigned?: Prisma.LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserUpsertWithoutApprovalLogsReceivedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutApprovalLogsReceivedInput, Prisma.UserUncheckedUpdateWithoutApprovalLogsReceivedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutApprovalLogsReceivedInput, Prisma.UserUncheckedCreateWithoutApprovalLogsReceivedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutApprovalLogsReceivedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutApprovalLogsReceivedInput, Prisma.UserUncheckedUpdateWithoutApprovalLogsReceivedInput>
+}
+
+export type UserUpdateWithoutApprovalLogsReceivedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  ledProjects?: Prisma.ProjectUpdateManyWithoutLeadUserNestedInput
+  managedProjects?: Prisma.ProjectUpdateManyWithoutManagerNestedInput
+  assignedSurveys?: Prisma.SurveyUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUpdateManyWithoutFromUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  signatures?: Prisma.DigitalSignatureUpdateManyWithoutUserNestedInput
+  workflowSteps?: Prisma.WorkflowStepUpdateManyWithoutAssignedToNestedInput
+  approvalsRequested?: Prisma.ApprovalUpdateManyWithoutRequestedByNestedInput
+  approvalsGiven?: Prisma.ApprovalUpdateManyWithoutApprovedByNestedInput
+  activities?: Prisma.ActivityUpdateManyWithoutUserNestedInput
+  reports?: Prisma.ReportUpdateManyWithoutGeneratedByNestedInput
+  documentsUploaded?: Prisma.DocumentUpdateManyWithoutUploadedByNestedInput
+  gpsTracking?: Prisma.GpsTrackingUpdateManyWithoutUserNestedInput
+  riskAssessmentsIdentified?: Prisma.RiskAssessmentUpdateManyWithoutIdentifiedByNestedInput
+  changeOrdersRequested?: Prisma.ChangeOrderUpdateManyWithoutRequestedByNestedInput
+  changeOrdersApproved?: Prisma.ChangeOrderUpdateManyWithoutApprovedByNestedInput
+  leadsAssigned?: Prisma.LeadUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutApprovalLogsReceivedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  ledProjects?: Prisma.ProjectUncheckedUpdateManyWithoutLeadUserNestedInput
+  managedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutManagerNestedInput
+  assignedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedUpdateManyWithoutFromUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  signatures?: Prisma.DigitalSignatureUncheckedUpdateManyWithoutUserNestedInput
+  workflowSteps?: Prisma.WorkflowStepUncheckedUpdateManyWithoutAssignedToNestedInput
+  approvalsRequested?: Prisma.ApprovalUncheckedUpdateManyWithoutRequestedByNestedInput
+  approvalsGiven?: Prisma.ApprovalUncheckedUpdateManyWithoutApprovedByNestedInput
+  activities?: Prisma.ActivityUncheckedUpdateManyWithoutUserNestedInput
+  reports?: Prisma.ReportUncheckedUpdateManyWithoutGeneratedByNestedInput
+  documentsUploaded?: Prisma.DocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  gpsTracking?: Prisma.GpsTrackingUncheckedUpdateManyWithoutUserNestedInput
+  riskAssessmentsIdentified?: Prisma.RiskAssessmentUncheckedUpdateManyWithoutIdentifiedByNestedInput
+  changeOrdersRequested?: Prisma.ChangeOrderUncheckedUpdateManyWithoutRequestedByNestedInput
+  changeOrdersApproved?: Prisma.ChangeOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  leadsAssigned?: Prisma.LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutRiskAssessmentsIdentifiedInput = {
@@ -1648,6 +2365,10 @@ export type UserCreateWithoutRiskAssessmentsIdentifiedInput = {
   ledProjects?: Prisma.ProjectCreateNestedManyWithoutLeadUserInput
   managedProjects?: Prisma.ProjectCreateNestedManyWithoutManagerInput
   assignedSurveys?: Prisma.SurveyCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   signatures?: Prisma.DigitalSignatureCreateNestedManyWithoutUserInput
@@ -1661,6 +2382,7 @@ export type UserCreateWithoutRiskAssessmentsIdentifiedInput = {
   changeOrdersRequested?: Prisma.ChangeOrderCreateNestedManyWithoutRequestedByInput
   changeOrdersApproved?: Prisma.ChangeOrderCreateNestedManyWithoutApprovedByInput
   leadsAssigned?: Prisma.LeadCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutRiskAssessmentsIdentifiedInput = {
@@ -1683,6 +2405,10 @@ export type UserUncheckedCreateWithoutRiskAssessmentsIdentifiedInput = {
   ledProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutLeadUserInput
   managedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutManagerInput
   assignedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   signatures?: Prisma.DigitalSignatureUncheckedCreateNestedManyWithoutUserInput
@@ -1696,6 +2422,7 @@ export type UserUncheckedCreateWithoutRiskAssessmentsIdentifiedInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutRequestedByInput
   changeOrdersApproved?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutApprovedByInput
   leadsAssigned?: Prisma.LeadUncheckedCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutRiskAssessmentsIdentifiedInput = {
@@ -1734,6 +2461,10 @@ export type UserUpdateWithoutRiskAssessmentsIdentifiedInput = {
   ledProjects?: Prisma.ProjectUpdateManyWithoutLeadUserNestedInput
   managedProjects?: Prisma.ProjectUpdateManyWithoutManagerNestedInput
   assignedSurveys?: Prisma.SurveyUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   signatures?: Prisma.DigitalSignatureUpdateManyWithoutUserNestedInput
@@ -1747,6 +2478,7 @@ export type UserUpdateWithoutRiskAssessmentsIdentifiedInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUpdateManyWithoutRequestedByNestedInput
   changeOrdersApproved?: Prisma.ChangeOrderUpdateManyWithoutApprovedByNestedInput
   leadsAssigned?: Prisma.LeadUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRiskAssessmentsIdentifiedInput = {
@@ -1769,6 +2501,10 @@ export type UserUncheckedUpdateWithoutRiskAssessmentsIdentifiedInput = {
   ledProjects?: Prisma.ProjectUncheckedUpdateManyWithoutLeadUserNestedInput
   managedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutManagerNestedInput
   assignedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   signatures?: Prisma.DigitalSignatureUncheckedUpdateManyWithoutUserNestedInput
@@ -1782,6 +2518,7 @@ export type UserUncheckedUpdateWithoutRiskAssessmentsIdentifiedInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUncheckedUpdateManyWithoutRequestedByNestedInput
   changeOrdersApproved?: Prisma.ChangeOrderUncheckedUpdateManyWithoutApprovedByNestedInput
   leadsAssigned?: Prisma.LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutWorkflowStepsInput = {
@@ -1804,6 +2541,10 @@ export type UserCreateWithoutWorkflowStepsInput = {
   ledProjects?: Prisma.ProjectCreateNestedManyWithoutLeadUserInput
   managedProjects?: Prisma.ProjectCreateNestedManyWithoutManagerInput
   assignedSurveys?: Prisma.SurveyCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   signatures?: Prisma.DigitalSignatureCreateNestedManyWithoutUserInput
@@ -1817,6 +2558,7 @@ export type UserCreateWithoutWorkflowStepsInput = {
   changeOrdersRequested?: Prisma.ChangeOrderCreateNestedManyWithoutRequestedByInput
   changeOrdersApproved?: Prisma.ChangeOrderCreateNestedManyWithoutApprovedByInput
   leadsAssigned?: Prisma.LeadCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutWorkflowStepsInput = {
@@ -1839,6 +2581,10 @@ export type UserUncheckedCreateWithoutWorkflowStepsInput = {
   ledProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutLeadUserInput
   managedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutManagerInput
   assignedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   signatures?: Prisma.DigitalSignatureUncheckedCreateNestedManyWithoutUserInput
@@ -1852,6 +2598,7 @@ export type UserUncheckedCreateWithoutWorkflowStepsInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutRequestedByInput
   changeOrdersApproved?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutApprovedByInput
   leadsAssigned?: Prisma.LeadUncheckedCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutWorkflowStepsInput = {
@@ -1890,6 +2637,10 @@ export type UserUpdateWithoutWorkflowStepsInput = {
   ledProjects?: Prisma.ProjectUpdateManyWithoutLeadUserNestedInput
   managedProjects?: Prisma.ProjectUpdateManyWithoutManagerNestedInput
   assignedSurveys?: Prisma.SurveyUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   signatures?: Prisma.DigitalSignatureUpdateManyWithoutUserNestedInput
@@ -1903,6 +2654,7 @@ export type UserUpdateWithoutWorkflowStepsInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUpdateManyWithoutRequestedByNestedInput
   changeOrdersApproved?: Prisma.ChangeOrderUpdateManyWithoutApprovedByNestedInput
   leadsAssigned?: Prisma.LeadUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutWorkflowStepsInput = {
@@ -1925,6 +2677,10 @@ export type UserUncheckedUpdateWithoutWorkflowStepsInput = {
   ledProjects?: Prisma.ProjectUncheckedUpdateManyWithoutLeadUserNestedInput
   managedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutManagerNestedInput
   assignedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   signatures?: Prisma.DigitalSignatureUncheckedUpdateManyWithoutUserNestedInput
@@ -1938,6 +2694,7 @@ export type UserUncheckedUpdateWithoutWorkflowStepsInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUncheckedUpdateManyWithoutRequestedByNestedInput
   changeOrdersApproved?: Prisma.ChangeOrderUncheckedUpdateManyWithoutApprovedByNestedInput
   leadsAssigned?: Prisma.LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutApprovalsRequestedInput = {
@@ -1960,6 +2717,10 @@ export type UserCreateWithoutApprovalsRequestedInput = {
   ledProjects?: Prisma.ProjectCreateNestedManyWithoutLeadUserInput
   managedProjects?: Prisma.ProjectCreateNestedManyWithoutManagerInput
   assignedSurveys?: Prisma.SurveyCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   signatures?: Prisma.DigitalSignatureCreateNestedManyWithoutUserInput
@@ -1973,6 +2734,7 @@ export type UserCreateWithoutApprovalsRequestedInput = {
   changeOrdersRequested?: Prisma.ChangeOrderCreateNestedManyWithoutRequestedByInput
   changeOrdersApproved?: Prisma.ChangeOrderCreateNestedManyWithoutApprovedByInput
   leadsAssigned?: Prisma.LeadCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutApprovalsRequestedInput = {
@@ -1995,6 +2757,10 @@ export type UserUncheckedCreateWithoutApprovalsRequestedInput = {
   ledProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutLeadUserInput
   managedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutManagerInput
   assignedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   signatures?: Prisma.DigitalSignatureUncheckedCreateNestedManyWithoutUserInput
@@ -2008,6 +2774,7 @@ export type UserUncheckedCreateWithoutApprovalsRequestedInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutRequestedByInput
   changeOrdersApproved?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutApprovedByInput
   leadsAssigned?: Prisma.LeadUncheckedCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutApprovalsRequestedInput = {
@@ -2035,6 +2802,10 @@ export type UserCreateWithoutApprovalsGivenInput = {
   ledProjects?: Prisma.ProjectCreateNestedManyWithoutLeadUserInput
   managedProjects?: Prisma.ProjectCreateNestedManyWithoutManagerInput
   assignedSurveys?: Prisma.SurveyCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   signatures?: Prisma.DigitalSignatureCreateNestedManyWithoutUserInput
@@ -2048,6 +2819,7 @@ export type UserCreateWithoutApprovalsGivenInput = {
   changeOrdersRequested?: Prisma.ChangeOrderCreateNestedManyWithoutRequestedByInput
   changeOrdersApproved?: Prisma.ChangeOrderCreateNestedManyWithoutApprovedByInput
   leadsAssigned?: Prisma.LeadCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutApprovalsGivenInput = {
@@ -2070,6 +2842,10 @@ export type UserUncheckedCreateWithoutApprovalsGivenInput = {
   ledProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutLeadUserInput
   managedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutManagerInput
   assignedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   signatures?: Prisma.DigitalSignatureUncheckedCreateNestedManyWithoutUserInput
@@ -2083,6 +2859,7 @@ export type UserUncheckedCreateWithoutApprovalsGivenInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutRequestedByInput
   changeOrdersApproved?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutApprovedByInput
   leadsAssigned?: Prisma.LeadUncheckedCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutApprovalsGivenInput = {
@@ -2121,6 +2898,10 @@ export type UserUpdateWithoutApprovalsRequestedInput = {
   ledProjects?: Prisma.ProjectUpdateManyWithoutLeadUserNestedInput
   managedProjects?: Prisma.ProjectUpdateManyWithoutManagerNestedInput
   assignedSurveys?: Prisma.SurveyUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   signatures?: Prisma.DigitalSignatureUpdateManyWithoutUserNestedInput
@@ -2134,6 +2915,7 @@ export type UserUpdateWithoutApprovalsRequestedInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUpdateManyWithoutRequestedByNestedInput
   changeOrdersApproved?: Prisma.ChangeOrderUpdateManyWithoutApprovedByNestedInput
   leadsAssigned?: Prisma.LeadUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApprovalsRequestedInput = {
@@ -2156,6 +2938,10 @@ export type UserUncheckedUpdateWithoutApprovalsRequestedInput = {
   ledProjects?: Prisma.ProjectUncheckedUpdateManyWithoutLeadUserNestedInput
   managedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutManagerNestedInput
   assignedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   signatures?: Prisma.DigitalSignatureUncheckedUpdateManyWithoutUserNestedInput
@@ -2169,6 +2955,7 @@ export type UserUncheckedUpdateWithoutApprovalsRequestedInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUncheckedUpdateManyWithoutRequestedByNestedInput
   changeOrdersApproved?: Prisma.ChangeOrderUncheckedUpdateManyWithoutApprovedByNestedInput
   leadsAssigned?: Prisma.LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutApprovalsGivenInput = {
@@ -2202,6 +2989,10 @@ export type UserUpdateWithoutApprovalsGivenInput = {
   ledProjects?: Prisma.ProjectUpdateManyWithoutLeadUserNestedInput
   managedProjects?: Prisma.ProjectUpdateManyWithoutManagerNestedInput
   assignedSurveys?: Prisma.SurveyUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   signatures?: Prisma.DigitalSignatureUpdateManyWithoutUserNestedInput
@@ -2215,6 +3006,7 @@ export type UserUpdateWithoutApprovalsGivenInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUpdateManyWithoutRequestedByNestedInput
   changeOrdersApproved?: Prisma.ChangeOrderUpdateManyWithoutApprovedByNestedInput
   leadsAssigned?: Prisma.LeadUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApprovalsGivenInput = {
@@ -2237,6 +3029,10 @@ export type UserUncheckedUpdateWithoutApprovalsGivenInput = {
   ledProjects?: Prisma.ProjectUncheckedUpdateManyWithoutLeadUserNestedInput
   managedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutManagerNestedInput
   assignedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   signatures?: Prisma.DigitalSignatureUncheckedUpdateManyWithoutUserNestedInput
@@ -2250,6 +3046,7 @@ export type UserUncheckedUpdateWithoutApprovalsGivenInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUncheckedUpdateManyWithoutRequestedByNestedInput
   changeOrdersApproved?: Prisma.ChangeOrderUncheckedUpdateManyWithoutApprovedByNestedInput
   leadsAssigned?: Prisma.LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSignaturesInput = {
@@ -2272,6 +3069,10 @@ export type UserCreateWithoutSignaturesInput = {
   ledProjects?: Prisma.ProjectCreateNestedManyWithoutLeadUserInput
   managedProjects?: Prisma.ProjectCreateNestedManyWithoutManagerInput
   assignedSurveys?: Prisma.SurveyCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   workflowSteps?: Prisma.WorkflowStepCreateNestedManyWithoutAssignedToInput
@@ -2285,6 +3086,7 @@ export type UserCreateWithoutSignaturesInput = {
   changeOrdersRequested?: Prisma.ChangeOrderCreateNestedManyWithoutRequestedByInput
   changeOrdersApproved?: Prisma.ChangeOrderCreateNestedManyWithoutApprovedByInput
   leadsAssigned?: Prisma.LeadCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSignaturesInput = {
@@ -2307,6 +3109,10 @@ export type UserUncheckedCreateWithoutSignaturesInput = {
   ledProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutLeadUserInput
   managedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutManagerInput
   assignedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   workflowSteps?: Prisma.WorkflowStepUncheckedCreateNestedManyWithoutAssignedToInput
@@ -2320,6 +3126,7 @@ export type UserUncheckedCreateWithoutSignaturesInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutRequestedByInput
   changeOrdersApproved?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutApprovedByInput
   leadsAssigned?: Prisma.LeadUncheckedCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSignaturesInput = {
@@ -2358,6 +3165,10 @@ export type UserUpdateWithoutSignaturesInput = {
   ledProjects?: Prisma.ProjectUpdateManyWithoutLeadUserNestedInput
   managedProjects?: Prisma.ProjectUpdateManyWithoutManagerNestedInput
   assignedSurveys?: Prisma.SurveyUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   workflowSteps?: Prisma.WorkflowStepUpdateManyWithoutAssignedToNestedInput
@@ -2371,6 +3182,7 @@ export type UserUpdateWithoutSignaturesInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUpdateManyWithoutRequestedByNestedInput
   changeOrdersApproved?: Prisma.ChangeOrderUpdateManyWithoutApprovedByNestedInput
   leadsAssigned?: Prisma.LeadUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSignaturesInput = {
@@ -2393,6 +3205,10 @@ export type UserUncheckedUpdateWithoutSignaturesInput = {
   ledProjects?: Prisma.ProjectUncheckedUpdateManyWithoutLeadUserNestedInput
   managedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutManagerNestedInput
   assignedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   workflowSteps?: Prisma.WorkflowStepUncheckedUpdateManyWithoutAssignedToNestedInput
@@ -2406,6 +3222,7 @@ export type UserUncheckedUpdateWithoutSignaturesInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUncheckedUpdateManyWithoutRequestedByNestedInput
   changeOrdersApproved?: Prisma.ChangeOrderUncheckedUpdateManyWithoutApprovedByNestedInput
   leadsAssigned?: Prisma.LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutNotificationsInput = {
@@ -2428,6 +3245,10 @@ export type UserCreateWithoutNotificationsInput = {
   ledProjects?: Prisma.ProjectCreateNestedManyWithoutLeadUserInput
   managedProjects?: Prisma.ProjectCreateNestedManyWithoutManagerInput
   assignedSurveys?: Prisma.SurveyCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   signatures?: Prisma.DigitalSignatureCreateNestedManyWithoutUserInput
   workflowSteps?: Prisma.WorkflowStepCreateNestedManyWithoutAssignedToInput
@@ -2441,6 +3262,7 @@ export type UserCreateWithoutNotificationsInput = {
   changeOrdersRequested?: Prisma.ChangeOrderCreateNestedManyWithoutRequestedByInput
   changeOrdersApproved?: Prisma.ChangeOrderCreateNestedManyWithoutApprovedByInput
   leadsAssigned?: Prisma.LeadCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -2463,6 +3285,10 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   ledProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutLeadUserInput
   managedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutManagerInput
   assignedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   signatures?: Prisma.DigitalSignatureUncheckedCreateNestedManyWithoutUserInput
   workflowSteps?: Prisma.WorkflowStepUncheckedCreateNestedManyWithoutAssignedToInput
@@ -2476,6 +3302,7 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutRequestedByInput
   changeOrdersApproved?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutApprovedByInput
   leadsAssigned?: Prisma.LeadUncheckedCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -2514,6 +3341,10 @@ export type UserUpdateWithoutNotificationsInput = {
   ledProjects?: Prisma.ProjectUpdateManyWithoutLeadUserNestedInput
   managedProjects?: Prisma.ProjectUpdateManyWithoutManagerNestedInput
   assignedSurveys?: Prisma.SurveyUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   signatures?: Prisma.DigitalSignatureUpdateManyWithoutUserNestedInput
   workflowSteps?: Prisma.WorkflowStepUpdateManyWithoutAssignedToNestedInput
@@ -2527,6 +3358,7 @@ export type UserUpdateWithoutNotificationsInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUpdateManyWithoutRequestedByNestedInput
   changeOrdersApproved?: Prisma.ChangeOrderUpdateManyWithoutApprovedByNestedInput
   leadsAssigned?: Prisma.LeadUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -2549,6 +3381,10 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   ledProjects?: Prisma.ProjectUncheckedUpdateManyWithoutLeadUserNestedInput
   managedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutManagerNestedInput
   assignedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   signatures?: Prisma.DigitalSignatureUncheckedUpdateManyWithoutUserNestedInput
   workflowSteps?: Prisma.WorkflowStepUncheckedUpdateManyWithoutAssignedToNestedInput
@@ -2562,6 +3398,7 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUncheckedUpdateManyWithoutRequestedByNestedInput
   changeOrdersApproved?: Prisma.ChangeOrderUncheckedUpdateManyWithoutApprovedByNestedInput
   leadsAssigned?: Prisma.LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutReportsInput = {
@@ -2584,6 +3421,10 @@ export type UserCreateWithoutReportsInput = {
   ledProjects?: Prisma.ProjectCreateNestedManyWithoutLeadUserInput
   managedProjects?: Prisma.ProjectCreateNestedManyWithoutManagerInput
   assignedSurveys?: Prisma.SurveyCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   signatures?: Prisma.DigitalSignatureCreateNestedManyWithoutUserInput
@@ -2597,6 +3438,7 @@ export type UserCreateWithoutReportsInput = {
   changeOrdersRequested?: Prisma.ChangeOrderCreateNestedManyWithoutRequestedByInput
   changeOrdersApproved?: Prisma.ChangeOrderCreateNestedManyWithoutApprovedByInput
   leadsAssigned?: Prisma.LeadCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutReportsInput = {
@@ -2619,6 +3461,10 @@ export type UserUncheckedCreateWithoutReportsInput = {
   ledProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutLeadUserInput
   managedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutManagerInput
   assignedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   signatures?: Prisma.DigitalSignatureUncheckedCreateNestedManyWithoutUserInput
@@ -2632,6 +3478,7 @@ export type UserUncheckedCreateWithoutReportsInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutRequestedByInput
   changeOrdersApproved?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutApprovedByInput
   leadsAssigned?: Prisma.LeadUncheckedCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutReportsInput = {
@@ -2670,6 +3517,10 @@ export type UserUpdateWithoutReportsInput = {
   ledProjects?: Prisma.ProjectUpdateManyWithoutLeadUserNestedInput
   managedProjects?: Prisma.ProjectUpdateManyWithoutManagerNestedInput
   assignedSurveys?: Prisma.SurveyUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   signatures?: Prisma.DigitalSignatureUpdateManyWithoutUserNestedInput
@@ -2683,6 +3534,7 @@ export type UserUpdateWithoutReportsInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUpdateManyWithoutRequestedByNestedInput
   changeOrdersApproved?: Prisma.ChangeOrderUpdateManyWithoutApprovedByNestedInput
   leadsAssigned?: Prisma.LeadUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReportsInput = {
@@ -2705,6 +3557,10 @@ export type UserUncheckedUpdateWithoutReportsInput = {
   ledProjects?: Prisma.ProjectUncheckedUpdateManyWithoutLeadUserNestedInput
   managedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutManagerNestedInput
   assignedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   signatures?: Prisma.DigitalSignatureUncheckedUpdateManyWithoutUserNestedInput
@@ -2718,6 +3574,7 @@ export type UserUncheckedUpdateWithoutReportsInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUncheckedUpdateManyWithoutRequestedByNestedInput
   changeOrdersApproved?: Prisma.ChangeOrderUncheckedUpdateManyWithoutApprovedByNestedInput
   leadsAssigned?: Prisma.LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutDocumentsUploadedInput = {
@@ -2740,6 +3597,10 @@ export type UserCreateWithoutDocumentsUploadedInput = {
   ledProjects?: Prisma.ProjectCreateNestedManyWithoutLeadUserInput
   managedProjects?: Prisma.ProjectCreateNestedManyWithoutManagerInput
   assignedSurveys?: Prisma.SurveyCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   signatures?: Prisma.DigitalSignatureCreateNestedManyWithoutUserInput
@@ -2753,6 +3614,7 @@ export type UserCreateWithoutDocumentsUploadedInput = {
   changeOrdersRequested?: Prisma.ChangeOrderCreateNestedManyWithoutRequestedByInput
   changeOrdersApproved?: Prisma.ChangeOrderCreateNestedManyWithoutApprovedByInput
   leadsAssigned?: Prisma.LeadCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutDocumentsUploadedInput = {
@@ -2775,6 +3637,10 @@ export type UserUncheckedCreateWithoutDocumentsUploadedInput = {
   ledProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutLeadUserInput
   managedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutManagerInput
   assignedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   signatures?: Prisma.DigitalSignatureUncheckedCreateNestedManyWithoutUserInput
@@ -2788,6 +3654,7 @@ export type UserUncheckedCreateWithoutDocumentsUploadedInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutRequestedByInput
   changeOrdersApproved?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutApprovedByInput
   leadsAssigned?: Prisma.LeadUncheckedCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutDocumentsUploadedInput = {
@@ -2826,6 +3693,10 @@ export type UserUpdateWithoutDocumentsUploadedInput = {
   ledProjects?: Prisma.ProjectUpdateManyWithoutLeadUserNestedInput
   managedProjects?: Prisma.ProjectUpdateManyWithoutManagerNestedInput
   assignedSurveys?: Prisma.SurveyUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   signatures?: Prisma.DigitalSignatureUpdateManyWithoutUserNestedInput
@@ -2839,6 +3710,7 @@ export type UserUpdateWithoutDocumentsUploadedInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUpdateManyWithoutRequestedByNestedInput
   changeOrdersApproved?: Prisma.ChangeOrderUpdateManyWithoutApprovedByNestedInput
   leadsAssigned?: Prisma.LeadUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDocumentsUploadedInput = {
@@ -2861,6 +3733,10 @@ export type UserUncheckedUpdateWithoutDocumentsUploadedInput = {
   ledProjects?: Prisma.ProjectUncheckedUpdateManyWithoutLeadUserNestedInput
   managedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutManagerNestedInput
   assignedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   signatures?: Prisma.DigitalSignatureUncheckedUpdateManyWithoutUserNestedInput
@@ -2874,6 +3750,7 @@ export type UserUncheckedUpdateWithoutDocumentsUploadedInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUncheckedUpdateManyWithoutRequestedByNestedInput
   changeOrdersApproved?: Prisma.ChangeOrderUncheckedUpdateManyWithoutApprovedByNestedInput
   leadsAssigned?: Prisma.LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAuditLogsInput = {
@@ -2896,6 +3773,10 @@ export type UserCreateWithoutAuditLogsInput = {
   ledProjects?: Prisma.ProjectCreateNestedManyWithoutLeadUserInput
   managedProjects?: Prisma.ProjectCreateNestedManyWithoutManagerInput
   assignedSurveys?: Prisma.SurveyCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   signatures?: Prisma.DigitalSignatureCreateNestedManyWithoutUserInput
   workflowSteps?: Prisma.WorkflowStepCreateNestedManyWithoutAssignedToInput
@@ -2909,6 +3790,7 @@ export type UserCreateWithoutAuditLogsInput = {
   changeOrdersRequested?: Prisma.ChangeOrderCreateNestedManyWithoutRequestedByInput
   changeOrdersApproved?: Prisma.ChangeOrderCreateNestedManyWithoutApprovedByInput
   leadsAssigned?: Prisma.LeadCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -2931,6 +3813,10 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   ledProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutLeadUserInput
   managedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutManagerInput
   assignedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   signatures?: Prisma.DigitalSignatureUncheckedCreateNestedManyWithoutUserInput
   workflowSteps?: Prisma.WorkflowStepUncheckedCreateNestedManyWithoutAssignedToInput
@@ -2944,6 +3830,7 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutRequestedByInput
   changeOrdersApproved?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutApprovedByInput
   leadsAssigned?: Prisma.LeadUncheckedCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -2982,6 +3869,10 @@ export type UserUpdateWithoutAuditLogsInput = {
   ledProjects?: Prisma.ProjectUpdateManyWithoutLeadUserNestedInput
   managedProjects?: Prisma.ProjectUpdateManyWithoutManagerNestedInput
   assignedSurveys?: Prisma.SurveyUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   signatures?: Prisma.DigitalSignatureUpdateManyWithoutUserNestedInput
   workflowSteps?: Prisma.WorkflowStepUpdateManyWithoutAssignedToNestedInput
@@ -2995,6 +3886,7 @@ export type UserUpdateWithoutAuditLogsInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUpdateManyWithoutRequestedByNestedInput
   changeOrdersApproved?: Prisma.ChangeOrderUpdateManyWithoutApprovedByNestedInput
   leadsAssigned?: Prisma.LeadUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -3017,6 +3909,10 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   ledProjects?: Prisma.ProjectUncheckedUpdateManyWithoutLeadUserNestedInput
   managedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutManagerNestedInput
   assignedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   signatures?: Prisma.DigitalSignatureUncheckedUpdateManyWithoutUserNestedInput
   workflowSteps?: Prisma.WorkflowStepUncheckedUpdateManyWithoutAssignedToNestedInput
@@ -3030,6 +3926,7 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUncheckedUpdateManyWithoutRequestedByNestedInput
   changeOrdersApproved?: Prisma.ChangeOrderUncheckedUpdateManyWithoutApprovedByNestedInput
   leadsAssigned?: Prisma.LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutActivitiesInput = {
@@ -3052,6 +3949,10 @@ export type UserCreateWithoutActivitiesInput = {
   ledProjects?: Prisma.ProjectCreateNestedManyWithoutLeadUserInput
   managedProjects?: Prisma.ProjectCreateNestedManyWithoutManagerInput
   assignedSurveys?: Prisma.SurveyCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   signatures?: Prisma.DigitalSignatureCreateNestedManyWithoutUserInput
@@ -3065,6 +3966,7 @@ export type UserCreateWithoutActivitiesInput = {
   changeOrdersRequested?: Prisma.ChangeOrderCreateNestedManyWithoutRequestedByInput
   changeOrdersApproved?: Prisma.ChangeOrderCreateNestedManyWithoutApprovedByInput
   leadsAssigned?: Prisma.LeadCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutActivitiesInput = {
@@ -3087,6 +3989,10 @@ export type UserUncheckedCreateWithoutActivitiesInput = {
   ledProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutLeadUserInput
   managedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutManagerInput
   assignedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   signatures?: Prisma.DigitalSignatureUncheckedCreateNestedManyWithoutUserInput
@@ -3100,6 +4006,7 @@ export type UserUncheckedCreateWithoutActivitiesInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutRequestedByInput
   changeOrdersApproved?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutApprovedByInput
   leadsAssigned?: Prisma.LeadUncheckedCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutActivitiesInput = {
@@ -3138,6 +4045,10 @@ export type UserUpdateWithoutActivitiesInput = {
   ledProjects?: Prisma.ProjectUpdateManyWithoutLeadUserNestedInput
   managedProjects?: Prisma.ProjectUpdateManyWithoutManagerNestedInput
   assignedSurveys?: Prisma.SurveyUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   signatures?: Prisma.DigitalSignatureUpdateManyWithoutUserNestedInput
@@ -3151,6 +4062,7 @@ export type UserUpdateWithoutActivitiesInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUpdateManyWithoutRequestedByNestedInput
   changeOrdersApproved?: Prisma.ChangeOrderUpdateManyWithoutApprovedByNestedInput
   leadsAssigned?: Prisma.LeadUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutActivitiesInput = {
@@ -3173,6 +4085,10 @@ export type UserUncheckedUpdateWithoutActivitiesInput = {
   ledProjects?: Prisma.ProjectUncheckedUpdateManyWithoutLeadUserNestedInput
   managedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutManagerNestedInput
   assignedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   signatures?: Prisma.DigitalSignatureUncheckedUpdateManyWithoutUserNestedInput
@@ -3186,6 +4102,7 @@ export type UserUncheckedUpdateWithoutActivitiesInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUncheckedUpdateManyWithoutRequestedByNestedInput
   changeOrdersApproved?: Prisma.ChangeOrderUncheckedUpdateManyWithoutApprovedByNestedInput
   leadsAssigned?: Prisma.LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutGpsTrackingInput = {
@@ -3208,6 +4125,10 @@ export type UserCreateWithoutGpsTrackingInput = {
   ledProjects?: Prisma.ProjectCreateNestedManyWithoutLeadUserInput
   managedProjects?: Prisma.ProjectCreateNestedManyWithoutManagerInput
   assignedSurveys?: Prisma.SurveyCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   signatures?: Prisma.DigitalSignatureCreateNestedManyWithoutUserInput
@@ -3221,6 +4142,7 @@ export type UserCreateWithoutGpsTrackingInput = {
   changeOrdersRequested?: Prisma.ChangeOrderCreateNestedManyWithoutRequestedByInput
   changeOrdersApproved?: Prisma.ChangeOrderCreateNestedManyWithoutApprovedByInput
   leadsAssigned?: Prisma.LeadCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutGpsTrackingInput = {
@@ -3243,6 +4165,10 @@ export type UserUncheckedCreateWithoutGpsTrackingInput = {
   ledProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutLeadUserInput
   managedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutManagerInput
   assignedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   signatures?: Prisma.DigitalSignatureUncheckedCreateNestedManyWithoutUserInput
@@ -3256,6 +4182,7 @@ export type UserUncheckedCreateWithoutGpsTrackingInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutRequestedByInput
   changeOrdersApproved?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutApprovedByInput
   leadsAssigned?: Prisma.LeadUncheckedCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutGpsTrackingInput = {
@@ -3294,6 +4221,10 @@ export type UserUpdateWithoutGpsTrackingInput = {
   ledProjects?: Prisma.ProjectUpdateManyWithoutLeadUserNestedInput
   managedProjects?: Prisma.ProjectUpdateManyWithoutManagerNestedInput
   assignedSurveys?: Prisma.SurveyUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   signatures?: Prisma.DigitalSignatureUpdateManyWithoutUserNestedInput
@@ -3307,6 +4238,7 @@ export type UserUpdateWithoutGpsTrackingInput = {
   changeOrdersRequested?: Prisma.ChangeOrderUpdateManyWithoutRequestedByNestedInput
   changeOrdersApproved?: Prisma.ChangeOrderUpdateManyWithoutApprovedByNestedInput
   leadsAssigned?: Prisma.LeadUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGpsTrackingInput = {
@@ -3329,6 +4261,10 @@ export type UserUncheckedUpdateWithoutGpsTrackingInput = {
   ledProjects?: Prisma.ProjectUncheckedUpdateManyWithoutLeadUserNestedInput
   managedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutManagerNestedInput
   assignedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   signatures?: Prisma.DigitalSignatureUncheckedUpdateManyWithoutUserNestedInput
@@ -3338,6 +4274,183 @@ export type UserUncheckedUpdateWithoutGpsTrackingInput = {
   activities?: Prisma.ActivityUncheckedUpdateManyWithoutUserNestedInput
   reports?: Prisma.ReportUncheckedUpdateManyWithoutGeneratedByNestedInput
   documentsUploaded?: Prisma.DocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  riskAssessmentsIdentified?: Prisma.RiskAssessmentUncheckedUpdateManyWithoutIdentifiedByNestedInput
+  changeOrdersRequested?: Prisma.ChangeOrderUncheckedUpdateManyWithoutRequestedByNestedInput
+  changeOrdersApproved?: Prisma.ChangeOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  leadsAssigned?: Prisma.LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutSiteVisitsInput = {
+  id?: string
+  email: string
+  password: string
+  firstName: string
+  lastName: string
+  phone?: string | null
+  avatar?: string | null
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy?: string | null
+  updatedBy?: string | null
+  isDeleted?: boolean
+  version?: number
+  ledProjects?: Prisma.ProjectCreateNestedManyWithoutLeadUserInput
+  managedProjects?: Prisma.ProjectCreateNestedManyWithoutManagerInput
+  assignedSurveys?: Prisma.SurveyCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  signatures?: Prisma.DigitalSignatureCreateNestedManyWithoutUserInput
+  workflowSteps?: Prisma.WorkflowStepCreateNestedManyWithoutAssignedToInput
+  approvalsRequested?: Prisma.ApprovalCreateNestedManyWithoutRequestedByInput
+  approvalsGiven?: Prisma.ApprovalCreateNestedManyWithoutApprovedByInput
+  activities?: Prisma.ActivityCreateNestedManyWithoutUserInput
+  reports?: Prisma.ReportCreateNestedManyWithoutGeneratedByInput
+  documentsUploaded?: Prisma.DocumentCreateNestedManyWithoutUploadedByInput
+  gpsTracking?: Prisma.GpsTrackingCreateNestedManyWithoutUserInput
+  riskAssessmentsIdentified?: Prisma.RiskAssessmentCreateNestedManyWithoutIdentifiedByInput
+  changeOrdersRequested?: Prisma.ChangeOrderCreateNestedManyWithoutRequestedByInput
+  changeOrdersApproved?: Prisma.ChangeOrderCreateNestedManyWithoutApprovedByInput
+  leadsAssigned?: Prisma.LeadCreateNestedManyWithoutAssignedToInput
+}
+
+export type UserUncheckedCreateWithoutSiteVisitsInput = {
+  id?: string
+  email: string
+  password: string
+  firstName: string
+  lastName: string
+  phone?: string | null
+  avatar?: string | null
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy?: string | null
+  updatedBy?: string | null
+  isDeleted?: boolean
+  version?: number
+  ledProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutLeadUserInput
+  managedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutManagerInput
+  assignedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  signatures?: Prisma.DigitalSignatureUncheckedCreateNestedManyWithoutUserInput
+  workflowSteps?: Prisma.WorkflowStepUncheckedCreateNestedManyWithoutAssignedToInput
+  approvalsRequested?: Prisma.ApprovalUncheckedCreateNestedManyWithoutRequestedByInput
+  approvalsGiven?: Prisma.ApprovalUncheckedCreateNestedManyWithoutApprovedByInput
+  activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutUserInput
+  reports?: Prisma.ReportUncheckedCreateNestedManyWithoutGeneratedByInput
+  documentsUploaded?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  gpsTracking?: Prisma.GpsTrackingUncheckedCreateNestedManyWithoutUserInput
+  riskAssessmentsIdentified?: Prisma.RiskAssessmentUncheckedCreateNestedManyWithoutIdentifiedByInput
+  changeOrdersRequested?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutRequestedByInput
+  changeOrdersApproved?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  leadsAssigned?: Prisma.LeadUncheckedCreateNestedManyWithoutAssignedToInput
+}
+
+export type UserCreateOrConnectWithoutSiteVisitsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSiteVisitsInput, Prisma.UserUncheckedCreateWithoutSiteVisitsInput>
+}
+
+export type UserUpsertWithoutSiteVisitsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSiteVisitsInput, Prisma.UserUncheckedUpdateWithoutSiteVisitsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSiteVisitsInput, Prisma.UserUncheckedCreateWithoutSiteVisitsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSiteVisitsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSiteVisitsInput, Prisma.UserUncheckedUpdateWithoutSiteVisitsInput>
+}
+
+export type UserUpdateWithoutSiteVisitsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  ledProjects?: Prisma.ProjectUpdateManyWithoutLeadUserNestedInput
+  managedProjects?: Prisma.ProjectUpdateManyWithoutManagerNestedInput
+  assignedSurveys?: Prisma.SurveyUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  signatures?: Prisma.DigitalSignatureUpdateManyWithoutUserNestedInput
+  workflowSteps?: Prisma.WorkflowStepUpdateManyWithoutAssignedToNestedInput
+  approvalsRequested?: Prisma.ApprovalUpdateManyWithoutRequestedByNestedInput
+  approvalsGiven?: Prisma.ApprovalUpdateManyWithoutApprovedByNestedInput
+  activities?: Prisma.ActivityUpdateManyWithoutUserNestedInput
+  reports?: Prisma.ReportUpdateManyWithoutGeneratedByNestedInput
+  documentsUploaded?: Prisma.DocumentUpdateManyWithoutUploadedByNestedInput
+  gpsTracking?: Prisma.GpsTrackingUpdateManyWithoutUserNestedInput
+  riskAssessmentsIdentified?: Prisma.RiskAssessmentUpdateManyWithoutIdentifiedByNestedInput
+  changeOrdersRequested?: Prisma.ChangeOrderUpdateManyWithoutRequestedByNestedInput
+  changeOrdersApproved?: Prisma.ChangeOrderUpdateManyWithoutApprovedByNestedInput
+  leadsAssigned?: Prisma.LeadUpdateManyWithoutAssignedToNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSiteVisitsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  ledProjects?: Prisma.ProjectUncheckedUpdateManyWithoutLeadUserNestedInput
+  managedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutManagerNestedInput
+  assignedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  signatures?: Prisma.DigitalSignatureUncheckedUpdateManyWithoutUserNestedInput
+  workflowSteps?: Prisma.WorkflowStepUncheckedUpdateManyWithoutAssignedToNestedInput
+  approvalsRequested?: Prisma.ApprovalUncheckedUpdateManyWithoutRequestedByNestedInput
+  approvalsGiven?: Prisma.ApprovalUncheckedUpdateManyWithoutApprovedByNestedInput
+  activities?: Prisma.ActivityUncheckedUpdateManyWithoutUserNestedInput
+  reports?: Prisma.ReportUncheckedUpdateManyWithoutGeneratedByNestedInput
+  documentsUploaded?: Prisma.DocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  gpsTracking?: Prisma.GpsTrackingUncheckedUpdateManyWithoutUserNestedInput
   riskAssessmentsIdentified?: Prisma.RiskAssessmentUncheckedUpdateManyWithoutIdentifiedByNestedInput
   changeOrdersRequested?: Prisma.ChangeOrderUncheckedUpdateManyWithoutRequestedByNestedInput
   changeOrdersApproved?: Prisma.ChangeOrderUncheckedUpdateManyWithoutApprovedByNestedInput
@@ -3364,6 +4477,10 @@ export type UserCreateWithoutChangeOrdersRequestedInput = {
   ledProjects?: Prisma.ProjectCreateNestedManyWithoutLeadUserInput
   managedProjects?: Prisma.ProjectCreateNestedManyWithoutManagerInput
   assignedSurveys?: Prisma.SurveyCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   signatures?: Prisma.DigitalSignatureCreateNestedManyWithoutUserInput
@@ -3377,6 +4494,7 @@ export type UserCreateWithoutChangeOrdersRequestedInput = {
   riskAssessmentsIdentified?: Prisma.RiskAssessmentCreateNestedManyWithoutIdentifiedByInput
   changeOrdersApproved?: Prisma.ChangeOrderCreateNestedManyWithoutApprovedByInput
   leadsAssigned?: Prisma.LeadCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutChangeOrdersRequestedInput = {
@@ -3399,6 +4517,10 @@ export type UserUncheckedCreateWithoutChangeOrdersRequestedInput = {
   ledProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutLeadUserInput
   managedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutManagerInput
   assignedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   signatures?: Prisma.DigitalSignatureUncheckedCreateNestedManyWithoutUserInput
@@ -3412,6 +4534,7 @@ export type UserUncheckedCreateWithoutChangeOrdersRequestedInput = {
   riskAssessmentsIdentified?: Prisma.RiskAssessmentUncheckedCreateNestedManyWithoutIdentifiedByInput
   changeOrdersApproved?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutApprovedByInput
   leadsAssigned?: Prisma.LeadUncheckedCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutChangeOrdersRequestedInput = {
@@ -3439,6 +4562,10 @@ export type UserCreateWithoutChangeOrdersApprovedInput = {
   ledProjects?: Prisma.ProjectCreateNestedManyWithoutLeadUserInput
   managedProjects?: Prisma.ProjectCreateNestedManyWithoutManagerInput
   assignedSurveys?: Prisma.SurveyCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   signatures?: Prisma.DigitalSignatureCreateNestedManyWithoutUserInput
@@ -3452,6 +4579,7 @@ export type UserCreateWithoutChangeOrdersApprovedInput = {
   riskAssessmentsIdentified?: Prisma.RiskAssessmentCreateNestedManyWithoutIdentifiedByInput
   changeOrdersRequested?: Prisma.ChangeOrderCreateNestedManyWithoutRequestedByInput
   leadsAssigned?: Prisma.LeadCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutChangeOrdersApprovedInput = {
@@ -3474,6 +4602,10 @@ export type UserUncheckedCreateWithoutChangeOrdersApprovedInput = {
   ledProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutLeadUserInput
   managedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutManagerInput
   assignedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutToUserInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   signatures?: Prisma.DigitalSignatureUncheckedCreateNestedManyWithoutUserInput
@@ -3487,6 +4619,7 @@ export type UserUncheckedCreateWithoutChangeOrdersApprovedInput = {
   riskAssessmentsIdentified?: Prisma.RiskAssessmentUncheckedCreateNestedManyWithoutIdentifiedByInput
   changeOrdersRequested?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutRequestedByInput
   leadsAssigned?: Prisma.LeadUncheckedCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutChangeOrdersApprovedInput = {
@@ -3525,6 +4658,10 @@ export type UserUpdateWithoutChangeOrdersRequestedInput = {
   ledProjects?: Prisma.ProjectUpdateManyWithoutLeadUserNestedInput
   managedProjects?: Prisma.ProjectUpdateManyWithoutManagerNestedInput
   assignedSurveys?: Prisma.SurveyUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   signatures?: Prisma.DigitalSignatureUpdateManyWithoutUserNestedInput
@@ -3538,6 +4675,7 @@ export type UserUpdateWithoutChangeOrdersRequestedInput = {
   riskAssessmentsIdentified?: Prisma.RiskAssessmentUpdateManyWithoutIdentifiedByNestedInput
   changeOrdersApproved?: Prisma.ChangeOrderUpdateManyWithoutApprovedByNestedInput
   leadsAssigned?: Prisma.LeadUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutChangeOrdersRequestedInput = {
@@ -3560,6 +4698,10 @@ export type UserUncheckedUpdateWithoutChangeOrdersRequestedInput = {
   ledProjects?: Prisma.ProjectUncheckedUpdateManyWithoutLeadUserNestedInput
   managedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutManagerNestedInput
   assignedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   signatures?: Prisma.DigitalSignatureUncheckedUpdateManyWithoutUserNestedInput
@@ -3573,6 +4715,7 @@ export type UserUncheckedUpdateWithoutChangeOrdersRequestedInput = {
   riskAssessmentsIdentified?: Prisma.RiskAssessmentUncheckedUpdateManyWithoutIdentifiedByNestedInput
   changeOrdersApproved?: Prisma.ChangeOrderUncheckedUpdateManyWithoutApprovedByNestedInput
   leadsAssigned?: Prisma.LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutChangeOrdersApprovedInput = {
@@ -3606,6 +4749,10 @@ export type UserUpdateWithoutChangeOrdersApprovedInput = {
   ledProjects?: Prisma.ProjectUpdateManyWithoutLeadUserNestedInput
   managedProjects?: Prisma.ProjectUpdateManyWithoutManagerNestedInput
   assignedSurveys?: Prisma.SurveyUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   signatures?: Prisma.DigitalSignatureUpdateManyWithoutUserNestedInput
@@ -3619,6 +4766,7 @@ export type UserUpdateWithoutChangeOrdersApprovedInput = {
   riskAssessmentsIdentified?: Prisma.RiskAssessmentUpdateManyWithoutIdentifiedByNestedInput
   changeOrdersRequested?: Prisma.ChangeOrderUpdateManyWithoutRequestedByNestedInput
   leadsAssigned?: Prisma.LeadUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutChangeOrdersApprovedInput = {
@@ -3641,6 +4789,10 @@ export type UserUncheckedUpdateWithoutChangeOrdersApprovedInput = {
   ledProjects?: Prisma.ProjectUncheckedUpdateManyWithoutLeadUserNestedInput
   managedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutManagerNestedInput
   assignedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedUpdateManyWithoutToUserNestedInput
+  approvalLevelAssignments?: Prisma.ApprovalLevelUserUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   signatures?: Prisma.DigitalSignatureUncheckedUpdateManyWithoutUserNestedInput
@@ -3654,6 +4806,183 @@ export type UserUncheckedUpdateWithoutChangeOrdersApprovedInput = {
   riskAssessmentsIdentified?: Prisma.RiskAssessmentUncheckedUpdateManyWithoutIdentifiedByNestedInput
   changeOrdersRequested?: Prisma.ChangeOrderUncheckedUpdateManyWithoutRequestedByNestedInput
   leadsAssigned?: Prisma.LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutApprovalLevelAssignmentsInput = {
+  id?: string
+  email: string
+  password: string
+  firstName: string
+  lastName: string
+  phone?: string | null
+  avatar?: string | null
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy?: string | null
+  updatedBy?: string | null
+  isDeleted?: boolean
+  version?: number
+  ledProjects?: Prisma.ProjectCreateNestedManyWithoutLeadUserInput
+  managedProjects?: Prisma.ProjectCreateNestedManyWithoutManagerInput
+  assignedSurveys?: Prisma.SurveyCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogCreateNestedManyWithoutToUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  signatures?: Prisma.DigitalSignatureCreateNestedManyWithoutUserInput
+  workflowSteps?: Prisma.WorkflowStepCreateNestedManyWithoutAssignedToInput
+  approvalsRequested?: Prisma.ApprovalCreateNestedManyWithoutRequestedByInput
+  approvalsGiven?: Prisma.ApprovalCreateNestedManyWithoutApprovedByInput
+  activities?: Prisma.ActivityCreateNestedManyWithoutUserInput
+  reports?: Prisma.ReportCreateNestedManyWithoutGeneratedByInput
+  documentsUploaded?: Prisma.DocumentCreateNestedManyWithoutUploadedByInput
+  gpsTracking?: Prisma.GpsTrackingCreateNestedManyWithoutUserInput
+  riskAssessmentsIdentified?: Prisma.RiskAssessmentCreateNestedManyWithoutIdentifiedByInput
+  changeOrdersRequested?: Prisma.ChangeOrderCreateNestedManyWithoutRequestedByInput
+  changeOrdersApproved?: Prisma.ChangeOrderCreateNestedManyWithoutApprovedByInput
+  leadsAssigned?: Prisma.LeadCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutApprovalLevelAssignmentsInput = {
+  id?: string
+  email: string
+  password: string
+  firstName: string
+  lastName: string
+  phone?: string | null
+  avatar?: string | null
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy?: string | null
+  updatedBy?: string | null
+  isDeleted?: boolean
+  version?: number
+  ledProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutLeadUserInput
+  managedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutManagerInput
+  assignedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutEngineerInput
+  approvedSurveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutAssignedApproverInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutFromUserInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutToUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  signatures?: Prisma.DigitalSignatureUncheckedCreateNestedManyWithoutUserInput
+  workflowSteps?: Prisma.WorkflowStepUncheckedCreateNestedManyWithoutAssignedToInput
+  approvalsRequested?: Prisma.ApprovalUncheckedCreateNestedManyWithoutRequestedByInput
+  approvalsGiven?: Prisma.ApprovalUncheckedCreateNestedManyWithoutApprovedByInput
+  activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutUserInput
+  reports?: Prisma.ReportUncheckedCreateNestedManyWithoutGeneratedByInput
+  documentsUploaded?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  gpsTracking?: Prisma.GpsTrackingUncheckedCreateNestedManyWithoutUserInput
+  riskAssessmentsIdentified?: Prisma.RiskAssessmentUncheckedCreateNestedManyWithoutIdentifiedByInput
+  changeOrdersRequested?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutRequestedByInput
+  changeOrdersApproved?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  leadsAssigned?: Prisma.LeadUncheckedCreateNestedManyWithoutAssignedToInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutApprovalLevelAssignmentsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutApprovalLevelAssignmentsInput, Prisma.UserUncheckedCreateWithoutApprovalLevelAssignmentsInput>
+}
+
+export type UserUpsertWithoutApprovalLevelAssignmentsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutApprovalLevelAssignmentsInput, Prisma.UserUncheckedUpdateWithoutApprovalLevelAssignmentsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutApprovalLevelAssignmentsInput, Prisma.UserUncheckedCreateWithoutApprovalLevelAssignmentsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutApprovalLevelAssignmentsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutApprovalLevelAssignmentsInput, Prisma.UserUncheckedUpdateWithoutApprovalLevelAssignmentsInput>
+}
+
+export type UserUpdateWithoutApprovalLevelAssignmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  ledProjects?: Prisma.ProjectUpdateManyWithoutLeadUserNestedInput
+  managedProjects?: Prisma.ProjectUpdateManyWithoutManagerNestedInput
+  assignedSurveys?: Prisma.SurveyUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUpdateManyWithoutToUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  signatures?: Prisma.DigitalSignatureUpdateManyWithoutUserNestedInput
+  workflowSteps?: Prisma.WorkflowStepUpdateManyWithoutAssignedToNestedInput
+  approvalsRequested?: Prisma.ApprovalUpdateManyWithoutRequestedByNestedInput
+  approvalsGiven?: Prisma.ApprovalUpdateManyWithoutApprovedByNestedInput
+  activities?: Prisma.ActivityUpdateManyWithoutUserNestedInput
+  reports?: Prisma.ReportUpdateManyWithoutGeneratedByNestedInput
+  documentsUploaded?: Prisma.DocumentUpdateManyWithoutUploadedByNestedInput
+  gpsTracking?: Prisma.GpsTrackingUpdateManyWithoutUserNestedInput
+  riskAssessmentsIdentified?: Prisma.RiskAssessmentUpdateManyWithoutIdentifiedByNestedInput
+  changeOrdersRequested?: Prisma.ChangeOrderUpdateManyWithoutRequestedByNestedInput
+  changeOrdersApproved?: Prisma.ChangeOrderUpdateManyWithoutApprovedByNestedInput
+  leadsAssigned?: Prisma.LeadUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutApprovalLevelAssignmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  ledProjects?: Prisma.ProjectUncheckedUpdateManyWithoutLeadUserNestedInput
+  managedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutManagerNestedInput
+  assignedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutEngineerNestedInput
+  approvedSurveys?: Prisma.SurveyUncheckedUpdateManyWithoutAssignedApproverNestedInput
+  approvalLogsGiven?: Prisma.ApprovalLogUncheckedUpdateManyWithoutFromUserNestedInput
+  approvalLogsReceived?: Prisma.ApprovalLogUncheckedUpdateManyWithoutToUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  signatures?: Prisma.DigitalSignatureUncheckedUpdateManyWithoutUserNestedInput
+  workflowSteps?: Prisma.WorkflowStepUncheckedUpdateManyWithoutAssignedToNestedInput
+  approvalsRequested?: Prisma.ApprovalUncheckedUpdateManyWithoutRequestedByNestedInput
+  approvalsGiven?: Prisma.ApprovalUncheckedUpdateManyWithoutApprovedByNestedInput
+  activities?: Prisma.ActivityUncheckedUpdateManyWithoutUserNestedInput
+  reports?: Prisma.ReportUncheckedUpdateManyWithoutGeneratedByNestedInput
+  documentsUploaded?: Prisma.DocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  gpsTracking?: Prisma.GpsTrackingUncheckedUpdateManyWithoutUserNestedInput
+  riskAssessmentsIdentified?: Prisma.RiskAssessmentUncheckedUpdateManyWithoutIdentifiedByNestedInput
+  changeOrdersRequested?: Prisma.ChangeOrderUncheckedUpdateManyWithoutRequestedByNestedInput
+  changeOrdersApproved?: Prisma.ChangeOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  leadsAssigned?: Prisma.LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -3665,6 +4994,10 @@ export type UserCountOutputType = {
   ledProjects: number
   managedProjects: number
   assignedSurveys: number
+  approvedSurveys: number
+  approvalLogsGiven: number
+  approvalLogsReceived: number
+  approvalLevelAssignments: number
   auditLogs: number
   notifications: number
   signatures: number
@@ -3679,12 +5012,17 @@ export type UserCountOutputType = {
   changeOrdersRequested: number
   changeOrdersApproved: number
   leadsAssigned: number
+  siteVisits: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   ledProjects?: boolean | UserCountOutputTypeCountLedProjectsArgs
   managedProjects?: boolean | UserCountOutputTypeCountManagedProjectsArgs
   assignedSurveys?: boolean | UserCountOutputTypeCountAssignedSurveysArgs
+  approvedSurveys?: boolean | UserCountOutputTypeCountApprovedSurveysArgs
+  approvalLogsGiven?: boolean | UserCountOutputTypeCountApprovalLogsGivenArgs
+  approvalLogsReceived?: boolean | UserCountOutputTypeCountApprovalLogsReceivedArgs
+  approvalLevelAssignments?: boolean | UserCountOutputTypeCountApprovalLevelAssignmentsArgs
   auditLogs?: boolean | UserCountOutputTypeCountAuditLogsArgs
   notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
   signatures?: boolean | UserCountOutputTypeCountSignaturesArgs
@@ -3699,6 +5037,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   changeOrdersRequested?: boolean | UserCountOutputTypeCountChangeOrdersRequestedArgs
   changeOrdersApproved?: boolean | UserCountOutputTypeCountChangeOrdersApprovedArgs
   leadsAssigned?: boolean | UserCountOutputTypeCountLeadsAssignedArgs
+  siteVisits?: boolean | UserCountOutputTypeCountSiteVisitsArgs
 }
 
 /**
@@ -3730,6 +5069,34 @@ export type UserCountOutputTypeCountManagedProjectsArgs<ExtArgs extends runtime.
  */
 export type UserCountOutputTypeCountAssignedSurveysArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.SurveyWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountApprovedSurveysArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SurveyWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountApprovalLogsGivenArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ApprovalLogWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountApprovalLogsReceivedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ApprovalLogWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountApprovalLevelAssignmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ApprovalLevelUserWhereInput
 }
 
 /**
@@ -3830,6 +5197,13 @@ export type UserCountOutputTypeCountLeadsAssignedArgs<ExtArgs extends runtime.Ty
   where?: Prisma.LeadWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSiteVisitsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SiteVisitWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -3851,6 +5225,10 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   ledProjects?: boolean | Prisma.User$ledProjectsArgs<ExtArgs>
   managedProjects?: boolean | Prisma.User$managedProjectsArgs<ExtArgs>
   assignedSurveys?: boolean | Prisma.User$assignedSurveysArgs<ExtArgs>
+  approvedSurveys?: boolean | Prisma.User$approvedSurveysArgs<ExtArgs>
+  approvalLogsGiven?: boolean | Prisma.User$approvalLogsGivenArgs<ExtArgs>
+  approvalLogsReceived?: boolean | Prisma.User$approvalLogsReceivedArgs<ExtArgs>
+  approvalLevelAssignments?: boolean | Prisma.User$approvalLevelAssignmentsArgs<ExtArgs>
   auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
   notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
   signatures?: boolean | Prisma.User$signaturesArgs<ExtArgs>
@@ -3865,6 +5243,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   changeOrdersRequested?: boolean | Prisma.User$changeOrdersRequestedArgs<ExtArgs>
   changeOrdersApproved?: boolean | Prisma.User$changeOrdersApprovedArgs<ExtArgs>
   leadsAssigned?: boolean | Prisma.User$leadsAssignedArgs<ExtArgs>
+  siteVisits?: boolean | Prisma.User$siteVisitsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -3930,6 +5309,10 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   ledProjects?: boolean | Prisma.User$ledProjectsArgs<ExtArgs>
   managedProjects?: boolean | Prisma.User$managedProjectsArgs<ExtArgs>
   assignedSurveys?: boolean | Prisma.User$assignedSurveysArgs<ExtArgs>
+  approvedSurveys?: boolean | Prisma.User$approvedSurveysArgs<ExtArgs>
+  approvalLogsGiven?: boolean | Prisma.User$approvalLogsGivenArgs<ExtArgs>
+  approvalLogsReceived?: boolean | Prisma.User$approvalLogsReceivedArgs<ExtArgs>
+  approvalLevelAssignments?: boolean | Prisma.User$approvalLevelAssignmentsArgs<ExtArgs>
   auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
   notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
   signatures?: boolean | Prisma.User$signaturesArgs<ExtArgs>
@@ -3944,6 +5327,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   changeOrdersRequested?: boolean | Prisma.User$changeOrdersRequestedArgs<ExtArgs>
   changeOrdersApproved?: boolean | Prisma.User$changeOrdersApprovedArgs<ExtArgs>
   leadsAssigned?: boolean | Prisma.User$leadsAssignedArgs<ExtArgs>
+  siteVisits?: boolean | Prisma.User$siteVisitsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -3955,6 +5339,10 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     ledProjects: Prisma.$ProjectPayload<ExtArgs>[]
     managedProjects: Prisma.$ProjectPayload<ExtArgs>[]
     assignedSurveys: Prisma.$SurveyPayload<ExtArgs>[]
+    approvedSurveys: Prisma.$SurveyPayload<ExtArgs>[]
+    approvalLogsGiven: Prisma.$ApprovalLogPayload<ExtArgs>[]
+    approvalLogsReceived: Prisma.$ApprovalLogPayload<ExtArgs>[]
+    approvalLevelAssignments: Prisma.$ApprovalLevelUserPayload<ExtArgs>[]
     auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
     notifications: Prisma.$NotificationPayload<ExtArgs>[]
     signatures: Prisma.$DigitalSignaturePayload<ExtArgs>[]
@@ -3969,6 +5357,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     changeOrdersRequested: Prisma.$ChangeOrderPayload<ExtArgs>[]
     changeOrdersApproved: Prisma.$ChangeOrderPayload<ExtArgs>[]
     leadsAssigned: Prisma.$LeadPayload<ExtArgs>[]
+    siteVisits: Prisma.$SiteVisitPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -4384,6 +5773,10 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   ledProjects<T extends Prisma.User$ledProjectsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ledProjectsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   managedProjects<T extends Prisma.User$managedProjectsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$managedProjectsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   assignedSurveys<T extends Prisma.User$assignedSurveysArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$assignedSurveysArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SurveyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  approvedSurveys<T extends Prisma.User$approvedSurveysArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$approvedSurveysArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SurveyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  approvalLogsGiven<T extends Prisma.User$approvalLogsGivenArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$approvalLogsGivenArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApprovalLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  approvalLogsReceived<T extends Prisma.User$approvalLogsReceivedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$approvalLogsReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApprovalLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  approvalLevelAssignments<T extends Prisma.User$approvalLevelAssignmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$approvalLevelAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApprovalLevelUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   auditLogs<T extends Prisma.User$auditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   notifications<T extends Prisma.User$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   signatures<T extends Prisma.User$signaturesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$signaturesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DigitalSignaturePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -4398,6 +5791,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   changeOrdersRequested<T extends Prisma.User$changeOrdersRequestedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$changeOrdersRequestedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChangeOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   changeOrdersApproved<T extends Prisma.User$changeOrdersApprovedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$changeOrdersApprovedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChangeOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   leadsAssigned<T extends Prisma.User$leadsAssignedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$leadsAssignedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  siteVisits<T extends Prisma.User$siteVisitsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$siteVisitsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SiteVisitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4908,6 +6302,102 @@ export type User$assignedSurveysArgs<ExtArgs extends runtime.Types.Extensions.In
 }
 
 /**
+ * User.approvedSurveys
+ */
+export type User$approvedSurveysArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Survey
+   */
+  select?: Prisma.SurveySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Survey
+   */
+  omit?: Prisma.SurveyOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SurveyInclude<ExtArgs> | null
+  where?: Prisma.SurveyWhereInput
+  orderBy?: Prisma.SurveyOrderByWithRelationInput | Prisma.SurveyOrderByWithRelationInput[]
+  cursor?: Prisma.SurveyWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SurveyScalarFieldEnum | Prisma.SurveyScalarFieldEnum[]
+}
+
+/**
+ * User.approvalLogsGiven
+ */
+export type User$approvalLogsGivenArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ApprovalLog
+   */
+  select?: Prisma.ApprovalLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ApprovalLog
+   */
+  omit?: Prisma.ApprovalLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ApprovalLogInclude<ExtArgs> | null
+  where?: Prisma.ApprovalLogWhereInput
+  orderBy?: Prisma.ApprovalLogOrderByWithRelationInput | Prisma.ApprovalLogOrderByWithRelationInput[]
+  cursor?: Prisma.ApprovalLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ApprovalLogScalarFieldEnum | Prisma.ApprovalLogScalarFieldEnum[]
+}
+
+/**
+ * User.approvalLogsReceived
+ */
+export type User$approvalLogsReceivedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ApprovalLog
+   */
+  select?: Prisma.ApprovalLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ApprovalLog
+   */
+  omit?: Prisma.ApprovalLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ApprovalLogInclude<ExtArgs> | null
+  where?: Prisma.ApprovalLogWhereInput
+  orderBy?: Prisma.ApprovalLogOrderByWithRelationInput | Prisma.ApprovalLogOrderByWithRelationInput[]
+  cursor?: Prisma.ApprovalLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ApprovalLogScalarFieldEnum | Prisma.ApprovalLogScalarFieldEnum[]
+}
+
+/**
+ * User.approvalLevelAssignments
+ */
+export type User$approvalLevelAssignmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ApprovalLevelUser
+   */
+  select?: Prisma.ApprovalLevelUserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ApprovalLevelUser
+   */
+  omit?: Prisma.ApprovalLevelUserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ApprovalLevelUserInclude<ExtArgs> | null
+  where?: Prisma.ApprovalLevelUserWhereInput
+  orderBy?: Prisma.ApprovalLevelUserOrderByWithRelationInput | Prisma.ApprovalLevelUserOrderByWithRelationInput[]
+  cursor?: Prisma.ApprovalLevelUserWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ApprovalLevelUserScalarFieldEnum | Prisma.ApprovalLevelUserScalarFieldEnum[]
+}
+
+/**
  * User.auditLogs
  */
 export type User$auditLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -5241,6 +6731,30 @@ export type User$leadsAssignedArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.LeadScalarFieldEnum | Prisma.LeadScalarFieldEnum[]
+}
+
+/**
+ * User.siteVisits
+ */
+export type User$siteVisitsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SiteVisit
+   */
+  select?: Prisma.SiteVisitSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SiteVisit
+   */
+  omit?: Prisma.SiteVisitOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SiteVisitInclude<ExtArgs> | null
+  where?: Prisma.SiteVisitWhereInput
+  orderBy?: Prisma.SiteVisitOrderByWithRelationInput | Prisma.SiteVisitOrderByWithRelationInput[]
+  cursor?: Prisma.SiteVisitWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SiteVisitScalarFieldEnum | Prisma.SiteVisitScalarFieldEnum[]
 }
 
 /**

@@ -344,7 +344,7 @@ export default function NewLeadPage() {
               <SelectItem value="NEW">New</SelectItem>
               <SelectItem value="CONTACTED">Contacted</SelectItem>
               <SelectItem value="QUALIFIED">Qualified</SelectItem>
-              <SelectItem value="PROPOSAL_SENT">Proposal Sent</SelectItem>
+              <SelectItem value="PROPOSAL">Proposal Sent</SelectItem>
               <SelectItem value="NEGOTIATION">Negotiation</SelectItem>
             </SelectContent>
           </Select>

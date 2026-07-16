@@ -37,9 +37,23 @@ export async function GET(request: NextRequest) {
       (db as any).quotation.count({ where }),
     ])
 
+    const statusMap: Record<string, string> = {
+      PENDING: 'Draft', PARTIAL: 'Sent', PAID: 'Accepted', OVERDUE: 'Rejected', CANCELLED: 'Cancelled',
+    }
+
     return NextResponse.json({
       success: true,
-      data: quotations,
+      data: quotations.map((q: any) => ({
+        id: q.id,
+        title: q.title,
+        project: q.project?.name || '',
+        totalAmount: q.totalAmount,
+        tax: q.taxAmount,
+        grandTotal: q.grandTotal,
+        validUntil: q.validUntil,
+        status: statusMap[q.status] || q.status,
+        createdAt: q.createdAt,
+      })),
       pagination: { page, limit, total, totalPages: Math.ceil(total / limit) },
     })
   } catch (error) {
@@ -102,7 +116,7 @@ export async function POST(request: NextRequest) {
       data: {
         quotationNumber,
         title,
-        projectId,
+        project: { connect: { id: projectId } },
         totalAmount,
         taxAmount,
         grandTotal,

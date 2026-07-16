@@ -53,6 +53,7 @@ export type PhotoMinAggregateOutputType = {
   isDeleted: boolean | null
   version: number | null
   surveyId: string | null
+  projectId: string | null
 }
 
 export type PhotoMaxAggregateOutputType = {
@@ -70,6 +71,7 @@ export type PhotoMaxAggregateOutputType = {
   isDeleted: boolean | null
   version: number | null
   surveyId: string | null
+  projectId: string | null
 }
 
 export type PhotoCountAggregateOutputType = {
@@ -87,6 +89,7 @@ export type PhotoCountAggregateOutputType = {
   isDeleted: number
   version: number
   surveyId: number
+  projectId: number
   _all: number
 }
 
@@ -118,6 +121,7 @@ export type PhotoMinAggregateInputType = {
   isDeleted?: true
   version?: true
   surveyId?: true
+  projectId?: true
 }
 
 export type PhotoMaxAggregateInputType = {
@@ -135,6 +139,7 @@ export type PhotoMaxAggregateInputType = {
   isDeleted?: true
   version?: true
   surveyId?: true
+  projectId?: true
 }
 
 export type PhotoCountAggregateInputType = {
@@ -152,6 +157,7 @@ export type PhotoCountAggregateInputType = {
   isDeleted?: true
   version?: true
   surveyId?: true
+  projectId?: true
   _all?: true
 }
 
@@ -256,6 +262,7 @@ export type PhotoGroupByOutputType = {
   isDeleted: boolean
   version: number
   surveyId: string
+  projectId: string | null
   _count: PhotoCountAggregateOutputType | null
   _avg: PhotoAvgAggregateOutputType | null
   _sum: PhotoSumAggregateOutputType | null
@@ -296,7 +303,9 @@ export type PhotoWhereInput = {
   isDeleted?: Prisma.BoolFilter<"Photo"> | boolean
   version?: Prisma.IntFilter<"Photo"> | number
   surveyId?: Prisma.StringFilter<"Photo"> | string
+  projectId?: Prisma.StringNullableFilter<"Photo"> | string | null
   survey?: Prisma.XOR<Prisma.SurveyScalarRelationFilter, Prisma.SurveyWhereInput>
+  project?: Prisma.XOR<Prisma.ProjectNullableScalarRelationFilter, Prisma.ProjectWhereInput> | null
 }
 
 export type PhotoOrderByWithRelationInput = {
@@ -314,7 +323,9 @@ export type PhotoOrderByWithRelationInput = {
   isDeleted?: Prisma.SortOrder
   version?: Prisma.SortOrder
   surveyId?: Prisma.SortOrder
+  projectId?: Prisma.SortOrderInput | Prisma.SortOrder
   survey?: Prisma.SurveyOrderByWithRelationInput
+  project?: Prisma.ProjectOrderByWithRelationInput
 }
 
 export type PhotoWhereUniqueInput = Prisma.AtLeast<{
@@ -335,7 +346,9 @@ export type PhotoWhereUniqueInput = Prisma.AtLeast<{
   isDeleted?: Prisma.BoolFilter<"Photo"> | boolean
   version?: Prisma.IntFilter<"Photo"> | number
   surveyId?: Prisma.StringFilter<"Photo"> | string
+  projectId?: Prisma.StringNullableFilter<"Photo"> | string | null
   survey?: Prisma.XOR<Prisma.SurveyScalarRelationFilter, Prisma.SurveyWhereInput>
+  project?: Prisma.XOR<Prisma.ProjectNullableScalarRelationFilter, Prisma.ProjectWhereInput> | null
 }, "id">
 
 export type PhotoOrderByWithAggregationInput = {
@@ -353,6 +366,7 @@ export type PhotoOrderByWithAggregationInput = {
   isDeleted?: Prisma.SortOrder
   version?: Prisma.SortOrder
   surveyId?: Prisma.SortOrder
+  projectId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.PhotoCountOrderByAggregateInput
   _avg?: Prisma.PhotoAvgOrderByAggregateInput
   _max?: Prisma.PhotoMaxOrderByAggregateInput
@@ -378,6 +392,7 @@ export type PhotoScalarWhereWithAggregatesInput = {
   isDeleted?: Prisma.BoolWithAggregatesFilter<"Photo"> | boolean
   version?: Prisma.IntWithAggregatesFilter<"Photo"> | number
   surveyId?: Prisma.StringWithAggregatesFilter<"Photo"> | string
+  projectId?: Prisma.StringNullableWithAggregatesFilter<"Photo"> | string | null
 }
 
 export type PhotoCreateInput = {
@@ -395,6 +410,7 @@ export type PhotoCreateInput = {
   isDeleted?: boolean
   version?: number
   survey: Prisma.SurveyCreateNestedOneWithoutPhotosInput
+  project?: Prisma.ProjectCreateNestedOneWithoutPhotosInput
 }
 
 export type PhotoUncheckedCreateInput = {
@@ -412,6 +428,7 @@ export type PhotoUncheckedCreateInput = {
   isDeleted?: boolean
   version?: number
   surveyId: string
+  projectId?: string | null
 }
 
 export type PhotoUpdateInput = {
@@ -429,6 +446,7 @@ export type PhotoUpdateInput = {
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
   survey?: Prisma.SurveyUpdateOneRequiredWithoutPhotosNestedInput
+  project?: Prisma.ProjectUpdateOneWithoutPhotosNestedInput
 }
 
 export type PhotoUncheckedUpdateInput = {
@@ -446,6 +464,7 @@ export type PhotoUncheckedUpdateInput = {
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
   surveyId?: Prisma.StringFieldUpdateOperationsInput | string
+  projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type PhotoCreateManyInput = {
@@ -463,6 +482,7 @@ export type PhotoCreateManyInput = {
   isDeleted?: boolean
   version?: number
   surveyId: string
+  projectId?: string | null
 }
 
 export type PhotoUpdateManyMutationInput = {
@@ -496,6 +516,7 @@ export type PhotoUncheckedUpdateManyInput = {
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
   surveyId?: Prisma.StringFieldUpdateOperationsInput | string
+  projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type PhotoListRelationFilter = {
@@ -523,6 +544,7 @@ export type PhotoCountOrderByAggregateInput = {
   isDeleted?: Prisma.SortOrder
   version?: Prisma.SortOrder
   surveyId?: Prisma.SortOrder
+  projectId?: Prisma.SortOrder
 }
 
 export type PhotoAvgOrderByAggregateInput = {
@@ -546,6 +568,7 @@ export type PhotoMaxOrderByAggregateInput = {
   isDeleted?: Prisma.SortOrder
   version?: Prisma.SortOrder
   surveyId?: Prisma.SortOrder
+  projectId?: Prisma.SortOrder
 }
 
 export type PhotoMinOrderByAggregateInput = {
@@ -563,12 +586,55 @@ export type PhotoMinOrderByAggregateInput = {
   isDeleted?: Prisma.SortOrder
   version?: Prisma.SortOrder
   surveyId?: Prisma.SortOrder
+  projectId?: Prisma.SortOrder
 }
 
 export type PhotoSumOrderByAggregateInput = {
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
   version?: Prisma.SortOrder
+}
+
+export type PhotoCreateNestedManyWithoutProjectInput = {
+  create?: Prisma.XOR<Prisma.PhotoCreateWithoutProjectInput, Prisma.PhotoUncheckedCreateWithoutProjectInput> | Prisma.PhotoCreateWithoutProjectInput[] | Prisma.PhotoUncheckedCreateWithoutProjectInput[]
+  connectOrCreate?: Prisma.PhotoCreateOrConnectWithoutProjectInput | Prisma.PhotoCreateOrConnectWithoutProjectInput[]
+  createMany?: Prisma.PhotoCreateManyProjectInputEnvelope
+  connect?: Prisma.PhotoWhereUniqueInput | Prisma.PhotoWhereUniqueInput[]
+}
+
+export type PhotoUncheckedCreateNestedManyWithoutProjectInput = {
+  create?: Prisma.XOR<Prisma.PhotoCreateWithoutProjectInput, Prisma.PhotoUncheckedCreateWithoutProjectInput> | Prisma.PhotoCreateWithoutProjectInput[] | Prisma.PhotoUncheckedCreateWithoutProjectInput[]
+  connectOrCreate?: Prisma.PhotoCreateOrConnectWithoutProjectInput | Prisma.PhotoCreateOrConnectWithoutProjectInput[]
+  createMany?: Prisma.PhotoCreateManyProjectInputEnvelope
+  connect?: Prisma.PhotoWhereUniqueInput | Prisma.PhotoWhereUniqueInput[]
+}
+
+export type PhotoUpdateManyWithoutProjectNestedInput = {
+  create?: Prisma.XOR<Prisma.PhotoCreateWithoutProjectInput, Prisma.PhotoUncheckedCreateWithoutProjectInput> | Prisma.PhotoCreateWithoutProjectInput[] | Prisma.PhotoUncheckedCreateWithoutProjectInput[]
+  connectOrCreate?: Prisma.PhotoCreateOrConnectWithoutProjectInput | Prisma.PhotoCreateOrConnectWithoutProjectInput[]
+  upsert?: Prisma.PhotoUpsertWithWhereUniqueWithoutProjectInput | Prisma.PhotoUpsertWithWhereUniqueWithoutProjectInput[]
+  createMany?: Prisma.PhotoCreateManyProjectInputEnvelope
+  set?: Prisma.PhotoWhereUniqueInput | Prisma.PhotoWhereUniqueInput[]
+  disconnect?: Prisma.PhotoWhereUniqueInput | Prisma.PhotoWhereUniqueInput[]
+  delete?: Prisma.PhotoWhereUniqueInput | Prisma.PhotoWhereUniqueInput[]
+  connect?: Prisma.PhotoWhereUniqueInput | Prisma.PhotoWhereUniqueInput[]
+  update?: Prisma.PhotoUpdateWithWhereUniqueWithoutProjectInput | Prisma.PhotoUpdateWithWhereUniqueWithoutProjectInput[]
+  updateMany?: Prisma.PhotoUpdateManyWithWhereWithoutProjectInput | Prisma.PhotoUpdateManyWithWhereWithoutProjectInput[]
+  deleteMany?: Prisma.PhotoScalarWhereInput | Prisma.PhotoScalarWhereInput[]
+}
+
+export type PhotoUncheckedUpdateManyWithoutProjectNestedInput = {
+  create?: Prisma.XOR<Prisma.PhotoCreateWithoutProjectInput, Prisma.PhotoUncheckedCreateWithoutProjectInput> | Prisma.PhotoCreateWithoutProjectInput[] | Prisma.PhotoUncheckedCreateWithoutProjectInput[]
+  connectOrCreate?: Prisma.PhotoCreateOrConnectWithoutProjectInput | Prisma.PhotoCreateOrConnectWithoutProjectInput[]
+  upsert?: Prisma.PhotoUpsertWithWhereUniqueWithoutProjectInput | Prisma.PhotoUpsertWithWhereUniqueWithoutProjectInput[]
+  createMany?: Prisma.PhotoCreateManyProjectInputEnvelope
+  set?: Prisma.PhotoWhereUniqueInput | Prisma.PhotoWhereUniqueInput[]
+  disconnect?: Prisma.PhotoWhereUniqueInput | Prisma.PhotoWhereUniqueInput[]
+  delete?: Prisma.PhotoWhereUniqueInput | Prisma.PhotoWhereUniqueInput[]
+  connect?: Prisma.PhotoWhereUniqueInput | Prisma.PhotoWhereUniqueInput[]
+  update?: Prisma.PhotoUpdateWithWhereUniqueWithoutProjectInput | Prisma.PhotoUpdateWithWhereUniqueWithoutProjectInput[]
+  updateMany?: Prisma.PhotoUpdateManyWithWhereWithoutProjectInput | Prisma.PhotoUpdateManyWithWhereWithoutProjectInput[]
+  deleteMany?: Prisma.PhotoScalarWhereInput | Prisma.PhotoScalarWhereInput[]
 }
 
 export type PhotoCreateNestedManyWithoutSurveyInput = {
@@ -613,6 +679,87 @@ export type PhotoUncheckedUpdateManyWithoutSurveyNestedInput = {
   deleteMany?: Prisma.PhotoScalarWhereInput | Prisma.PhotoScalarWhereInput[]
 }
 
+export type PhotoCreateWithoutProjectInput = {
+  id?: string
+  url: string
+  filename: string
+  caption?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  takenAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy?: string | null
+  updatedBy?: string | null
+  isDeleted?: boolean
+  version?: number
+  survey: Prisma.SurveyCreateNestedOneWithoutPhotosInput
+}
+
+export type PhotoUncheckedCreateWithoutProjectInput = {
+  id?: string
+  url: string
+  filename: string
+  caption?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  takenAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy?: string | null
+  updatedBy?: string | null
+  isDeleted?: boolean
+  version?: number
+  surveyId: string
+}
+
+export type PhotoCreateOrConnectWithoutProjectInput = {
+  where: Prisma.PhotoWhereUniqueInput
+  create: Prisma.XOR<Prisma.PhotoCreateWithoutProjectInput, Prisma.PhotoUncheckedCreateWithoutProjectInput>
+}
+
+export type PhotoCreateManyProjectInputEnvelope = {
+  data: Prisma.PhotoCreateManyProjectInput | Prisma.PhotoCreateManyProjectInput[]
+  skipDuplicates?: boolean
+}
+
+export type PhotoUpsertWithWhereUniqueWithoutProjectInput = {
+  where: Prisma.PhotoWhereUniqueInput
+  update: Prisma.XOR<Prisma.PhotoUpdateWithoutProjectInput, Prisma.PhotoUncheckedUpdateWithoutProjectInput>
+  create: Prisma.XOR<Prisma.PhotoCreateWithoutProjectInput, Prisma.PhotoUncheckedCreateWithoutProjectInput>
+}
+
+export type PhotoUpdateWithWhereUniqueWithoutProjectInput = {
+  where: Prisma.PhotoWhereUniqueInput
+  data: Prisma.XOR<Prisma.PhotoUpdateWithoutProjectInput, Prisma.PhotoUncheckedUpdateWithoutProjectInput>
+}
+
+export type PhotoUpdateManyWithWhereWithoutProjectInput = {
+  where: Prisma.PhotoScalarWhereInput
+  data: Prisma.XOR<Prisma.PhotoUpdateManyMutationInput, Prisma.PhotoUncheckedUpdateManyWithoutProjectInput>
+}
+
+export type PhotoScalarWhereInput = {
+  AND?: Prisma.PhotoScalarWhereInput | Prisma.PhotoScalarWhereInput[]
+  OR?: Prisma.PhotoScalarWhereInput[]
+  NOT?: Prisma.PhotoScalarWhereInput | Prisma.PhotoScalarWhereInput[]
+  id?: Prisma.StringFilter<"Photo"> | string
+  url?: Prisma.StringFilter<"Photo"> | string
+  filename?: Prisma.StringFilter<"Photo"> | string
+  caption?: Prisma.StringNullableFilter<"Photo"> | string | null
+  latitude?: Prisma.FloatNullableFilter<"Photo"> | number | null
+  longitude?: Prisma.FloatNullableFilter<"Photo"> | number | null
+  takenAt?: Prisma.DateTimeNullableFilter<"Photo"> | Date | string | null
+  createdAt?: Prisma.DateTimeFilter<"Photo"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Photo"> | Date | string
+  createdBy?: Prisma.StringNullableFilter<"Photo"> | string | null
+  updatedBy?: Prisma.StringNullableFilter<"Photo"> | string | null
+  isDeleted?: Prisma.BoolFilter<"Photo"> | boolean
+  version?: Prisma.IntFilter<"Photo"> | number
+  surveyId?: Prisma.StringFilter<"Photo"> | string
+  projectId?: Prisma.StringNullableFilter<"Photo"> | string | null
+}
+
 export type PhotoCreateWithoutSurveyInput = {
   id?: string
   url: string
@@ -627,6 +774,7 @@ export type PhotoCreateWithoutSurveyInput = {
   updatedBy?: string | null
   isDeleted?: boolean
   version?: number
+  project?: Prisma.ProjectCreateNestedOneWithoutPhotosInput
 }
 
 export type PhotoUncheckedCreateWithoutSurveyInput = {
@@ -643,6 +791,7 @@ export type PhotoUncheckedCreateWithoutSurveyInput = {
   updatedBy?: string | null
   isDeleted?: boolean
   version?: number
+  projectId?: string | null
 }
 
 export type PhotoCreateOrConnectWithoutSurveyInput = {
@@ -671,24 +820,72 @@ export type PhotoUpdateManyWithWhereWithoutSurveyInput = {
   data: Prisma.XOR<Prisma.PhotoUpdateManyMutationInput, Prisma.PhotoUncheckedUpdateManyWithoutSurveyInput>
 }
 
-export type PhotoScalarWhereInput = {
-  AND?: Prisma.PhotoScalarWhereInput | Prisma.PhotoScalarWhereInput[]
-  OR?: Prisma.PhotoScalarWhereInput[]
-  NOT?: Prisma.PhotoScalarWhereInput | Prisma.PhotoScalarWhereInput[]
-  id?: Prisma.StringFilter<"Photo"> | string
-  url?: Prisma.StringFilter<"Photo"> | string
-  filename?: Prisma.StringFilter<"Photo"> | string
-  caption?: Prisma.StringNullableFilter<"Photo"> | string | null
-  latitude?: Prisma.FloatNullableFilter<"Photo"> | number | null
-  longitude?: Prisma.FloatNullableFilter<"Photo"> | number | null
-  takenAt?: Prisma.DateTimeNullableFilter<"Photo"> | Date | string | null
-  createdAt?: Prisma.DateTimeFilter<"Photo"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Photo"> | Date | string
-  createdBy?: Prisma.StringNullableFilter<"Photo"> | string | null
-  updatedBy?: Prisma.StringNullableFilter<"Photo"> | string | null
-  isDeleted?: Prisma.BoolFilter<"Photo"> | boolean
-  version?: Prisma.IntFilter<"Photo"> | number
-  surveyId?: Prisma.StringFilter<"Photo"> | string
+export type PhotoCreateManyProjectInput = {
+  id?: string
+  url: string
+  filename: string
+  caption?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  takenAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy?: string | null
+  updatedBy?: string | null
+  isDeleted?: boolean
+  version?: number
+  surveyId: string
+}
+
+export type PhotoUpdateWithoutProjectInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  filename?: Prisma.StringFieldUpdateOperationsInput | string
+  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  takenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  survey?: Prisma.SurveyUpdateOneRequiredWithoutPhotosNestedInput
+}
+
+export type PhotoUncheckedUpdateWithoutProjectInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  filename?: Prisma.StringFieldUpdateOperationsInput | string
+  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  takenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  surveyId?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+export type PhotoUncheckedUpdateManyWithoutProjectInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  filename?: Prisma.StringFieldUpdateOperationsInput | string
+  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  takenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  surveyId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type PhotoCreateManySurveyInput = {
@@ -705,6 +902,7 @@ export type PhotoCreateManySurveyInput = {
   updatedBy?: string | null
   isDeleted?: boolean
   version?: number
+  projectId?: string | null
 }
 
 export type PhotoUpdateWithoutSurveyInput = {
@@ -721,6 +919,7 @@ export type PhotoUpdateWithoutSurveyInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
+  project?: Prisma.ProjectUpdateOneWithoutPhotosNestedInput
 }
 
 export type PhotoUncheckedUpdateWithoutSurveyInput = {
@@ -737,6 +936,7 @@ export type PhotoUncheckedUpdateWithoutSurveyInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
+  projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type PhotoUncheckedUpdateManyWithoutSurveyInput = {
@@ -753,6 +953,7 @@ export type PhotoUncheckedUpdateManyWithoutSurveyInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
+  projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -772,7 +973,9 @@ export type PhotoSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   isDeleted?: boolean
   version?: boolean
   surveyId?: boolean
+  projectId?: boolean
   survey?: boolean | Prisma.SurveyDefaultArgs<ExtArgs>
+  project?: boolean | Prisma.Photo$projectArgs<ExtArgs>
 }, ExtArgs["result"]["photo"]>
 
 export type PhotoSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -790,7 +993,9 @@ export type PhotoSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   isDeleted?: boolean
   version?: boolean
   surveyId?: boolean
+  projectId?: boolean
   survey?: boolean | Prisma.SurveyDefaultArgs<ExtArgs>
+  project?: boolean | Prisma.Photo$projectArgs<ExtArgs>
 }, ExtArgs["result"]["photo"]>
 
 export type PhotoSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -808,7 +1013,9 @@ export type PhotoSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   isDeleted?: boolean
   version?: boolean
   surveyId?: boolean
+  projectId?: boolean
   survey?: boolean | Prisma.SurveyDefaultArgs<ExtArgs>
+  project?: boolean | Prisma.Photo$projectArgs<ExtArgs>
 }, ExtArgs["result"]["photo"]>
 
 export type PhotoSelectScalar = {
@@ -826,23 +1033,28 @@ export type PhotoSelectScalar = {
   isDeleted?: boolean
   version?: boolean
   surveyId?: boolean
+  projectId?: boolean
 }
 
-export type PhotoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "url" | "filename" | "caption" | "latitude" | "longitude" | "takenAt" | "createdAt" | "updatedAt" | "createdBy" | "updatedBy" | "isDeleted" | "version" | "surveyId", ExtArgs["result"]["photo"]>
+export type PhotoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "url" | "filename" | "caption" | "latitude" | "longitude" | "takenAt" | "createdAt" | "updatedAt" | "createdBy" | "updatedBy" | "isDeleted" | "version" | "surveyId" | "projectId", ExtArgs["result"]["photo"]>
 export type PhotoInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   survey?: boolean | Prisma.SurveyDefaultArgs<ExtArgs>
+  project?: boolean | Prisma.Photo$projectArgs<ExtArgs>
 }
 export type PhotoIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   survey?: boolean | Prisma.SurveyDefaultArgs<ExtArgs>
+  project?: boolean | Prisma.Photo$projectArgs<ExtArgs>
 }
 export type PhotoIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   survey?: boolean | Prisma.SurveyDefaultArgs<ExtArgs>
+  project?: boolean | Prisma.Photo$projectArgs<ExtArgs>
 }
 
 export type $PhotoPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Photo"
   objects: {
     survey: Prisma.$SurveyPayload<ExtArgs>
+    project: Prisma.$ProjectPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -859,6 +1071,7 @@ export type $PhotoPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     isDeleted: boolean
     version: number
     surveyId: string
+    projectId: string | null
   }, ExtArgs["result"]["photo"]>
   composites: {}
 }
@@ -1254,6 +1467,7 @@ readonly fields: PhotoFieldRefs;
 export interface Prisma__PhotoClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   survey<T extends Prisma.SurveyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SurveyDefaultArgs<ExtArgs>>): Prisma.Prisma__SurveyClient<runtime.Types.Result.GetResult<Prisma.$SurveyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  project<T extends Prisma.Photo$projectArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Photo$projectArgs<ExtArgs>>): Prisma.Prisma__ProjectClient<runtime.Types.Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1297,6 +1511,7 @@ export interface PhotoFieldRefs {
   readonly isDeleted: Prisma.FieldRef<"Photo", 'Boolean'>
   readonly version: Prisma.FieldRef<"Photo", 'Int'>
   readonly surveyId: Prisma.FieldRef<"Photo", 'String'>
+  readonly projectId: Prisma.FieldRef<"Photo", 'String'>
 }
     
 
@@ -1695,6 +1910,25 @@ export type PhotoDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Limit how many Photos to delete.
    */
   limit?: number
+}
+
+/**
+ * Photo.project
+ */
+export type Photo$projectArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Project
+   */
+  select?: Prisma.ProjectSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Project
+   */
+  omit?: Prisma.ProjectOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProjectInclude<ExtArgs> | null
+  where?: Prisma.ProjectWhereInput
 }
 
 /**

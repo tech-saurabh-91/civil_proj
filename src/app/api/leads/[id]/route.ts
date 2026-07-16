@@ -23,6 +23,47 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
   }
 }
 
+export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  try {
+    const { id } = await params
+    const body = await req.json()
+    const { action } = body
+
+    if (action === 'convert') {
+      const lead = await db.lead.findUnique({ where: { id } })
+      if (!lead) {
+        return NextResponse.json({ success: false, error: 'Lead not found' }, { status: 404 })
+      }
+
+      if (lead.clientId) {
+        return NextResponse.json({ success: false, error: 'Lead already converted' }, { status: 400 })
+      }
+
+      const client = await db.client.create({
+        data: {
+          companyName: lead.company || `${lead.name}'s Company`,
+          contactPerson: lead.name,
+          email: lead.email || '',
+          phone: lead.phone || '',
+          country: 'India',
+        },
+      })
+
+      await db.lead.update({
+        where: { id },
+        data: { status: 'WON', clientId: client.id, convertedAt: new Date() },
+      })
+
+      return NextResponse.json({ success: true, data: { clientId: client.id } })
+    }
+
+    return NextResponse.json({ success: false, error: 'Invalid action' }, { status: 400 })
+  } catch (error) {
+    console.error('POST /api/leads/[id] error:', error)
+    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 })
+  }
+}
+
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params
@@ -37,6 +78,10 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
       return NextResponse.json({ success: false, error: 'Lead not found' }, { status: 404 })
     }
 
+    if ((existing as any).status === 'WON' || (existing as any).status === 'LOST') {
+      return NextResponse.json({ success: false, error: 'Cannot modify a closed lead (Won/Lost)' }, { status: 400 })
+    }
+
     const updateData: any = {}
 
     if (name) updateData.name = name
@@ -49,8 +94,20 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     if (estimatedValue !== undefined) updateData.estimatedValue = estimatedValue ? parseFloat(estimatedValue) : null
     if (notes !== undefined) updateData.notes = notes
     if (assignedToId !== undefined) updateData.assignedToId = assignedToId
-    if (clientId !== undefined) updateData.clientId = clientId
-    if (convertedAt !== undefined) updateData.convertedAt = convertedAt ? new Date(convertedAt) : null
+
+    if (status === 'WON' && !(existing as any).clientId) {
+      const client = await db.client.create({
+        data: {
+          companyName: (existing as any).company || `${(existing as any).name}'s Company`,
+          contactPerson: (existing as any).name,
+          email: (existing as any).email || '',
+          phone: (existing as any).phone || '',
+          country: 'India',
+        },
+      })
+      updateData.clientId = client.id
+      updateData.convertedAt = new Date()
+    }
 
     const updated = await db.lead.update({
       where: { id },

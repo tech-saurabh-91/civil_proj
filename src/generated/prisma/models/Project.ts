@@ -415,6 +415,7 @@ export type ProjectWhereInput = {
   boqItems?: Prisma.BOQItemListRelationFilter
   costEstimations?: Prisma.CostEstimationListRelationFilter
   quotations?: Prisma.QuotationListRelationFilter
+  invoices?: Prisma.InvoiceListRelationFilter
   documents?: Prisma.DocumentListRelationFilter
   workflows?: Prisma.WorkflowListRelationFilter
   activities?: Prisma.ActivityListRelationFilter
@@ -422,6 +423,8 @@ export type ProjectWhereInput = {
   gpsTracking?: Prisma.GpsTrackingListRelationFilter
   meetings?: Prisma.MeetingListRelationFilter
   changeOrders?: Prisma.ChangeOrderListRelationFilter
+  photos?: Prisma.PhotoListRelationFilter
+  siteVisits?: Prisma.SiteVisitListRelationFilter
 }
 
 export type ProjectOrderByWithRelationInput = {
@@ -458,6 +461,7 @@ export type ProjectOrderByWithRelationInput = {
   boqItems?: Prisma.BOQItemOrderByRelationAggregateInput
   costEstimations?: Prisma.CostEstimationOrderByRelationAggregateInput
   quotations?: Prisma.QuotationOrderByRelationAggregateInput
+  invoices?: Prisma.InvoiceOrderByRelationAggregateInput
   documents?: Prisma.DocumentOrderByRelationAggregateInput
   workflows?: Prisma.WorkflowOrderByRelationAggregateInput
   activities?: Prisma.ActivityOrderByRelationAggregateInput
@@ -465,6 +469,8 @@ export type ProjectOrderByWithRelationInput = {
   gpsTracking?: Prisma.GpsTrackingOrderByRelationAggregateInput
   meetings?: Prisma.MeetingOrderByRelationAggregateInput
   changeOrders?: Prisma.ChangeOrderOrderByRelationAggregateInput
+  photos?: Prisma.PhotoOrderByRelationAggregateInput
+  siteVisits?: Prisma.SiteVisitOrderByRelationAggregateInput
 }
 
 export type ProjectWhereUniqueInput = Prisma.AtLeast<{
@@ -504,6 +510,7 @@ export type ProjectWhereUniqueInput = Prisma.AtLeast<{
   boqItems?: Prisma.BOQItemListRelationFilter
   costEstimations?: Prisma.CostEstimationListRelationFilter
   quotations?: Prisma.QuotationListRelationFilter
+  invoices?: Prisma.InvoiceListRelationFilter
   documents?: Prisma.DocumentListRelationFilter
   workflows?: Prisma.WorkflowListRelationFilter
   activities?: Prisma.ActivityListRelationFilter
@@ -511,6 +518,8 @@ export type ProjectWhereUniqueInput = Prisma.AtLeast<{
   gpsTracking?: Prisma.GpsTrackingListRelationFilter
   meetings?: Prisma.MeetingListRelationFilter
   changeOrders?: Prisma.ChangeOrderListRelationFilter
+  photos?: Prisma.PhotoListRelationFilter
+  siteVisits?: Prisma.SiteVisitListRelationFilter
 }, "id" | "code">
 
 export type ProjectOrderByWithAggregationInput = {
@@ -610,6 +619,7 @@ export type ProjectCreateInput = {
   boqItems?: Prisma.BOQItemCreateNestedManyWithoutProjectInput
   costEstimations?: Prisma.CostEstimationCreateNestedManyWithoutProjectInput
   quotations?: Prisma.QuotationCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentCreateNestedManyWithoutProjectInput
   workflows?: Prisma.WorkflowCreateNestedManyWithoutProjectInput
   activities?: Prisma.ActivityCreateNestedManyWithoutProjectInput
@@ -617,6 +627,8 @@ export type ProjectCreateInput = {
   gpsTracking?: Prisma.GpsTrackingCreateNestedManyWithoutProjectInput
   meetings?: Prisma.MeetingCreateNestedManyWithoutProjectInput
   changeOrders?: Prisma.ChangeOrderCreateNestedManyWithoutProjectInput
+  photos?: Prisma.PhotoCreateNestedManyWithoutProjectInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUncheckedCreateInput = {
@@ -650,6 +662,7 @@ export type ProjectUncheckedCreateInput = {
   boqItems?: Prisma.BOQItemUncheckedCreateNestedManyWithoutProjectInput
   costEstimations?: Prisma.CostEstimationUncheckedCreateNestedManyWithoutProjectInput
   quotations?: Prisma.QuotationUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutProjectInput
   workflows?: Prisma.WorkflowUncheckedCreateNestedManyWithoutProjectInput
   activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutProjectInput
@@ -657,6 +670,8 @@ export type ProjectUncheckedCreateInput = {
   gpsTracking?: Prisma.GpsTrackingUncheckedCreateNestedManyWithoutProjectInput
   meetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutProjectInput
   changeOrders?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutProjectInput
+  photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutProjectInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUpdateInput = {
@@ -690,6 +705,7 @@ export type ProjectUpdateInput = {
   boqItems?: Prisma.BOQItemUpdateManyWithoutProjectNestedInput
   costEstimations?: Prisma.CostEstimationUpdateManyWithoutProjectNestedInput
   quotations?: Prisma.QuotationUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutProjectNestedInput
   workflows?: Prisma.WorkflowUpdateManyWithoutProjectNestedInput
   activities?: Prisma.ActivityUpdateManyWithoutProjectNestedInput
@@ -697,6 +713,8 @@ export type ProjectUpdateInput = {
   gpsTracking?: Prisma.GpsTrackingUpdateManyWithoutProjectNestedInput
   meetings?: Prisma.MeetingUpdateManyWithoutProjectNestedInput
   changeOrders?: Prisma.ChangeOrderUpdateManyWithoutProjectNestedInput
+  photos?: Prisma.PhotoUpdateManyWithoutProjectNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateInput = {
@@ -730,6 +748,7 @@ export type ProjectUncheckedUpdateInput = {
   boqItems?: Prisma.BOQItemUncheckedUpdateManyWithoutProjectNestedInput
   costEstimations?: Prisma.CostEstimationUncheckedUpdateManyWithoutProjectNestedInput
   quotations?: Prisma.QuotationUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutProjectNestedInput
   workflows?: Prisma.WorkflowUncheckedUpdateManyWithoutProjectNestedInput
   activities?: Prisma.ActivityUncheckedUpdateManyWithoutProjectNestedInput
@@ -737,6 +756,8 @@ export type ProjectUncheckedUpdateInput = {
   gpsTracking?: Prisma.GpsTrackingUncheckedUpdateManyWithoutProjectNestedInput
   meetings?: Prisma.MeetingUncheckedUpdateManyWithoutProjectNestedInput
   changeOrders?: Prisma.ChangeOrderUncheckedUpdateManyWithoutProjectNestedInput
+  photos?: Prisma.PhotoUncheckedUpdateManyWithoutProjectNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectCreateManyInput = {
@@ -1106,6 +1127,22 @@ export type ProjectUpdateOneRequiredWithoutSurveysNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectUpdateToOneWithWhereWithoutSurveysInput, Prisma.ProjectUpdateWithoutSurveysInput>, Prisma.ProjectUncheckedUpdateWithoutSurveysInput>
 }
 
+export type ProjectCreateNestedOneWithoutPhotosInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutPhotosInput, Prisma.ProjectUncheckedCreateWithoutPhotosInput>
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutPhotosInput
+  connect?: Prisma.ProjectWhereUniqueInput
+}
+
+export type ProjectUpdateOneWithoutPhotosNestedInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutPhotosInput, Prisma.ProjectUncheckedCreateWithoutPhotosInput>
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutPhotosInput
+  upsert?: Prisma.ProjectUpsertWithoutPhotosInput
+  disconnect?: Prisma.ProjectWhereInput | boolean
+  delete?: Prisma.ProjectWhereInput | boolean
+  connect?: Prisma.ProjectWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectUpdateToOneWithWhereWithoutPhotosInput, Prisma.ProjectUpdateWithoutPhotosInput>, Prisma.ProjectUncheckedUpdateWithoutPhotosInput>
+}
+
 export type ProjectCreateNestedOneWithoutBoqItemsInput = {
   create?: Prisma.XOR<Prisma.ProjectCreateWithoutBoqItemsInput, Prisma.ProjectUncheckedCreateWithoutBoqItemsInput>
   connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutBoqItemsInput
@@ -1220,6 +1257,22 @@ export type ProjectUpdateOneWithoutGpsTrackingNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectUpdateToOneWithWhereWithoutGpsTrackingInput, Prisma.ProjectUpdateWithoutGpsTrackingInput>, Prisma.ProjectUncheckedUpdateWithoutGpsTrackingInput>
 }
 
+export type ProjectCreateNestedOneWithoutSiteVisitsInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutSiteVisitsInput, Prisma.ProjectUncheckedCreateWithoutSiteVisitsInput>
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutSiteVisitsInput
+  connect?: Prisma.ProjectWhereUniqueInput
+}
+
+export type ProjectUpdateOneWithoutSiteVisitsNestedInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutSiteVisitsInput, Prisma.ProjectUncheckedCreateWithoutSiteVisitsInput>
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutSiteVisitsInput
+  upsert?: Prisma.ProjectUpsertWithoutSiteVisitsInput
+  disconnect?: Prisma.ProjectWhereInput | boolean
+  delete?: Prisma.ProjectWhereInput | boolean
+  connect?: Prisma.ProjectWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectUpdateToOneWithWhereWithoutSiteVisitsInput, Prisma.ProjectUpdateWithoutSiteVisitsInput>, Prisma.ProjectUncheckedUpdateWithoutSiteVisitsInput>
+}
+
 export type ProjectCreateNestedOneWithoutMeetingsInput = {
   create?: Prisma.XOR<Prisma.ProjectCreateWithoutMeetingsInput, Prisma.ProjectUncheckedCreateWithoutMeetingsInput>
   connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutMeetingsInput
@@ -1246,6 +1299,20 @@ export type ProjectUpdateOneRequiredWithoutChangeOrdersNestedInput = {
   upsert?: Prisma.ProjectUpsertWithoutChangeOrdersInput
   connect?: Prisma.ProjectWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectUpdateToOneWithWhereWithoutChangeOrdersInput, Prisma.ProjectUpdateWithoutChangeOrdersInput>, Prisma.ProjectUncheckedUpdateWithoutChangeOrdersInput>
+}
+
+export type ProjectCreateNestedOneWithoutInvoicesInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutInvoicesInput, Prisma.ProjectUncheckedCreateWithoutInvoicesInput>
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutInvoicesInput
+  connect?: Prisma.ProjectWhereUniqueInput
+}
+
+export type ProjectUpdateOneRequiredWithoutInvoicesNestedInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutInvoicesInput, Prisma.ProjectUncheckedCreateWithoutInvoicesInput>
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutInvoicesInput
+  upsert?: Prisma.ProjectUpsertWithoutInvoicesInput
+  connect?: Prisma.ProjectWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectUpdateToOneWithWhereWithoutInvoicesInput, Prisma.ProjectUpdateWithoutInvoicesInput>, Prisma.ProjectUncheckedUpdateWithoutInvoicesInput>
 }
 
 export type ProjectCreateWithoutLeadUserInput = {
@@ -1278,6 +1345,7 @@ export type ProjectCreateWithoutLeadUserInput = {
   boqItems?: Prisma.BOQItemCreateNestedManyWithoutProjectInput
   costEstimations?: Prisma.CostEstimationCreateNestedManyWithoutProjectInput
   quotations?: Prisma.QuotationCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentCreateNestedManyWithoutProjectInput
   workflows?: Prisma.WorkflowCreateNestedManyWithoutProjectInput
   activities?: Prisma.ActivityCreateNestedManyWithoutProjectInput
@@ -1285,6 +1353,8 @@ export type ProjectCreateWithoutLeadUserInput = {
   gpsTracking?: Prisma.GpsTrackingCreateNestedManyWithoutProjectInput
   meetings?: Prisma.MeetingCreateNestedManyWithoutProjectInput
   changeOrders?: Prisma.ChangeOrderCreateNestedManyWithoutProjectInput
+  photos?: Prisma.PhotoCreateNestedManyWithoutProjectInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUncheckedCreateWithoutLeadUserInput = {
@@ -1317,6 +1387,7 @@ export type ProjectUncheckedCreateWithoutLeadUserInput = {
   boqItems?: Prisma.BOQItemUncheckedCreateNestedManyWithoutProjectInput
   costEstimations?: Prisma.CostEstimationUncheckedCreateNestedManyWithoutProjectInput
   quotations?: Prisma.QuotationUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutProjectInput
   workflows?: Prisma.WorkflowUncheckedCreateNestedManyWithoutProjectInput
   activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutProjectInput
@@ -1324,6 +1395,8 @@ export type ProjectUncheckedCreateWithoutLeadUserInput = {
   gpsTracking?: Prisma.GpsTrackingUncheckedCreateNestedManyWithoutProjectInput
   meetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutProjectInput
   changeOrders?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutProjectInput
+  photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutProjectInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectCreateOrConnectWithoutLeadUserInput = {
@@ -1366,6 +1439,7 @@ export type ProjectCreateWithoutManagerInput = {
   boqItems?: Prisma.BOQItemCreateNestedManyWithoutProjectInput
   costEstimations?: Prisma.CostEstimationCreateNestedManyWithoutProjectInput
   quotations?: Prisma.QuotationCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentCreateNestedManyWithoutProjectInput
   workflows?: Prisma.WorkflowCreateNestedManyWithoutProjectInput
   activities?: Prisma.ActivityCreateNestedManyWithoutProjectInput
@@ -1373,6 +1447,8 @@ export type ProjectCreateWithoutManagerInput = {
   gpsTracking?: Prisma.GpsTrackingCreateNestedManyWithoutProjectInput
   meetings?: Prisma.MeetingCreateNestedManyWithoutProjectInput
   changeOrders?: Prisma.ChangeOrderCreateNestedManyWithoutProjectInput
+  photos?: Prisma.PhotoCreateNestedManyWithoutProjectInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUncheckedCreateWithoutManagerInput = {
@@ -1405,6 +1481,7 @@ export type ProjectUncheckedCreateWithoutManagerInput = {
   boqItems?: Prisma.BOQItemUncheckedCreateNestedManyWithoutProjectInput
   costEstimations?: Prisma.CostEstimationUncheckedCreateNestedManyWithoutProjectInput
   quotations?: Prisma.QuotationUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutProjectInput
   workflows?: Prisma.WorkflowUncheckedCreateNestedManyWithoutProjectInput
   activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutProjectInput
@@ -1412,6 +1489,8 @@ export type ProjectUncheckedCreateWithoutManagerInput = {
   gpsTracking?: Prisma.GpsTrackingUncheckedCreateNestedManyWithoutProjectInput
   meetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutProjectInput
   changeOrders?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutProjectInput
+  photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutProjectInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectCreateOrConnectWithoutManagerInput = {
@@ -1518,6 +1597,7 @@ export type ProjectCreateWithoutClientInput = {
   boqItems?: Prisma.BOQItemCreateNestedManyWithoutProjectInput
   costEstimations?: Prisma.CostEstimationCreateNestedManyWithoutProjectInput
   quotations?: Prisma.QuotationCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentCreateNestedManyWithoutProjectInput
   workflows?: Prisma.WorkflowCreateNestedManyWithoutProjectInput
   activities?: Prisma.ActivityCreateNestedManyWithoutProjectInput
@@ -1525,6 +1605,8 @@ export type ProjectCreateWithoutClientInput = {
   gpsTracking?: Prisma.GpsTrackingCreateNestedManyWithoutProjectInput
   meetings?: Prisma.MeetingCreateNestedManyWithoutProjectInput
   changeOrders?: Prisma.ChangeOrderCreateNestedManyWithoutProjectInput
+  photos?: Prisma.PhotoCreateNestedManyWithoutProjectInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUncheckedCreateWithoutClientInput = {
@@ -1557,6 +1639,7 @@ export type ProjectUncheckedCreateWithoutClientInput = {
   boqItems?: Prisma.BOQItemUncheckedCreateNestedManyWithoutProjectInput
   costEstimations?: Prisma.CostEstimationUncheckedCreateNestedManyWithoutProjectInput
   quotations?: Prisma.QuotationUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutProjectInput
   workflows?: Prisma.WorkflowUncheckedCreateNestedManyWithoutProjectInput
   activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutProjectInput
@@ -1564,6 +1647,8 @@ export type ProjectUncheckedCreateWithoutClientInput = {
   gpsTracking?: Prisma.GpsTrackingUncheckedCreateNestedManyWithoutProjectInput
   meetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutProjectInput
   changeOrders?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutProjectInput
+  photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutProjectInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectCreateOrConnectWithoutClientInput = {
@@ -1622,6 +1707,7 @@ export type ProjectCreateWithoutSurveysInput = {
   boqItems?: Prisma.BOQItemCreateNestedManyWithoutProjectInput
   costEstimations?: Prisma.CostEstimationCreateNestedManyWithoutProjectInput
   quotations?: Prisma.QuotationCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentCreateNestedManyWithoutProjectInput
   workflows?: Prisma.WorkflowCreateNestedManyWithoutProjectInput
   activities?: Prisma.ActivityCreateNestedManyWithoutProjectInput
@@ -1629,6 +1715,8 @@ export type ProjectCreateWithoutSurveysInput = {
   gpsTracking?: Prisma.GpsTrackingCreateNestedManyWithoutProjectInput
   meetings?: Prisma.MeetingCreateNestedManyWithoutProjectInput
   changeOrders?: Prisma.ChangeOrderCreateNestedManyWithoutProjectInput
+  photos?: Prisma.PhotoCreateNestedManyWithoutProjectInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUncheckedCreateWithoutSurveysInput = {
@@ -1661,6 +1749,7 @@ export type ProjectUncheckedCreateWithoutSurveysInput = {
   boqItems?: Prisma.BOQItemUncheckedCreateNestedManyWithoutProjectInput
   costEstimations?: Prisma.CostEstimationUncheckedCreateNestedManyWithoutProjectInput
   quotations?: Prisma.QuotationUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutProjectInput
   workflows?: Prisma.WorkflowUncheckedCreateNestedManyWithoutProjectInput
   activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutProjectInput
@@ -1668,6 +1757,8 @@ export type ProjectUncheckedCreateWithoutSurveysInput = {
   gpsTracking?: Prisma.GpsTrackingUncheckedCreateNestedManyWithoutProjectInput
   meetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutProjectInput
   changeOrders?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutProjectInput
+  photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutProjectInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectCreateOrConnectWithoutSurveysInput = {
@@ -1716,6 +1807,7 @@ export type ProjectUpdateWithoutSurveysInput = {
   boqItems?: Prisma.BOQItemUpdateManyWithoutProjectNestedInput
   costEstimations?: Prisma.CostEstimationUpdateManyWithoutProjectNestedInput
   quotations?: Prisma.QuotationUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutProjectNestedInput
   workflows?: Prisma.WorkflowUpdateManyWithoutProjectNestedInput
   activities?: Prisma.ActivityUpdateManyWithoutProjectNestedInput
@@ -1723,6 +1815,8 @@ export type ProjectUpdateWithoutSurveysInput = {
   gpsTracking?: Prisma.GpsTrackingUpdateManyWithoutProjectNestedInput
   meetings?: Prisma.MeetingUpdateManyWithoutProjectNestedInput
   changeOrders?: Prisma.ChangeOrderUpdateManyWithoutProjectNestedInput
+  photos?: Prisma.PhotoUpdateManyWithoutProjectNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateWithoutSurveysInput = {
@@ -1755,6 +1849,7 @@ export type ProjectUncheckedUpdateWithoutSurveysInput = {
   boqItems?: Prisma.BOQItemUncheckedUpdateManyWithoutProjectNestedInput
   costEstimations?: Prisma.CostEstimationUncheckedUpdateManyWithoutProjectNestedInput
   quotations?: Prisma.QuotationUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutProjectNestedInput
   workflows?: Prisma.WorkflowUncheckedUpdateManyWithoutProjectNestedInput
   activities?: Prisma.ActivityUncheckedUpdateManyWithoutProjectNestedInput
@@ -1762,6 +1857,192 @@ export type ProjectUncheckedUpdateWithoutSurveysInput = {
   gpsTracking?: Prisma.GpsTrackingUncheckedUpdateManyWithoutProjectNestedInput
   meetings?: Prisma.MeetingUncheckedUpdateManyWithoutProjectNestedInput
   changeOrders?: Prisma.ChangeOrderUncheckedUpdateManyWithoutProjectNestedInput
+  photos?: Prisma.PhotoUncheckedUpdateManyWithoutProjectNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutProjectNestedInput
+}
+
+export type ProjectCreateWithoutPhotosInput = {
+  id?: string
+  name: string
+  code: string
+  description?: string | null
+  type?: $Enums.ProjectType
+  status?: $Enums.ProjectStatus
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  budget?: number | null
+  actualCost?: number | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  area?: number | null
+  floors?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy?: string | null
+  updatedBy?: string | null
+  isDeleted?: boolean
+  version?: number
+  client: Prisma.ClientCreateNestedOneWithoutProjectsInput
+  manager?: Prisma.UserCreateNestedOneWithoutManagedProjectsInput
+  leadUser?: Prisma.UserCreateNestedOneWithoutLedProjectsInput
+  surveys?: Prisma.SurveyCreateNestedManyWithoutProjectInput
+  boqItems?: Prisma.BOQItemCreateNestedManyWithoutProjectInput
+  costEstimations?: Prisma.CostEstimationCreateNestedManyWithoutProjectInput
+  quotations?: Prisma.QuotationCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutProjectInput
+  workflows?: Prisma.WorkflowCreateNestedManyWithoutProjectInput
+  activities?: Prisma.ActivityCreateNestedManyWithoutProjectInput
+  reports?: Prisma.ReportCreateNestedManyWithoutProjectInput
+  gpsTracking?: Prisma.GpsTrackingCreateNestedManyWithoutProjectInput
+  meetings?: Prisma.MeetingCreateNestedManyWithoutProjectInput
+  changeOrders?: Prisma.ChangeOrderCreateNestedManyWithoutProjectInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutProjectInput
+}
+
+export type ProjectUncheckedCreateWithoutPhotosInput = {
+  id?: string
+  name: string
+  code: string
+  description?: string | null
+  type?: $Enums.ProjectType
+  status?: $Enums.ProjectStatus
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  budget?: number | null
+  actualCost?: number | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  area?: number | null
+  floors?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy?: string | null
+  updatedBy?: string | null
+  isDeleted?: boolean
+  version?: number
+  clientId: string
+  managerId?: string | null
+  leadUserId?: string | null
+  surveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutProjectInput
+  boqItems?: Prisma.BOQItemUncheckedCreateNestedManyWithoutProjectInput
+  costEstimations?: Prisma.CostEstimationUncheckedCreateNestedManyWithoutProjectInput
+  quotations?: Prisma.QuotationUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutProjectInput
+  workflows?: Prisma.WorkflowUncheckedCreateNestedManyWithoutProjectInput
+  activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutProjectInput
+  reports?: Prisma.ReportUncheckedCreateNestedManyWithoutProjectInput
+  gpsTracking?: Prisma.GpsTrackingUncheckedCreateNestedManyWithoutProjectInput
+  meetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutProjectInput
+  changeOrders?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutProjectInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutProjectInput
+}
+
+export type ProjectCreateOrConnectWithoutPhotosInput = {
+  where: Prisma.ProjectWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProjectCreateWithoutPhotosInput, Prisma.ProjectUncheckedCreateWithoutPhotosInput>
+}
+
+export type ProjectUpsertWithoutPhotosInput = {
+  update: Prisma.XOR<Prisma.ProjectUpdateWithoutPhotosInput, Prisma.ProjectUncheckedUpdateWithoutPhotosInput>
+  create: Prisma.XOR<Prisma.ProjectCreateWithoutPhotosInput, Prisma.ProjectUncheckedCreateWithoutPhotosInput>
+  where?: Prisma.ProjectWhereInput
+}
+
+export type ProjectUpdateToOneWithWhereWithoutPhotosInput = {
+  where?: Prisma.ProjectWhereInput
+  data: Prisma.XOR<Prisma.ProjectUpdateWithoutPhotosInput, Prisma.ProjectUncheckedUpdateWithoutPhotosInput>
+}
+
+export type ProjectUpdateWithoutPhotosInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumProjectTypeFieldUpdateOperationsInput | $Enums.ProjectType
+  status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  budget?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  actualCost?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  area?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  floors?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  client?: Prisma.ClientUpdateOneRequiredWithoutProjectsNestedInput
+  manager?: Prisma.UserUpdateOneWithoutManagedProjectsNestedInput
+  leadUser?: Prisma.UserUpdateOneWithoutLedProjectsNestedInput
+  surveys?: Prisma.SurveyUpdateManyWithoutProjectNestedInput
+  boqItems?: Prisma.BOQItemUpdateManyWithoutProjectNestedInput
+  costEstimations?: Prisma.CostEstimationUpdateManyWithoutProjectNestedInput
+  quotations?: Prisma.QuotationUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutProjectNestedInput
+  workflows?: Prisma.WorkflowUpdateManyWithoutProjectNestedInput
+  activities?: Prisma.ActivityUpdateManyWithoutProjectNestedInput
+  reports?: Prisma.ReportUpdateManyWithoutProjectNestedInput
+  gpsTracking?: Prisma.GpsTrackingUpdateManyWithoutProjectNestedInput
+  meetings?: Prisma.MeetingUpdateManyWithoutProjectNestedInput
+  changeOrders?: Prisma.ChangeOrderUpdateManyWithoutProjectNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutProjectNestedInput
+}
+
+export type ProjectUncheckedUpdateWithoutPhotosInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumProjectTypeFieldUpdateOperationsInput | $Enums.ProjectType
+  status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  budget?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  actualCost?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  area?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  floors?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  clientId?: Prisma.StringFieldUpdateOperationsInput | string
+  managerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leadUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveys?: Prisma.SurveyUncheckedUpdateManyWithoutProjectNestedInput
+  boqItems?: Prisma.BOQItemUncheckedUpdateManyWithoutProjectNestedInput
+  costEstimations?: Prisma.CostEstimationUncheckedUpdateManyWithoutProjectNestedInput
+  quotations?: Prisma.QuotationUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutProjectNestedInput
+  workflows?: Prisma.WorkflowUncheckedUpdateManyWithoutProjectNestedInput
+  activities?: Prisma.ActivityUncheckedUpdateManyWithoutProjectNestedInput
+  reports?: Prisma.ReportUncheckedUpdateManyWithoutProjectNestedInput
+  gpsTracking?: Prisma.GpsTrackingUncheckedUpdateManyWithoutProjectNestedInput
+  meetings?: Prisma.MeetingUncheckedUpdateManyWithoutProjectNestedInput
+  changeOrders?: Prisma.ChangeOrderUncheckedUpdateManyWithoutProjectNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectCreateWithoutBoqItemsInput = {
@@ -1794,6 +2075,7 @@ export type ProjectCreateWithoutBoqItemsInput = {
   surveys?: Prisma.SurveyCreateNestedManyWithoutProjectInput
   costEstimations?: Prisma.CostEstimationCreateNestedManyWithoutProjectInput
   quotations?: Prisma.QuotationCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentCreateNestedManyWithoutProjectInput
   workflows?: Prisma.WorkflowCreateNestedManyWithoutProjectInput
   activities?: Prisma.ActivityCreateNestedManyWithoutProjectInput
@@ -1801,6 +2083,8 @@ export type ProjectCreateWithoutBoqItemsInput = {
   gpsTracking?: Prisma.GpsTrackingCreateNestedManyWithoutProjectInput
   meetings?: Prisma.MeetingCreateNestedManyWithoutProjectInput
   changeOrders?: Prisma.ChangeOrderCreateNestedManyWithoutProjectInput
+  photos?: Prisma.PhotoCreateNestedManyWithoutProjectInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUncheckedCreateWithoutBoqItemsInput = {
@@ -1833,6 +2117,7 @@ export type ProjectUncheckedCreateWithoutBoqItemsInput = {
   surveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutProjectInput
   costEstimations?: Prisma.CostEstimationUncheckedCreateNestedManyWithoutProjectInput
   quotations?: Prisma.QuotationUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutProjectInput
   workflows?: Prisma.WorkflowUncheckedCreateNestedManyWithoutProjectInput
   activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutProjectInput
@@ -1840,6 +2125,8 @@ export type ProjectUncheckedCreateWithoutBoqItemsInput = {
   gpsTracking?: Prisma.GpsTrackingUncheckedCreateNestedManyWithoutProjectInput
   meetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutProjectInput
   changeOrders?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutProjectInput
+  photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutProjectInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectCreateOrConnectWithoutBoqItemsInput = {
@@ -1888,6 +2175,7 @@ export type ProjectUpdateWithoutBoqItemsInput = {
   surveys?: Prisma.SurveyUpdateManyWithoutProjectNestedInput
   costEstimations?: Prisma.CostEstimationUpdateManyWithoutProjectNestedInput
   quotations?: Prisma.QuotationUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutProjectNestedInput
   workflows?: Prisma.WorkflowUpdateManyWithoutProjectNestedInput
   activities?: Prisma.ActivityUpdateManyWithoutProjectNestedInput
@@ -1895,6 +2183,8 @@ export type ProjectUpdateWithoutBoqItemsInput = {
   gpsTracking?: Prisma.GpsTrackingUpdateManyWithoutProjectNestedInput
   meetings?: Prisma.MeetingUpdateManyWithoutProjectNestedInput
   changeOrders?: Prisma.ChangeOrderUpdateManyWithoutProjectNestedInput
+  photos?: Prisma.PhotoUpdateManyWithoutProjectNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateWithoutBoqItemsInput = {
@@ -1927,6 +2217,7 @@ export type ProjectUncheckedUpdateWithoutBoqItemsInput = {
   surveys?: Prisma.SurveyUncheckedUpdateManyWithoutProjectNestedInput
   costEstimations?: Prisma.CostEstimationUncheckedUpdateManyWithoutProjectNestedInput
   quotations?: Prisma.QuotationUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutProjectNestedInput
   workflows?: Prisma.WorkflowUncheckedUpdateManyWithoutProjectNestedInput
   activities?: Prisma.ActivityUncheckedUpdateManyWithoutProjectNestedInput
@@ -1934,6 +2225,8 @@ export type ProjectUncheckedUpdateWithoutBoqItemsInput = {
   gpsTracking?: Prisma.GpsTrackingUncheckedUpdateManyWithoutProjectNestedInput
   meetings?: Prisma.MeetingUncheckedUpdateManyWithoutProjectNestedInput
   changeOrders?: Prisma.ChangeOrderUncheckedUpdateManyWithoutProjectNestedInput
+  photos?: Prisma.PhotoUncheckedUpdateManyWithoutProjectNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectCreateWithoutCostEstimationsInput = {
@@ -1966,6 +2259,7 @@ export type ProjectCreateWithoutCostEstimationsInput = {
   surveys?: Prisma.SurveyCreateNestedManyWithoutProjectInput
   boqItems?: Prisma.BOQItemCreateNestedManyWithoutProjectInput
   quotations?: Prisma.QuotationCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentCreateNestedManyWithoutProjectInput
   workflows?: Prisma.WorkflowCreateNestedManyWithoutProjectInput
   activities?: Prisma.ActivityCreateNestedManyWithoutProjectInput
@@ -1973,6 +2267,8 @@ export type ProjectCreateWithoutCostEstimationsInput = {
   gpsTracking?: Prisma.GpsTrackingCreateNestedManyWithoutProjectInput
   meetings?: Prisma.MeetingCreateNestedManyWithoutProjectInput
   changeOrders?: Prisma.ChangeOrderCreateNestedManyWithoutProjectInput
+  photos?: Prisma.PhotoCreateNestedManyWithoutProjectInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUncheckedCreateWithoutCostEstimationsInput = {
@@ -2005,6 +2301,7 @@ export type ProjectUncheckedCreateWithoutCostEstimationsInput = {
   surveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutProjectInput
   boqItems?: Prisma.BOQItemUncheckedCreateNestedManyWithoutProjectInput
   quotations?: Prisma.QuotationUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutProjectInput
   workflows?: Prisma.WorkflowUncheckedCreateNestedManyWithoutProjectInput
   activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutProjectInput
@@ -2012,6 +2309,8 @@ export type ProjectUncheckedCreateWithoutCostEstimationsInput = {
   gpsTracking?: Prisma.GpsTrackingUncheckedCreateNestedManyWithoutProjectInput
   meetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutProjectInput
   changeOrders?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutProjectInput
+  photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutProjectInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectCreateOrConnectWithoutCostEstimationsInput = {
@@ -2060,6 +2359,7 @@ export type ProjectUpdateWithoutCostEstimationsInput = {
   surveys?: Prisma.SurveyUpdateManyWithoutProjectNestedInput
   boqItems?: Prisma.BOQItemUpdateManyWithoutProjectNestedInput
   quotations?: Prisma.QuotationUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutProjectNestedInput
   workflows?: Prisma.WorkflowUpdateManyWithoutProjectNestedInput
   activities?: Prisma.ActivityUpdateManyWithoutProjectNestedInput
@@ -2067,6 +2367,8 @@ export type ProjectUpdateWithoutCostEstimationsInput = {
   gpsTracking?: Prisma.GpsTrackingUpdateManyWithoutProjectNestedInput
   meetings?: Prisma.MeetingUpdateManyWithoutProjectNestedInput
   changeOrders?: Prisma.ChangeOrderUpdateManyWithoutProjectNestedInput
+  photos?: Prisma.PhotoUpdateManyWithoutProjectNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateWithoutCostEstimationsInput = {
@@ -2099,6 +2401,7 @@ export type ProjectUncheckedUpdateWithoutCostEstimationsInput = {
   surveys?: Prisma.SurveyUncheckedUpdateManyWithoutProjectNestedInput
   boqItems?: Prisma.BOQItemUncheckedUpdateManyWithoutProjectNestedInput
   quotations?: Prisma.QuotationUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutProjectNestedInput
   workflows?: Prisma.WorkflowUncheckedUpdateManyWithoutProjectNestedInput
   activities?: Prisma.ActivityUncheckedUpdateManyWithoutProjectNestedInput
@@ -2106,6 +2409,8 @@ export type ProjectUncheckedUpdateWithoutCostEstimationsInput = {
   gpsTracking?: Prisma.GpsTrackingUncheckedUpdateManyWithoutProjectNestedInput
   meetings?: Prisma.MeetingUncheckedUpdateManyWithoutProjectNestedInput
   changeOrders?: Prisma.ChangeOrderUncheckedUpdateManyWithoutProjectNestedInput
+  photos?: Prisma.PhotoUncheckedUpdateManyWithoutProjectNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectCreateWithoutQuotationsInput = {
@@ -2138,6 +2443,7 @@ export type ProjectCreateWithoutQuotationsInput = {
   surveys?: Prisma.SurveyCreateNestedManyWithoutProjectInput
   boqItems?: Prisma.BOQItemCreateNestedManyWithoutProjectInput
   costEstimations?: Prisma.CostEstimationCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentCreateNestedManyWithoutProjectInput
   workflows?: Prisma.WorkflowCreateNestedManyWithoutProjectInput
   activities?: Prisma.ActivityCreateNestedManyWithoutProjectInput
@@ -2145,6 +2451,8 @@ export type ProjectCreateWithoutQuotationsInput = {
   gpsTracking?: Prisma.GpsTrackingCreateNestedManyWithoutProjectInput
   meetings?: Prisma.MeetingCreateNestedManyWithoutProjectInput
   changeOrders?: Prisma.ChangeOrderCreateNestedManyWithoutProjectInput
+  photos?: Prisma.PhotoCreateNestedManyWithoutProjectInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUncheckedCreateWithoutQuotationsInput = {
@@ -2177,6 +2485,7 @@ export type ProjectUncheckedCreateWithoutQuotationsInput = {
   surveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutProjectInput
   boqItems?: Prisma.BOQItemUncheckedCreateNestedManyWithoutProjectInput
   costEstimations?: Prisma.CostEstimationUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutProjectInput
   workflows?: Prisma.WorkflowUncheckedCreateNestedManyWithoutProjectInput
   activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutProjectInput
@@ -2184,6 +2493,8 @@ export type ProjectUncheckedCreateWithoutQuotationsInput = {
   gpsTracking?: Prisma.GpsTrackingUncheckedCreateNestedManyWithoutProjectInput
   meetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutProjectInput
   changeOrders?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutProjectInput
+  photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutProjectInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectCreateOrConnectWithoutQuotationsInput = {
@@ -2232,6 +2543,7 @@ export type ProjectUpdateWithoutQuotationsInput = {
   surveys?: Prisma.SurveyUpdateManyWithoutProjectNestedInput
   boqItems?: Prisma.BOQItemUpdateManyWithoutProjectNestedInput
   costEstimations?: Prisma.CostEstimationUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutProjectNestedInput
   workflows?: Prisma.WorkflowUpdateManyWithoutProjectNestedInput
   activities?: Prisma.ActivityUpdateManyWithoutProjectNestedInput
@@ -2239,6 +2551,8 @@ export type ProjectUpdateWithoutQuotationsInput = {
   gpsTracking?: Prisma.GpsTrackingUpdateManyWithoutProjectNestedInput
   meetings?: Prisma.MeetingUpdateManyWithoutProjectNestedInput
   changeOrders?: Prisma.ChangeOrderUpdateManyWithoutProjectNestedInput
+  photos?: Prisma.PhotoUpdateManyWithoutProjectNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateWithoutQuotationsInput = {
@@ -2271,6 +2585,7 @@ export type ProjectUncheckedUpdateWithoutQuotationsInput = {
   surveys?: Prisma.SurveyUncheckedUpdateManyWithoutProjectNestedInput
   boqItems?: Prisma.BOQItemUncheckedUpdateManyWithoutProjectNestedInput
   costEstimations?: Prisma.CostEstimationUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutProjectNestedInput
   workflows?: Prisma.WorkflowUncheckedUpdateManyWithoutProjectNestedInput
   activities?: Prisma.ActivityUncheckedUpdateManyWithoutProjectNestedInput
@@ -2278,6 +2593,8 @@ export type ProjectUncheckedUpdateWithoutQuotationsInput = {
   gpsTracking?: Prisma.GpsTrackingUncheckedUpdateManyWithoutProjectNestedInput
   meetings?: Prisma.MeetingUncheckedUpdateManyWithoutProjectNestedInput
   changeOrders?: Prisma.ChangeOrderUncheckedUpdateManyWithoutProjectNestedInput
+  photos?: Prisma.PhotoUncheckedUpdateManyWithoutProjectNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectCreateWithoutWorkflowsInput = {
@@ -2311,12 +2628,15 @@ export type ProjectCreateWithoutWorkflowsInput = {
   boqItems?: Prisma.BOQItemCreateNestedManyWithoutProjectInput
   costEstimations?: Prisma.CostEstimationCreateNestedManyWithoutProjectInput
   quotations?: Prisma.QuotationCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentCreateNestedManyWithoutProjectInput
   activities?: Prisma.ActivityCreateNestedManyWithoutProjectInput
   reports?: Prisma.ReportCreateNestedManyWithoutProjectInput
   gpsTracking?: Prisma.GpsTrackingCreateNestedManyWithoutProjectInput
   meetings?: Prisma.MeetingCreateNestedManyWithoutProjectInput
   changeOrders?: Prisma.ChangeOrderCreateNestedManyWithoutProjectInput
+  photos?: Prisma.PhotoCreateNestedManyWithoutProjectInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUncheckedCreateWithoutWorkflowsInput = {
@@ -2350,12 +2670,15 @@ export type ProjectUncheckedCreateWithoutWorkflowsInput = {
   boqItems?: Prisma.BOQItemUncheckedCreateNestedManyWithoutProjectInput
   costEstimations?: Prisma.CostEstimationUncheckedCreateNestedManyWithoutProjectInput
   quotations?: Prisma.QuotationUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutProjectInput
   activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutProjectInput
   reports?: Prisma.ReportUncheckedCreateNestedManyWithoutProjectInput
   gpsTracking?: Prisma.GpsTrackingUncheckedCreateNestedManyWithoutProjectInput
   meetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutProjectInput
   changeOrders?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutProjectInput
+  photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutProjectInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectCreateOrConnectWithoutWorkflowsInput = {
@@ -2405,12 +2728,15 @@ export type ProjectUpdateWithoutWorkflowsInput = {
   boqItems?: Prisma.BOQItemUpdateManyWithoutProjectNestedInput
   costEstimations?: Prisma.CostEstimationUpdateManyWithoutProjectNestedInput
   quotations?: Prisma.QuotationUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutProjectNestedInput
   activities?: Prisma.ActivityUpdateManyWithoutProjectNestedInput
   reports?: Prisma.ReportUpdateManyWithoutProjectNestedInput
   gpsTracking?: Prisma.GpsTrackingUpdateManyWithoutProjectNestedInput
   meetings?: Prisma.MeetingUpdateManyWithoutProjectNestedInput
   changeOrders?: Prisma.ChangeOrderUpdateManyWithoutProjectNestedInput
+  photos?: Prisma.PhotoUpdateManyWithoutProjectNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateWithoutWorkflowsInput = {
@@ -2444,12 +2770,15 @@ export type ProjectUncheckedUpdateWithoutWorkflowsInput = {
   boqItems?: Prisma.BOQItemUncheckedUpdateManyWithoutProjectNestedInput
   costEstimations?: Prisma.CostEstimationUncheckedUpdateManyWithoutProjectNestedInput
   quotations?: Prisma.QuotationUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutProjectNestedInput
   activities?: Prisma.ActivityUncheckedUpdateManyWithoutProjectNestedInput
   reports?: Prisma.ReportUncheckedUpdateManyWithoutProjectNestedInput
   gpsTracking?: Prisma.GpsTrackingUncheckedUpdateManyWithoutProjectNestedInput
   meetings?: Prisma.MeetingUncheckedUpdateManyWithoutProjectNestedInput
   changeOrders?: Prisma.ChangeOrderUncheckedUpdateManyWithoutProjectNestedInput
+  photos?: Prisma.PhotoUncheckedUpdateManyWithoutProjectNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectCreateWithoutReportsInput = {
@@ -2483,12 +2812,15 @@ export type ProjectCreateWithoutReportsInput = {
   boqItems?: Prisma.BOQItemCreateNestedManyWithoutProjectInput
   costEstimations?: Prisma.CostEstimationCreateNestedManyWithoutProjectInput
   quotations?: Prisma.QuotationCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentCreateNestedManyWithoutProjectInput
   workflows?: Prisma.WorkflowCreateNestedManyWithoutProjectInput
   activities?: Prisma.ActivityCreateNestedManyWithoutProjectInput
   gpsTracking?: Prisma.GpsTrackingCreateNestedManyWithoutProjectInput
   meetings?: Prisma.MeetingCreateNestedManyWithoutProjectInput
   changeOrders?: Prisma.ChangeOrderCreateNestedManyWithoutProjectInput
+  photos?: Prisma.PhotoCreateNestedManyWithoutProjectInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUncheckedCreateWithoutReportsInput = {
@@ -2522,12 +2854,15 @@ export type ProjectUncheckedCreateWithoutReportsInput = {
   boqItems?: Prisma.BOQItemUncheckedCreateNestedManyWithoutProjectInput
   costEstimations?: Prisma.CostEstimationUncheckedCreateNestedManyWithoutProjectInput
   quotations?: Prisma.QuotationUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutProjectInput
   workflows?: Prisma.WorkflowUncheckedCreateNestedManyWithoutProjectInput
   activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutProjectInput
   gpsTracking?: Prisma.GpsTrackingUncheckedCreateNestedManyWithoutProjectInput
   meetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutProjectInput
   changeOrders?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutProjectInput
+  photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutProjectInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectCreateOrConnectWithoutReportsInput = {
@@ -2577,12 +2912,15 @@ export type ProjectUpdateWithoutReportsInput = {
   boqItems?: Prisma.BOQItemUpdateManyWithoutProjectNestedInput
   costEstimations?: Prisma.CostEstimationUpdateManyWithoutProjectNestedInput
   quotations?: Prisma.QuotationUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutProjectNestedInput
   workflows?: Prisma.WorkflowUpdateManyWithoutProjectNestedInput
   activities?: Prisma.ActivityUpdateManyWithoutProjectNestedInput
   gpsTracking?: Prisma.GpsTrackingUpdateManyWithoutProjectNestedInput
   meetings?: Prisma.MeetingUpdateManyWithoutProjectNestedInput
   changeOrders?: Prisma.ChangeOrderUpdateManyWithoutProjectNestedInput
+  photos?: Prisma.PhotoUpdateManyWithoutProjectNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateWithoutReportsInput = {
@@ -2616,12 +2954,15 @@ export type ProjectUncheckedUpdateWithoutReportsInput = {
   boqItems?: Prisma.BOQItemUncheckedUpdateManyWithoutProjectNestedInput
   costEstimations?: Prisma.CostEstimationUncheckedUpdateManyWithoutProjectNestedInput
   quotations?: Prisma.QuotationUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutProjectNestedInput
   workflows?: Prisma.WorkflowUncheckedUpdateManyWithoutProjectNestedInput
   activities?: Prisma.ActivityUncheckedUpdateManyWithoutProjectNestedInput
   gpsTracking?: Prisma.GpsTrackingUncheckedUpdateManyWithoutProjectNestedInput
   meetings?: Prisma.MeetingUncheckedUpdateManyWithoutProjectNestedInput
   changeOrders?: Prisma.ChangeOrderUncheckedUpdateManyWithoutProjectNestedInput
+  photos?: Prisma.PhotoUncheckedUpdateManyWithoutProjectNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectCreateWithoutDocumentsInput = {
@@ -2655,12 +2996,15 @@ export type ProjectCreateWithoutDocumentsInput = {
   boqItems?: Prisma.BOQItemCreateNestedManyWithoutProjectInput
   costEstimations?: Prisma.CostEstimationCreateNestedManyWithoutProjectInput
   quotations?: Prisma.QuotationCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
   workflows?: Prisma.WorkflowCreateNestedManyWithoutProjectInput
   activities?: Prisma.ActivityCreateNestedManyWithoutProjectInput
   reports?: Prisma.ReportCreateNestedManyWithoutProjectInput
   gpsTracking?: Prisma.GpsTrackingCreateNestedManyWithoutProjectInput
   meetings?: Prisma.MeetingCreateNestedManyWithoutProjectInput
   changeOrders?: Prisma.ChangeOrderCreateNestedManyWithoutProjectInput
+  photos?: Prisma.PhotoCreateNestedManyWithoutProjectInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUncheckedCreateWithoutDocumentsInput = {
@@ -2694,12 +3038,15 @@ export type ProjectUncheckedCreateWithoutDocumentsInput = {
   boqItems?: Prisma.BOQItemUncheckedCreateNestedManyWithoutProjectInput
   costEstimations?: Prisma.CostEstimationUncheckedCreateNestedManyWithoutProjectInput
   quotations?: Prisma.QuotationUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
   workflows?: Prisma.WorkflowUncheckedCreateNestedManyWithoutProjectInput
   activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutProjectInput
   reports?: Prisma.ReportUncheckedCreateNestedManyWithoutProjectInput
   gpsTracking?: Prisma.GpsTrackingUncheckedCreateNestedManyWithoutProjectInput
   meetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutProjectInput
   changeOrders?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutProjectInput
+  photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutProjectInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectCreateOrConnectWithoutDocumentsInput = {
@@ -2749,12 +3096,15 @@ export type ProjectUpdateWithoutDocumentsInput = {
   boqItems?: Prisma.BOQItemUpdateManyWithoutProjectNestedInput
   costEstimations?: Prisma.CostEstimationUpdateManyWithoutProjectNestedInput
   quotations?: Prisma.QuotationUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
   workflows?: Prisma.WorkflowUpdateManyWithoutProjectNestedInput
   activities?: Prisma.ActivityUpdateManyWithoutProjectNestedInput
   reports?: Prisma.ReportUpdateManyWithoutProjectNestedInput
   gpsTracking?: Prisma.GpsTrackingUpdateManyWithoutProjectNestedInput
   meetings?: Prisma.MeetingUpdateManyWithoutProjectNestedInput
   changeOrders?: Prisma.ChangeOrderUpdateManyWithoutProjectNestedInput
+  photos?: Prisma.PhotoUpdateManyWithoutProjectNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateWithoutDocumentsInput = {
@@ -2788,12 +3138,15 @@ export type ProjectUncheckedUpdateWithoutDocumentsInput = {
   boqItems?: Prisma.BOQItemUncheckedUpdateManyWithoutProjectNestedInput
   costEstimations?: Prisma.CostEstimationUncheckedUpdateManyWithoutProjectNestedInput
   quotations?: Prisma.QuotationUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
   workflows?: Prisma.WorkflowUncheckedUpdateManyWithoutProjectNestedInput
   activities?: Prisma.ActivityUncheckedUpdateManyWithoutProjectNestedInput
   reports?: Prisma.ReportUncheckedUpdateManyWithoutProjectNestedInput
   gpsTracking?: Prisma.GpsTrackingUncheckedUpdateManyWithoutProjectNestedInput
   meetings?: Prisma.MeetingUncheckedUpdateManyWithoutProjectNestedInput
   changeOrders?: Prisma.ChangeOrderUncheckedUpdateManyWithoutProjectNestedInput
+  photos?: Prisma.PhotoUncheckedUpdateManyWithoutProjectNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectCreateWithoutActivitiesInput = {
@@ -2827,12 +3180,15 @@ export type ProjectCreateWithoutActivitiesInput = {
   boqItems?: Prisma.BOQItemCreateNestedManyWithoutProjectInput
   costEstimations?: Prisma.CostEstimationCreateNestedManyWithoutProjectInput
   quotations?: Prisma.QuotationCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentCreateNestedManyWithoutProjectInput
   workflows?: Prisma.WorkflowCreateNestedManyWithoutProjectInput
   reports?: Prisma.ReportCreateNestedManyWithoutProjectInput
   gpsTracking?: Prisma.GpsTrackingCreateNestedManyWithoutProjectInput
   meetings?: Prisma.MeetingCreateNestedManyWithoutProjectInput
   changeOrders?: Prisma.ChangeOrderCreateNestedManyWithoutProjectInput
+  photos?: Prisma.PhotoCreateNestedManyWithoutProjectInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUncheckedCreateWithoutActivitiesInput = {
@@ -2866,12 +3222,15 @@ export type ProjectUncheckedCreateWithoutActivitiesInput = {
   boqItems?: Prisma.BOQItemUncheckedCreateNestedManyWithoutProjectInput
   costEstimations?: Prisma.CostEstimationUncheckedCreateNestedManyWithoutProjectInput
   quotations?: Prisma.QuotationUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutProjectInput
   workflows?: Prisma.WorkflowUncheckedCreateNestedManyWithoutProjectInput
   reports?: Prisma.ReportUncheckedCreateNestedManyWithoutProjectInput
   gpsTracking?: Prisma.GpsTrackingUncheckedCreateNestedManyWithoutProjectInput
   meetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutProjectInput
   changeOrders?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutProjectInput
+  photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutProjectInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectCreateOrConnectWithoutActivitiesInput = {
@@ -2921,12 +3280,15 @@ export type ProjectUpdateWithoutActivitiesInput = {
   boqItems?: Prisma.BOQItemUpdateManyWithoutProjectNestedInput
   costEstimations?: Prisma.CostEstimationUpdateManyWithoutProjectNestedInput
   quotations?: Prisma.QuotationUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutProjectNestedInput
   workflows?: Prisma.WorkflowUpdateManyWithoutProjectNestedInput
   reports?: Prisma.ReportUpdateManyWithoutProjectNestedInput
   gpsTracking?: Prisma.GpsTrackingUpdateManyWithoutProjectNestedInput
   meetings?: Prisma.MeetingUpdateManyWithoutProjectNestedInput
   changeOrders?: Prisma.ChangeOrderUpdateManyWithoutProjectNestedInput
+  photos?: Prisma.PhotoUpdateManyWithoutProjectNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateWithoutActivitiesInput = {
@@ -2960,12 +3322,15 @@ export type ProjectUncheckedUpdateWithoutActivitiesInput = {
   boqItems?: Prisma.BOQItemUncheckedUpdateManyWithoutProjectNestedInput
   costEstimations?: Prisma.CostEstimationUncheckedUpdateManyWithoutProjectNestedInput
   quotations?: Prisma.QuotationUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutProjectNestedInput
   workflows?: Prisma.WorkflowUncheckedUpdateManyWithoutProjectNestedInput
   reports?: Prisma.ReportUncheckedUpdateManyWithoutProjectNestedInput
   gpsTracking?: Prisma.GpsTrackingUncheckedUpdateManyWithoutProjectNestedInput
   meetings?: Prisma.MeetingUncheckedUpdateManyWithoutProjectNestedInput
   changeOrders?: Prisma.ChangeOrderUncheckedUpdateManyWithoutProjectNestedInput
+  photos?: Prisma.PhotoUncheckedUpdateManyWithoutProjectNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectCreateWithoutGpsTrackingInput = {
@@ -2999,12 +3364,15 @@ export type ProjectCreateWithoutGpsTrackingInput = {
   boqItems?: Prisma.BOQItemCreateNestedManyWithoutProjectInput
   costEstimations?: Prisma.CostEstimationCreateNestedManyWithoutProjectInput
   quotations?: Prisma.QuotationCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentCreateNestedManyWithoutProjectInput
   workflows?: Prisma.WorkflowCreateNestedManyWithoutProjectInput
   activities?: Prisma.ActivityCreateNestedManyWithoutProjectInput
   reports?: Prisma.ReportCreateNestedManyWithoutProjectInput
   meetings?: Prisma.MeetingCreateNestedManyWithoutProjectInput
   changeOrders?: Prisma.ChangeOrderCreateNestedManyWithoutProjectInput
+  photos?: Prisma.PhotoCreateNestedManyWithoutProjectInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUncheckedCreateWithoutGpsTrackingInput = {
@@ -3038,12 +3406,15 @@ export type ProjectUncheckedCreateWithoutGpsTrackingInput = {
   boqItems?: Prisma.BOQItemUncheckedCreateNestedManyWithoutProjectInput
   costEstimations?: Prisma.CostEstimationUncheckedCreateNestedManyWithoutProjectInput
   quotations?: Prisma.QuotationUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutProjectInput
   workflows?: Prisma.WorkflowUncheckedCreateNestedManyWithoutProjectInput
   activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutProjectInput
   reports?: Prisma.ReportUncheckedCreateNestedManyWithoutProjectInput
   meetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutProjectInput
   changeOrders?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutProjectInput
+  photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutProjectInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectCreateOrConnectWithoutGpsTrackingInput = {
@@ -3093,12 +3464,15 @@ export type ProjectUpdateWithoutGpsTrackingInput = {
   boqItems?: Prisma.BOQItemUpdateManyWithoutProjectNestedInput
   costEstimations?: Prisma.CostEstimationUpdateManyWithoutProjectNestedInput
   quotations?: Prisma.QuotationUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutProjectNestedInput
   workflows?: Prisma.WorkflowUpdateManyWithoutProjectNestedInput
   activities?: Prisma.ActivityUpdateManyWithoutProjectNestedInput
   reports?: Prisma.ReportUpdateManyWithoutProjectNestedInput
   meetings?: Prisma.MeetingUpdateManyWithoutProjectNestedInput
   changeOrders?: Prisma.ChangeOrderUpdateManyWithoutProjectNestedInput
+  photos?: Prisma.PhotoUpdateManyWithoutProjectNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateWithoutGpsTrackingInput = {
@@ -3132,12 +3506,199 @@ export type ProjectUncheckedUpdateWithoutGpsTrackingInput = {
   boqItems?: Prisma.BOQItemUncheckedUpdateManyWithoutProjectNestedInput
   costEstimations?: Prisma.CostEstimationUncheckedUpdateManyWithoutProjectNestedInput
   quotations?: Prisma.QuotationUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutProjectNestedInput
   workflows?: Prisma.WorkflowUncheckedUpdateManyWithoutProjectNestedInput
   activities?: Prisma.ActivityUncheckedUpdateManyWithoutProjectNestedInput
   reports?: Prisma.ReportUncheckedUpdateManyWithoutProjectNestedInput
   meetings?: Prisma.MeetingUncheckedUpdateManyWithoutProjectNestedInput
   changeOrders?: Prisma.ChangeOrderUncheckedUpdateManyWithoutProjectNestedInput
+  photos?: Prisma.PhotoUncheckedUpdateManyWithoutProjectNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutProjectNestedInput
+}
+
+export type ProjectCreateWithoutSiteVisitsInput = {
+  id?: string
+  name: string
+  code: string
+  description?: string | null
+  type?: $Enums.ProjectType
+  status?: $Enums.ProjectStatus
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  budget?: number | null
+  actualCost?: number | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  area?: number | null
+  floors?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy?: string | null
+  updatedBy?: string | null
+  isDeleted?: boolean
+  version?: number
+  client: Prisma.ClientCreateNestedOneWithoutProjectsInput
+  manager?: Prisma.UserCreateNestedOneWithoutManagedProjectsInput
+  leadUser?: Prisma.UserCreateNestedOneWithoutLedProjectsInput
+  surveys?: Prisma.SurveyCreateNestedManyWithoutProjectInput
+  boqItems?: Prisma.BOQItemCreateNestedManyWithoutProjectInput
+  costEstimations?: Prisma.CostEstimationCreateNestedManyWithoutProjectInput
+  quotations?: Prisma.QuotationCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutProjectInput
+  workflows?: Prisma.WorkflowCreateNestedManyWithoutProjectInput
+  activities?: Prisma.ActivityCreateNestedManyWithoutProjectInput
+  reports?: Prisma.ReportCreateNestedManyWithoutProjectInput
+  gpsTracking?: Prisma.GpsTrackingCreateNestedManyWithoutProjectInput
+  meetings?: Prisma.MeetingCreateNestedManyWithoutProjectInput
+  changeOrders?: Prisma.ChangeOrderCreateNestedManyWithoutProjectInput
+  photos?: Prisma.PhotoCreateNestedManyWithoutProjectInput
+}
+
+export type ProjectUncheckedCreateWithoutSiteVisitsInput = {
+  id?: string
+  name: string
+  code: string
+  description?: string | null
+  type?: $Enums.ProjectType
+  status?: $Enums.ProjectStatus
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  budget?: number | null
+  actualCost?: number | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  area?: number | null
+  floors?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy?: string | null
+  updatedBy?: string | null
+  isDeleted?: boolean
+  version?: number
+  clientId: string
+  managerId?: string | null
+  leadUserId?: string | null
+  surveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutProjectInput
+  boqItems?: Prisma.BOQItemUncheckedCreateNestedManyWithoutProjectInput
+  costEstimations?: Prisma.CostEstimationUncheckedCreateNestedManyWithoutProjectInput
+  quotations?: Prisma.QuotationUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutProjectInput
+  workflows?: Prisma.WorkflowUncheckedCreateNestedManyWithoutProjectInput
+  activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutProjectInput
+  reports?: Prisma.ReportUncheckedCreateNestedManyWithoutProjectInput
+  gpsTracking?: Prisma.GpsTrackingUncheckedCreateNestedManyWithoutProjectInput
+  meetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutProjectInput
+  changeOrders?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutProjectInput
+  photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutProjectInput
+}
+
+export type ProjectCreateOrConnectWithoutSiteVisitsInput = {
+  where: Prisma.ProjectWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProjectCreateWithoutSiteVisitsInput, Prisma.ProjectUncheckedCreateWithoutSiteVisitsInput>
+}
+
+export type ProjectUpsertWithoutSiteVisitsInput = {
+  update: Prisma.XOR<Prisma.ProjectUpdateWithoutSiteVisitsInput, Prisma.ProjectUncheckedUpdateWithoutSiteVisitsInput>
+  create: Prisma.XOR<Prisma.ProjectCreateWithoutSiteVisitsInput, Prisma.ProjectUncheckedCreateWithoutSiteVisitsInput>
+  where?: Prisma.ProjectWhereInput
+}
+
+export type ProjectUpdateToOneWithWhereWithoutSiteVisitsInput = {
+  where?: Prisma.ProjectWhereInput
+  data: Prisma.XOR<Prisma.ProjectUpdateWithoutSiteVisitsInput, Prisma.ProjectUncheckedUpdateWithoutSiteVisitsInput>
+}
+
+export type ProjectUpdateWithoutSiteVisitsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumProjectTypeFieldUpdateOperationsInput | $Enums.ProjectType
+  status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  budget?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  actualCost?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  area?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  floors?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  client?: Prisma.ClientUpdateOneRequiredWithoutProjectsNestedInput
+  manager?: Prisma.UserUpdateOneWithoutManagedProjectsNestedInput
+  leadUser?: Prisma.UserUpdateOneWithoutLedProjectsNestedInput
+  surveys?: Prisma.SurveyUpdateManyWithoutProjectNestedInput
+  boqItems?: Prisma.BOQItemUpdateManyWithoutProjectNestedInput
+  costEstimations?: Prisma.CostEstimationUpdateManyWithoutProjectNestedInput
+  quotations?: Prisma.QuotationUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutProjectNestedInput
+  workflows?: Prisma.WorkflowUpdateManyWithoutProjectNestedInput
+  activities?: Prisma.ActivityUpdateManyWithoutProjectNestedInput
+  reports?: Prisma.ReportUpdateManyWithoutProjectNestedInput
+  gpsTracking?: Prisma.GpsTrackingUpdateManyWithoutProjectNestedInput
+  meetings?: Prisma.MeetingUpdateManyWithoutProjectNestedInput
+  changeOrders?: Prisma.ChangeOrderUpdateManyWithoutProjectNestedInput
+  photos?: Prisma.PhotoUpdateManyWithoutProjectNestedInput
+}
+
+export type ProjectUncheckedUpdateWithoutSiteVisitsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumProjectTypeFieldUpdateOperationsInput | $Enums.ProjectType
+  status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  budget?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  actualCost?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  area?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  floors?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  clientId?: Prisma.StringFieldUpdateOperationsInput | string
+  managerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leadUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveys?: Prisma.SurveyUncheckedUpdateManyWithoutProjectNestedInput
+  boqItems?: Prisma.BOQItemUncheckedUpdateManyWithoutProjectNestedInput
+  costEstimations?: Prisma.CostEstimationUncheckedUpdateManyWithoutProjectNestedInput
+  quotations?: Prisma.QuotationUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutProjectNestedInput
+  workflows?: Prisma.WorkflowUncheckedUpdateManyWithoutProjectNestedInput
+  activities?: Prisma.ActivityUncheckedUpdateManyWithoutProjectNestedInput
+  reports?: Prisma.ReportUncheckedUpdateManyWithoutProjectNestedInput
+  gpsTracking?: Prisma.GpsTrackingUncheckedUpdateManyWithoutProjectNestedInput
+  meetings?: Prisma.MeetingUncheckedUpdateManyWithoutProjectNestedInput
+  changeOrders?: Prisma.ChangeOrderUncheckedUpdateManyWithoutProjectNestedInput
+  photos?: Prisma.PhotoUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectCreateWithoutMeetingsInput = {
@@ -3171,12 +3732,15 @@ export type ProjectCreateWithoutMeetingsInput = {
   boqItems?: Prisma.BOQItemCreateNestedManyWithoutProjectInput
   costEstimations?: Prisma.CostEstimationCreateNestedManyWithoutProjectInput
   quotations?: Prisma.QuotationCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentCreateNestedManyWithoutProjectInput
   workflows?: Prisma.WorkflowCreateNestedManyWithoutProjectInput
   activities?: Prisma.ActivityCreateNestedManyWithoutProjectInput
   reports?: Prisma.ReportCreateNestedManyWithoutProjectInput
   gpsTracking?: Prisma.GpsTrackingCreateNestedManyWithoutProjectInput
   changeOrders?: Prisma.ChangeOrderCreateNestedManyWithoutProjectInput
+  photos?: Prisma.PhotoCreateNestedManyWithoutProjectInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUncheckedCreateWithoutMeetingsInput = {
@@ -3210,12 +3774,15 @@ export type ProjectUncheckedCreateWithoutMeetingsInput = {
   boqItems?: Prisma.BOQItemUncheckedCreateNestedManyWithoutProjectInput
   costEstimations?: Prisma.CostEstimationUncheckedCreateNestedManyWithoutProjectInput
   quotations?: Prisma.QuotationUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutProjectInput
   workflows?: Prisma.WorkflowUncheckedCreateNestedManyWithoutProjectInput
   activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutProjectInput
   reports?: Prisma.ReportUncheckedCreateNestedManyWithoutProjectInput
   gpsTracking?: Prisma.GpsTrackingUncheckedCreateNestedManyWithoutProjectInput
   changeOrders?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutProjectInput
+  photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutProjectInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectCreateOrConnectWithoutMeetingsInput = {
@@ -3265,12 +3832,15 @@ export type ProjectUpdateWithoutMeetingsInput = {
   boqItems?: Prisma.BOQItemUpdateManyWithoutProjectNestedInput
   costEstimations?: Prisma.CostEstimationUpdateManyWithoutProjectNestedInput
   quotations?: Prisma.QuotationUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutProjectNestedInput
   workflows?: Prisma.WorkflowUpdateManyWithoutProjectNestedInput
   activities?: Prisma.ActivityUpdateManyWithoutProjectNestedInput
   reports?: Prisma.ReportUpdateManyWithoutProjectNestedInput
   gpsTracking?: Prisma.GpsTrackingUpdateManyWithoutProjectNestedInput
   changeOrders?: Prisma.ChangeOrderUpdateManyWithoutProjectNestedInput
+  photos?: Prisma.PhotoUpdateManyWithoutProjectNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateWithoutMeetingsInput = {
@@ -3304,12 +3874,15 @@ export type ProjectUncheckedUpdateWithoutMeetingsInput = {
   boqItems?: Prisma.BOQItemUncheckedUpdateManyWithoutProjectNestedInput
   costEstimations?: Prisma.CostEstimationUncheckedUpdateManyWithoutProjectNestedInput
   quotations?: Prisma.QuotationUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutProjectNestedInput
   workflows?: Prisma.WorkflowUncheckedUpdateManyWithoutProjectNestedInput
   activities?: Prisma.ActivityUncheckedUpdateManyWithoutProjectNestedInput
   reports?: Prisma.ReportUncheckedUpdateManyWithoutProjectNestedInput
   gpsTracking?: Prisma.GpsTrackingUncheckedUpdateManyWithoutProjectNestedInput
   changeOrders?: Prisma.ChangeOrderUncheckedUpdateManyWithoutProjectNestedInput
+  photos?: Prisma.PhotoUncheckedUpdateManyWithoutProjectNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectCreateWithoutChangeOrdersInput = {
@@ -3343,12 +3916,15 @@ export type ProjectCreateWithoutChangeOrdersInput = {
   boqItems?: Prisma.BOQItemCreateNestedManyWithoutProjectInput
   costEstimations?: Prisma.CostEstimationCreateNestedManyWithoutProjectInput
   quotations?: Prisma.QuotationCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentCreateNestedManyWithoutProjectInput
   workflows?: Prisma.WorkflowCreateNestedManyWithoutProjectInput
   activities?: Prisma.ActivityCreateNestedManyWithoutProjectInput
   reports?: Prisma.ReportCreateNestedManyWithoutProjectInput
   gpsTracking?: Prisma.GpsTrackingCreateNestedManyWithoutProjectInput
   meetings?: Prisma.MeetingCreateNestedManyWithoutProjectInput
+  photos?: Prisma.PhotoCreateNestedManyWithoutProjectInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUncheckedCreateWithoutChangeOrdersInput = {
@@ -3382,12 +3958,15 @@ export type ProjectUncheckedCreateWithoutChangeOrdersInput = {
   boqItems?: Prisma.BOQItemUncheckedCreateNestedManyWithoutProjectInput
   costEstimations?: Prisma.CostEstimationUncheckedCreateNestedManyWithoutProjectInput
   quotations?: Prisma.QuotationUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutProjectInput
   workflows?: Prisma.WorkflowUncheckedCreateNestedManyWithoutProjectInput
   activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutProjectInput
   reports?: Prisma.ReportUncheckedCreateNestedManyWithoutProjectInput
   gpsTracking?: Prisma.GpsTrackingUncheckedCreateNestedManyWithoutProjectInput
   meetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutProjectInput
+  photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutProjectInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectCreateOrConnectWithoutChangeOrdersInput = {
@@ -3437,15 +4016,202 @@ export type ProjectUpdateWithoutChangeOrdersInput = {
   boqItems?: Prisma.BOQItemUpdateManyWithoutProjectNestedInput
   costEstimations?: Prisma.CostEstimationUpdateManyWithoutProjectNestedInput
   quotations?: Prisma.QuotationUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutProjectNestedInput
   workflows?: Prisma.WorkflowUpdateManyWithoutProjectNestedInput
   activities?: Prisma.ActivityUpdateManyWithoutProjectNestedInput
   reports?: Prisma.ReportUpdateManyWithoutProjectNestedInput
   gpsTracking?: Prisma.GpsTrackingUpdateManyWithoutProjectNestedInput
   meetings?: Prisma.MeetingUpdateManyWithoutProjectNestedInput
+  photos?: Prisma.PhotoUpdateManyWithoutProjectNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateWithoutChangeOrdersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumProjectTypeFieldUpdateOperationsInput | $Enums.ProjectType
+  status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  budget?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  actualCost?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  area?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  floors?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  clientId?: Prisma.StringFieldUpdateOperationsInput | string
+  managerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leadUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveys?: Prisma.SurveyUncheckedUpdateManyWithoutProjectNestedInput
+  boqItems?: Prisma.BOQItemUncheckedUpdateManyWithoutProjectNestedInput
+  costEstimations?: Prisma.CostEstimationUncheckedUpdateManyWithoutProjectNestedInput
+  quotations?: Prisma.QuotationUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutProjectNestedInput
+  workflows?: Prisma.WorkflowUncheckedUpdateManyWithoutProjectNestedInput
+  activities?: Prisma.ActivityUncheckedUpdateManyWithoutProjectNestedInput
+  reports?: Prisma.ReportUncheckedUpdateManyWithoutProjectNestedInput
+  gpsTracking?: Prisma.GpsTrackingUncheckedUpdateManyWithoutProjectNestedInput
+  meetings?: Prisma.MeetingUncheckedUpdateManyWithoutProjectNestedInput
+  photos?: Prisma.PhotoUncheckedUpdateManyWithoutProjectNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutProjectNestedInput
+}
+
+export type ProjectCreateWithoutInvoicesInput = {
+  id?: string
+  name: string
+  code: string
+  description?: string | null
+  type?: $Enums.ProjectType
+  status?: $Enums.ProjectStatus
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  budget?: number | null
+  actualCost?: number | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  area?: number | null
+  floors?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy?: string | null
+  updatedBy?: string | null
+  isDeleted?: boolean
+  version?: number
+  client: Prisma.ClientCreateNestedOneWithoutProjectsInput
+  manager?: Prisma.UserCreateNestedOneWithoutManagedProjectsInput
+  leadUser?: Prisma.UserCreateNestedOneWithoutLedProjectsInput
+  surveys?: Prisma.SurveyCreateNestedManyWithoutProjectInput
+  boqItems?: Prisma.BOQItemCreateNestedManyWithoutProjectInput
+  costEstimations?: Prisma.CostEstimationCreateNestedManyWithoutProjectInput
+  quotations?: Prisma.QuotationCreateNestedManyWithoutProjectInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutProjectInput
+  workflows?: Prisma.WorkflowCreateNestedManyWithoutProjectInput
+  activities?: Prisma.ActivityCreateNestedManyWithoutProjectInput
+  reports?: Prisma.ReportCreateNestedManyWithoutProjectInput
+  gpsTracking?: Prisma.GpsTrackingCreateNestedManyWithoutProjectInput
+  meetings?: Prisma.MeetingCreateNestedManyWithoutProjectInput
+  changeOrders?: Prisma.ChangeOrderCreateNestedManyWithoutProjectInput
+  photos?: Prisma.PhotoCreateNestedManyWithoutProjectInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutProjectInput
+}
+
+export type ProjectUncheckedCreateWithoutInvoicesInput = {
+  id?: string
+  name: string
+  code: string
+  description?: string | null
+  type?: $Enums.ProjectType
+  status?: $Enums.ProjectStatus
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  budget?: number | null
+  actualCost?: number | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  area?: number | null
+  floors?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy?: string | null
+  updatedBy?: string | null
+  isDeleted?: boolean
+  version?: number
+  clientId: string
+  managerId?: string | null
+  leadUserId?: string | null
+  surveys?: Prisma.SurveyUncheckedCreateNestedManyWithoutProjectInput
+  boqItems?: Prisma.BOQItemUncheckedCreateNestedManyWithoutProjectInput
+  costEstimations?: Prisma.CostEstimationUncheckedCreateNestedManyWithoutProjectInput
+  quotations?: Prisma.QuotationUncheckedCreateNestedManyWithoutProjectInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutProjectInput
+  workflows?: Prisma.WorkflowUncheckedCreateNestedManyWithoutProjectInput
+  activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutProjectInput
+  reports?: Prisma.ReportUncheckedCreateNestedManyWithoutProjectInput
+  gpsTracking?: Prisma.GpsTrackingUncheckedCreateNestedManyWithoutProjectInput
+  meetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutProjectInput
+  changeOrders?: Prisma.ChangeOrderUncheckedCreateNestedManyWithoutProjectInput
+  photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutProjectInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutProjectInput
+}
+
+export type ProjectCreateOrConnectWithoutInvoicesInput = {
+  where: Prisma.ProjectWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProjectCreateWithoutInvoicesInput, Prisma.ProjectUncheckedCreateWithoutInvoicesInput>
+}
+
+export type ProjectUpsertWithoutInvoicesInput = {
+  update: Prisma.XOR<Prisma.ProjectUpdateWithoutInvoicesInput, Prisma.ProjectUncheckedUpdateWithoutInvoicesInput>
+  create: Prisma.XOR<Prisma.ProjectCreateWithoutInvoicesInput, Prisma.ProjectUncheckedCreateWithoutInvoicesInput>
+  where?: Prisma.ProjectWhereInput
+}
+
+export type ProjectUpdateToOneWithWhereWithoutInvoicesInput = {
+  where?: Prisma.ProjectWhereInput
+  data: Prisma.XOR<Prisma.ProjectUpdateWithoutInvoicesInput, Prisma.ProjectUncheckedUpdateWithoutInvoicesInput>
+}
+
+export type ProjectUpdateWithoutInvoicesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumProjectTypeFieldUpdateOperationsInput | $Enums.ProjectType
+  status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  budget?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  actualCost?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  area?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  floors?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  client?: Prisma.ClientUpdateOneRequiredWithoutProjectsNestedInput
+  manager?: Prisma.UserUpdateOneWithoutManagedProjectsNestedInput
+  leadUser?: Prisma.UserUpdateOneWithoutLedProjectsNestedInput
+  surveys?: Prisma.SurveyUpdateManyWithoutProjectNestedInput
+  boqItems?: Prisma.BOQItemUpdateManyWithoutProjectNestedInput
+  costEstimations?: Prisma.CostEstimationUpdateManyWithoutProjectNestedInput
+  quotations?: Prisma.QuotationUpdateManyWithoutProjectNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutProjectNestedInput
+  workflows?: Prisma.WorkflowUpdateManyWithoutProjectNestedInput
+  activities?: Prisma.ActivityUpdateManyWithoutProjectNestedInput
+  reports?: Prisma.ReportUpdateManyWithoutProjectNestedInput
+  gpsTracking?: Prisma.GpsTrackingUpdateManyWithoutProjectNestedInput
+  meetings?: Prisma.MeetingUpdateManyWithoutProjectNestedInput
+  changeOrders?: Prisma.ChangeOrderUpdateManyWithoutProjectNestedInput
+  photos?: Prisma.PhotoUpdateManyWithoutProjectNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutProjectNestedInput
+}
+
+export type ProjectUncheckedUpdateWithoutInvoicesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3482,6 +4248,9 @@ export type ProjectUncheckedUpdateWithoutChangeOrdersInput = {
   reports?: Prisma.ReportUncheckedUpdateManyWithoutProjectNestedInput
   gpsTracking?: Prisma.GpsTrackingUncheckedUpdateManyWithoutProjectNestedInput
   meetings?: Prisma.MeetingUncheckedUpdateManyWithoutProjectNestedInput
+  changeOrders?: Prisma.ChangeOrderUncheckedUpdateManyWithoutProjectNestedInput
+  photos?: Prisma.PhotoUncheckedUpdateManyWithoutProjectNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectCreateManyLeadUserInput = {
@@ -3570,6 +4339,7 @@ export type ProjectUpdateWithoutLeadUserInput = {
   boqItems?: Prisma.BOQItemUpdateManyWithoutProjectNestedInput
   costEstimations?: Prisma.CostEstimationUpdateManyWithoutProjectNestedInput
   quotations?: Prisma.QuotationUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutProjectNestedInput
   workflows?: Prisma.WorkflowUpdateManyWithoutProjectNestedInput
   activities?: Prisma.ActivityUpdateManyWithoutProjectNestedInput
@@ -3577,6 +4347,8 @@ export type ProjectUpdateWithoutLeadUserInput = {
   gpsTracking?: Prisma.GpsTrackingUpdateManyWithoutProjectNestedInput
   meetings?: Prisma.MeetingUpdateManyWithoutProjectNestedInput
   changeOrders?: Prisma.ChangeOrderUpdateManyWithoutProjectNestedInput
+  photos?: Prisma.PhotoUpdateManyWithoutProjectNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateWithoutLeadUserInput = {
@@ -3609,6 +4381,7 @@ export type ProjectUncheckedUpdateWithoutLeadUserInput = {
   boqItems?: Prisma.BOQItemUncheckedUpdateManyWithoutProjectNestedInput
   costEstimations?: Prisma.CostEstimationUncheckedUpdateManyWithoutProjectNestedInput
   quotations?: Prisma.QuotationUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutProjectNestedInput
   workflows?: Prisma.WorkflowUncheckedUpdateManyWithoutProjectNestedInput
   activities?: Prisma.ActivityUncheckedUpdateManyWithoutProjectNestedInput
@@ -3616,6 +4389,8 @@ export type ProjectUncheckedUpdateWithoutLeadUserInput = {
   gpsTracking?: Prisma.GpsTrackingUncheckedUpdateManyWithoutProjectNestedInput
   meetings?: Prisma.MeetingUncheckedUpdateManyWithoutProjectNestedInput
   changeOrders?: Prisma.ChangeOrderUncheckedUpdateManyWithoutProjectNestedInput
+  photos?: Prisma.PhotoUncheckedUpdateManyWithoutProjectNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateManyWithoutLeadUserInput = {
@@ -3676,6 +4451,7 @@ export type ProjectUpdateWithoutManagerInput = {
   boqItems?: Prisma.BOQItemUpdateManyWithoutProjectNestedInput
   costEstimations?: Prisma.CostEstimationUpdateManyWithoutProjectNestedInput
   quotations?: Prisma.QuotationUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutProjectNestedInput
   workflows?: Prisma.WorkflowUpdateManyWithoutProjectNestedInput
   activities?: Prisma.ActivityUpdateManyWithoutProjectNestedInput
@@ -3683,6 +4459,8 @@ export type ProjectUpdateWithoutManagerInput = {
   gpsTracking?: Prisma.GpsTrackingUpdateManyWithoutProjectNestedInput
   meetings?: Prisma.MeetingUpdateManyWithoutProjectNestedInput
   changeOrders?: Prisma.ChangeOrderUpdateManyWithoutProjectNestedInput
+  photos?: Prisma.PhotoUpdateManyWithoutProjectNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateWithoutManagerInput = {
@@ -3715,6 +4493,7 @@ export type ProjectUncheckedUpdateWithoutManagerInput = {
   boqItems?: Prisma.BOQItemUncheckedUpdateManyWithoutProjectNestedInput
   costEstimations?: Prisma.CostEstimationUncheckedUpdateManyWithoutProjectNestedInput
   quotations?: Prisma.QuotationUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutProjectNestedInput
   workflows?: Prisma.WorkflowUncheckedUpdateManyWithoutProjectNestedInput
   activities?: Prisma.ActivityUncheckedUpdateManyWithoutProjectNestedInput
@@ -3722,6 +4501,8 @@ export type ProjectUncheckedUpdateWithoutManagerInput = {
   gpsTracking?: Prisma.GpsTrackingUncheckedUpdateManyWithoutProjectNestedInput
   meetings?: Prisma.MeetingUncheckedUpdateManyWithoutProjectNestedInput
   changeOrders?: Prisma.ChangeOrderUncheckedUpdateManyWithoutProjectNestedInput
+  photos?: Prisma.PhotoUncheckedUpdateManyWithoutProjectNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateManyWithoutManagerInput = {
@@ -3810,6 +4591,7 @@ export type ProjectUpdateWithoutClientInput = {
   boqItems?: Prisma.BOQItemUpdateManyWithoutProjectNestedInput
   costEstimations?: Prisma.CostEstimationUpdateManyWithoutProjectNestedInput
   quotations?: Prisma.QuotationUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutProjectNestedInput
   workflows?: Prisma.WorkflowUpdateManyWithoutProjectNestedInput
   activities?: Prisma.ActivityUpdateManyWithoutProjectNestedInput
@@ -3817,6 +4599,8 @@ export type ProjectUpdateWithoutClientInput = {
   gpsTracking?: Prisma.GpsTrackingUpdateManyWithoutProjectNestedInput
   meetings?: Prisma.MeetingUpdateManyWithoutProjectNestedInput
   changeOrders?: Prisma.ChangeOrderUpdateManyWithoutProjectNestedInput
+  photos?: Prisma.PhotoUpdateManyWithoutProjectNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateWithoutClientInput = {
@@ -3849,6 +4633,7 @@ export type ProjectUncheckedUpdateWithoutClientInput = {
   boqItems?: Prisma.BOQItemUncheckedUpdateManyWithoutProjectNestedInput
   costEstimations?: Prisma.CostEstimationUncheckedUpdateManyWithoutProjectNestedInput
   quotations?: Prisma.QuotationUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutProjectNestedInput
   workflows?: Prisma.WorkflowUncheckedUpdateManyWithoutProjectNestedInput
   activities?: Prisma.ActivityUncheckedUpdateManyWithoutProjectNestedInput
@@ -3856,6 +4641,8 @@ export type ProjectUncheckedUpdateWithoutClientInput = {
   gpsTracking?: Prisma.GpsTrackingUncheckedUpdateManyWithoutProjectNestedInput
   meetings?: Prisma.MeetingUncheckedUpdateManyWithoutProjectNestedInput
   changeOrders?: Prisma.ChangeOrderUncheckedUpdateManyWithoutProjectNestedInput
+  photos?: Prisma.PhotoUncheckedUpdateManyWithoutProjectNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateManyWithoutClientInput = {
@@ -3896,6 +4683,7 @@ export type ProjectCountOutputType = {
   boqItems: number
   costEstimations: number
   quotations: number
+  invoices: number
   documents: number
   workflows: number
   activities: number
@@ -3903,6 +4691,8 @@ export type ProjectCountOutputType = {
   gpsTracking: number
   meetings: number
   changeOrders: number
+  photos: number
+  siteVisits: number
 }
 
 export type ProjectCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3910,6 +4700,7 @@ export type ProjectCountOutputTypeSelect<ExtArgs extends runtime.Types.Extension
   boqItems?: boolean | ProjectCountOutputTypeCountBoqItemsArgs
   costEstimations?: boolean | ProjectCountOutputTypeCountCostEstimationsArgs
   quotations?: boolean | ProjectCountOutputTypeCountQuotationsArgs
+  invoices?: boolean | ProjectCountOutputTypeCountInvoicesArgs
   documents?: boolean | ProjectCountOutputTypeCountDocumentsArgs
   workflows?: boolean | ProjectCountOutputTypeCountWorkflowsArgs
   activities?: boolean | ProjectCountOutputTypeCountActivitiesArgs
@@ -3917,6 +4708,8 @@ export type ProjectCountOutputTypeSelect<ExtArgs extends runtime.Types.Extension
   gpsTracking?: boolean | ProjectCountOutputTypeCountGpsTrackingArgs
   meetings?: boolean | ProjectCountOutputTypeCountMeetingsArgs
   changeOrders?: boolean | ProjectCountOutputTypeCountChangeOrdersArgs
+  photos?: boolean | ProjectCountOutputTypeCountPhotosArgs
+  siteVisits?: boolean | ProjectCountOutputTypeCountSiteVisitsArgs
 }
 
 /**
@@ -3955,6 +4748,13 @@ export type ProjectCountOutputTypeCountCostEstimationsArgs<ExtArgs extends runti
  */
 export type ProjectCountOutputTypeCountQuotationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.QuotationWhereInput
+}
+
+/**
+ * ProjectCountOutputType without action
+ */
+export type ProjectCountOutputTypeCountInvoicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.InvoiceWhereInput
 }
 
 /**
@@ -4006,6 +4806,20 @@ export type ProjectCountOutputTypeCountChangeOrdersArgs<ExtArgs extends runtime.
   where?: Prisma.ChangeOrderWhereInput
 }
 
+/**
+ * ProjectCountOutputType without action
+ */
+export type ProjectCountOutputTypeCountPhotosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PhotoWhereInput
+}
+
+/**
+ * ProjectCountOutputType without action
+ */
+export type ProjectCountOutputTypeCountSiteVisitsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SiteVisitWhereInput
+}
+
 
 export type ProjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -4041,6 +4855,7 @@ export type ProjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   boqItems?: boolean | Prisma.Project$boqItemsArgs<ExtArgs>
   costEstimations?: boolean | Prisma.Project$costEstimationsArgs<ExtArgs>
   quotations?: boolean | Prisma.Project$quotationsArgs<ExtArgs>
+  invoices?: boolean | Prisma.Project$invoicesArgs<ExtArgs>
   documents?: boolean | Prisma.Project$documentsArgs<ExtArgs>
   workflows?: boolean | Prisma.Project$workflowsArgs<ExtArgs>
   activities?: boolean | Prisma.Project$activitiesArgs<ExtArgs>
@@ -4048,6 +4863,8 @@ export type ProjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   gpsTracking?: boolean | Prisma.Project$gpsTrackingArgs<ExtArgs>
   meetings?: boolean | Prisma.Project$meetingsArgs<ExtArgs>
   changeOrders?: boolean | Prisma.Project$changeOrdersArgs<ExtArgs>
+  photos?: boolean | Prisma.Project$photosArgs<ExtArgs>
+  siteVisits?: boolean | Prisma.Project$siteVisitsArgs<ExtArgs>
   _count?: boolean | Prisma.ProjectCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["project"]>
 
@@ -4153,6 +4970,7 @@ export type ProjectInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   boqItems?: boolean | Prisma.Project$boqItemsArgs<ExtArgs>
   costEstimations?: boolean | Prisma.Project$costEstimationsArgs<ExtArgs>
   quotations?: boolean | Prisma.Project$quotationsArgs<ExtArgs>
+  invoices?: boolean | Prisma.Project$invoicesArgs<ExtArgs>
   documents?: boolean | Prisma.Project$documentsArgs<ExtArgs>
   workflows?: boolean | Prisma.Project$workflowsArgs<ExtArgs>
   activities?: boolean | Prisma.Project$activitiesArgs<ExtArgs>
@@ -4160,6 +4978,8 @@ export type ProjectInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   gpsTracking?: boolean | Prisma.Project$gpsTrackingArgs<ExtArgs>
   meetings?: boolean | Prisma.Project$meetingsArgs<ExtArgs>
   changeOrders?: boolean | Prisma.Project$changeOrdersArgs<ExtArgs>
+  photos?: boolean | Prisma.Project$photosArgs<ExtArgs>
+  siteVisits?: boolean | Prisma.Project$siteVisitsArgs<ExtArgs>
   _count?: boolean | Prisma.ProjectCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ProjectIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -4183,6 +5003,7 @@ export type $ProjectPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     boqItems: Prisma.$BOQItemPayload<ExtArgs>[]
     costEstimations: Prisma.$CostEstimationPayload<ExtArgs>[]
     quotations: Prisma.$QuotationPayload<ExtArgs>[]
+    invoices: Prisma.$InvoicePayload<ExtArgs>[]
     documents: Prisma.$DocumentPayload<ExtArgs>[]
     workflows: Prisma.$WorkflowPayload<ExtArgs>[]
     activities: Prisma.$ActivityPayload<ExtArgs>[]
@@ -4190,6 +5011,8 @@ export type $ProjectPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     gpsTracking: Prisma.$GpsTrackingPayload<ExtArgs>[]
     meetings: Prisma.$MeetingPayload<ExtArgs>[]
     changeOrders: Prisma.$ChangeOrderPayload<ExtArgs>[]
+    photos: Prisma.$PhotoPayload<ExtArgs>[]
+    siteVisits: Prisma.$SiteVisitPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -4619,6 +5442,7 @@ export interface Prisma__ProjectClient<T, Null = never, ExtArgs extends runtime.
   boqItems<T extends Prisma.Project$boqItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$boqItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BOQItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   costEstimations<T extends Prisma.Project$costEstimationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$costEstimationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CostEstimationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   quotations<T extends Prisma.Project$quotationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$quotationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QuotationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  invoices<T extends Prisma.Project$invoicesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$invoicesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   documents<T extends Prisma.Project$documentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$documentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   workflows<T extends Prisma.Project$workflowsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$workflowsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkflowPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   activities<T extends Prisma.Project$activitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$activitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ActivityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -4626,6 +5450,8 @@ export interface Prisma__ProjectClient<T, Null = never, ExtArgs extends runtime.
   gpsTracking<T extends Prisma.Project$gpsTrackingArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$gpsTrackingArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GpsTrackingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   meetings<T extends Prisma.Project$meetingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$meetingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MeetingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   changeOrders<T extends Prisma.Project$changeOrdersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$changeOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChangeOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  photos<T extends Prisma.Project$photosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$photosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PhotoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  siteVisits<T extends Prisma.Project$siteVisitsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$siteVisitsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SiteVisitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5216,6 +6042,30 @@ export type Project$quotationsArgs<ExtArgs extends runtime.Types.Extensions.Inte
 }
 
 /**
+ * Project.invoices
+ */
+export type Project$invoicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Invoice
+   */
+  select?: Prisma.InvoiceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Invoice
+   */
+  omit?: Prisma.InvoiceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InvoiceInclude<ExtArgs> | null
+  where?: Prisma.InvoiceWhereInput
+  orderBy?: Prisma.InvoiceOrderByWithRelationInput | Prisma.InvoiceOrderByWithRelationInput[]
+  cursor?: Prisma.InvoiceWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.InvoiceScalarFieldEnum | Prisma.InvoiceScalarFieldEnum[]
+}
+
+/**
  * Project.documents
  */
 export type Project$documentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -5381,6 +6231,54 @@ export type Project$changeOrdersArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.ChangeOrderScalarFieldEnum | Prisma.ChangeOrderScalarFieldEnum[]
+}
+
+/**
+ * Project.photos
+ */
+export type Project$photosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Photo
+   */
+  select?: Prisma.PhotoSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Photo
+   */
+  omit?: Prisma.PhotoOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PhotoInclude<ExtArgs> | null
+  where?: Prisma.PhotoWhereInput
+  orderBy?: Prisma.PhotoOrderByWithRelationInput | Prisma.PhotoOrderByWithRelationInput[]
+  cursor?: Prisma.PhotoWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PhotoScalarFieldEnum | Prisma.PhotoScalarFieldEnum[]
+}
+
+/**
+ * Project.siteVisits
+ */
+export type Project$siteVisitsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SiteVisit
+   */
+  select?: Prisma.SiteVisitSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SiteVisit
+   */
+  omit?: Prisma.SiteVisitOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SiteVisitInclude<ExtArgs> | null
+  where?: Prisma.SiteVisitWhereInput
+  orderBy?: Prisma.SiteVisitOrderByWithRelationInput | Prisma.SiteVisitOrderByWithRelationInput[]
+  cursor?: Prisma.SiteVisitWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SiteVisitScalarFieldEnum | Prisma.SiteVisitScalarFieldEnum[]
 }
 
 /**

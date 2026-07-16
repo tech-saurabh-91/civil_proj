@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   FileText,
   Download,
@@ -38,25 +38,16 @@ const reportTypes = [
   { value: 'daily', label: 'Daily Report', icon: <Calendar className="h-4 w-4" /> },
 ]
 
-const projects = [
-  { value: 'PRJ-001', label: 'Phoenix Tower — Structural Survey' },
-  { value: 'PRJ-002', label: 'Greenfield Estates — Phase 2' },
-  { value: 'PRJ-003', label: 'Cloudview Apartments — Interior' },
-  { value: 'PRJ-004', label: 'Metro Residency — Foundation' },
-  { value: 'PRJ-005', label: 'Sunrise Enclave — Pre-Construction' },
-  { value: 'PRJ-006', label: 'Hillside Villas — Soil Testing' },
-]
-
 const sectionOptions = [
-  { id: 'header', label: 'Report Header', icon: <FileText className="h-3.5 w-3.5" /> },
-  { id: 'project', label: 'Project Details', icon: <FolderKanban className="h-3.5 w-3.5" /> },
-  { id: 'location', label: 'GPS Location', icon: <MapPin className="h-3.5 w-3.5" /> },
-  { id: 'measurements', label: 'Measurements Table', icon: <BarChart3 className="h-3.5 w-3.5" /> },
-  { id: 'checklist', label: 'Checklist Summary', icon: <CheckCircle className="h-3.5 w-3.5" /> },
-  { id: 'photos', label: 'Photo Documentation', icon: <Camera className="h-3.5 w-3.5" /> },
-  { id: 'risks', label: 'Risk Assessment', icon: <AlertTriangle className="h-3.5 w-3.5" /> },
-  { id: 'remarks', label: 'Remarks & Notes', icon: <Clock className="h-3.5 w-3.5" /> },
-  { id: 'signatures', label: 'Digital Signatures', icon: <CheckCircle className="h-3.5 w-3.5" /> },
+  { id: 'header', label: 'Report Header', icon: <FileText className="h-3.5 h-3.5" /> },
+  { id: 'project', label: 'Project Details', icon: <FolderKanban className="h-3.5 h-3.5" /> },
+  { id: 'location', label: 'GPS Location', icon: <MapPin className="h-3.5 h-3.5" /> },
+  { id: 'measurements', label: 'Measurements Table', icon: <BarChart3 className="h-3.5 h-3.5" /> },
+  { id: 'checklist', label: 'Checklist Summary', icon: <CheckCircle className="h-3.5 h-3.5" /> },
+  { id: 'photos', label: 'Photo Documentation', icon: <Camera className="h-3.5 h-3.5" /> },
+  { id: 'risks', label: 'Risk Assessment', icon: <AlertTriangle className="h-3.5 h-3.5" /> },
+  { id: 'remarks', label: 'Remarks & Notes', icon: <Clock className="h-3.5 h-3.5" /> },
+  { id: 'signatures', label: 'Digital Signatures', icon: <CheckCircle className="h-3.5 h-3.5" /> },
 ]
 
 const sampleData: SurveyReportData = {
@@ -136,6 +127,17 @@ export default function GenerateReportPage() {
   )
   const [isGenerating, setIsGenerating] = useState(false)
   const [isGenerated, setIsGenerated] = useState(false)
+  const [projectList, setProjectList] = useState<{ value: string; label: string }[]>([])
+
+  useEffect(() => {
+    fetch('/api/projects')
+      .then(r => r.json())
+      .then(d => {
+        const raw = d.data ?? d.projects ?? (Array.isArray(d) ? d : [])
+        setProjectList(raw.map((p: any) => ({ value: p.id, label: p.name })))
+      })
+      .catch(() => {})
+  }, [])
 
   const toggleSection = (id: string) => {
     setSelectedSections((prev) =>
@@ -212,7 +214,7 @@ export default function GenerateReportPage() {
                       <SelectValue placeholder="Select project" />
                     </SelectTrigger>
                     <SelectContent>
-                      {projects.map((p) => (
+                      {projectList.map((p) => (
                         <SelectItem key={p.value} value={p.value}>
                           {p.label}
                         </SelectItem>

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import Link from "next/link"
 import {
   FileText,
@@ -55,184 +55,25 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { DatePicker } from "@/components/ui/date-picker"
 
 const reportTemplates = [
-  {
-    id: "survey",
-    name: "Survey Report",
-    description: "Comprehensive survey findings, measurements, and site conditions",
-    icon: <ClipboardList className="h-6 w-6" />,
-    color: "bg-blue-100 text-blue-600",
-  },
-  {
-    id: "project-summary",
-    name: "Project Summary",
-    description: "High-level overview of project status, milestones, and KPIs",
-    icon: <FileText className="h-6 w-6" />,
-    color: "bg-emerald-100 text-emerald-600",
-  },
-  {
-    id: "boq",
-    name: "BOQ Report",
-    description: "Bill of Quantities with itemized costs and quantities",
-    icon: <FileSpreadsheet className="h-6 w-6" />,
-    color: "bg-amber-100 text-amber-600",
-  },
-  {
-    id: "financial",
-    name: "Financial Report",
-    description: "Revenue, expenses, profit margins, and payment status",
-    icon: <IndianRupee className="h-6 w-6" />,
-    color: "bg-violet-100 text-violet-600",
-  },
-  {
-    id: "progress",
-    name: "Progress Report",
-    description: "Construction progress tracking with photo documentation",
-    icon: <TrendingUp className="h-6 w-6" />,
-    color: "bg-teal-100 text-teal-600",
-  },
-  {
-    id: "client",
-    name: "Client Report",
-    description: "Client-facing deliverables and project updates",
-    icon: <Users className="h-6 w-6" />,
-    color: "bg-rose-100 text-rose-600",
-  },
+  { id: "survey", name: "Survey Report", description: "Comprehensive survey findings, measurements, and site conditions", icon: <ClipboardList className="h-6 w-6" />, color: "bg-blue-100 text-blue-600" },
+  { id: "project-summary", name: "Project Summary", description: "High-level overview of project status, milestones, and KPIs", icon: <FileText className="h-6 w-6" />, color: "bg-emerald-100 text-emerald-600" },
+  { id: "boq", name: "BOQ Report", description: "Bill of Quantities with itemized costs and quantities", icon: <FileSpreadsheet className="h-6 w-6" />, color: "bg-amber-100 text-amber-600" },
+  { id: "financial", name: "Financial Report", description: "Revenue, expenses, profit margins, and payment status", icon: <IndianRupee className="h-6 w-6" />, color: "bg-violet-100 text-violet-600" },
+  { id: "progress", name: "Progress Report", description: "Construction progress tracking with photo documentation", icon: <TrendingUp className="h-6 w-6" />, color: "bg-teal-100 text-teal-600" },
+  { id: "client", name: "Client Report", description: "Client-facing deliverables and project updates", icon: <Users className="h-6 w-6" />, color: "bg-rose-100 text-rose-600" },
 ]
 
-const mockGeneratedReports = [
-  {
-    id: "RPT-2026-001",
-    title: "Topographical Survey - Worli Sky Residences",
-    project: "Worli Sky Residences Tower A",
-    type: "Survey Report",
-    generatedBy: "Raj Mehta",
-    generatedByInitials: "RM",
-    date: "2026-07-10",
-    format: "PDF",
-    size: "2.4 MB",
-  },
-  {
-    id: "RPT-2026-002",
-    title: "Monthly Progress Report - June 2026",
-    project: "BKC Commercial Hub Phase 1",
-    type: "Progress Report",
-    generatedBy: "Priya Nair",
-    generatedByInitials: "PN",
-    date: "2026-07-05",
-    format: "PDF",
-    size: "5.1 MB",
-  },
-  {
-    id: "RPT-2026-003",
-    title: "BOQ - Delhi-Meerut Expressway Section 3",
-    project: "Delhi-Meerut Expressway Section 3",
-    type: "BOQ Report",
-    generatedBy: "Amit Kumar",
-    generatedByInitials: "AK",
-    date: "2026-07-03",
-    format: "Excel",
-    size: "1.8 MB",
-  },
-  {
-    id: "RPT-2026-004",
-    title: "Q1 FY2026-27 Financial Summary",
-    project: "All Projects",
-    type: "Financial Report",
-    generatedBy: "Saurabh Patil",
-    generatedByInitials: "SP",
-    date: "2026-07-01",
-    format: "PDF",
-    size: "3.6 MB",
-  },
-  {
-    id: "RPT-2026-005",
-    title: "Client Presentation - Prestige Lake Ridge",
-    project: "Prestige Lake Ridge Villas",
-    type: "Client Report",
-    generatedBy: "Neha Kulkarni",
-    generatedByInitials: "NK",
-    date: "2026-06-28",
-    format: "PDF",
-    size: "8.2 MB",
-  },
-  {
-    id: "RPT-2026-006",
-    title: "Foundation Inspection Survey",
-    project: "Metro Residency",
-    type: "Survey Report",
-    generatedBy: "Raj Mehta",
-    generatedByInitials: "RM",
-    date: "2026-06-25",
-    format: "PDF",
-    size: "1.9 MB",
-  },
-  {
-    id: "RPT-2026-007",
-    title: "Material Quality Assessment",
-    project: "Godrej Platinum Towers",
-    type: "Survey Report",
-    generatedBy: "Amit Kumar",
-    generatedByInitials: "AK",
-    date: "2026-06-22",
-    format: "PDF",
-    size: "2.1 MB",
-  },
-  {
-    id: "RPT-2026-008",
-    title: "Monthly Financial Report - June",
-    project: "Mumbai Metro Line 4 Extension",
-    type: "Financial Report",
-    generatedBy: "Saurabh Patil",
-    generatedByInitials: "SP",
-    date: "2026-06-20",
-    format: "Excel",
-    size: "1.5 MB",
-  },
-  {
-    id: "RPT-2026-009",
-    title: "Project Summary - Q4 FY2025-26",
-    project: "Adani Ahmedabad Airport Expansion",
-    type: "Project Summary",
-    generatedBy: "Vikram Desai",
-    generatedByInitials: "VD",
-    date: "2026-06-18",
-    format: "PDF",
-    size: "4.7 MB",
-  },
-  {
-    id: "RPT-2026-010",
-    title: "Bridge Load Testing Report",
-    project: "Ircon Bridge Reconstruction - Bihar",
-    type: "Survey Report",
-    generatedBy: "Raj Mehta",
-    generatedByInitials: "RM",
-    date: "2026-06-15",
-    format: "PDF",
-    size: "3.3 MB",
-  },
-  {
-    id: "RPT-2026-011",
-    title: "BOQ Update - Oberoi Three Sixty West",
-    project: "Oberoi Three Sixty West",
-    type: "BOQ Report",
-    generatedBy: "Priya Nair",
-    generatedByInitials: "PN",
-    date: "2026-06-12",
-    format: "Excel",
-    size: "2.0 MB",
-  },
-  {
-    id: "RPT-2026-012",
-    title: "Client Progress Update - Chennai-Salem",
-    project: "Chennai-Salem Expressway",
-    type: "Client Report",
-    generatedBy: "Manish Gupta",
-    generatedByInitials: "MG",
-    date: "2026-06-10",
-    format: "PDF",
-    size: "6.5 MB",
-  },
-]
+interface GeneratedReport {
+  id: string
+  title: string
+  project: string
+  type: string
+  generatedBy: string
+  generatedByInitials: string
+  date: string
+  format: string
+  size: string
+}
 
 const reportTypeColors: Record<string, string> = {
   "Survey Report": "bg-blue-100 text-blue-800",
@@ -248,26 +89,9 @@ const formatIcon: Record<string, React.ReactNode> = {
   Excel: <FileSpreadsheet className="h-4 w-4 text-emerald-500" />,
 }
 
-const projects = [
-  "All Projects",
-  "Worli Sky Residences Tower A",
-  "BKC Commercial Hub Phase 1",
-  "Delhi-Meerut Expressway Section 3",
-  "Prestige Lake Ridge Villas",
-  "Godrej Platinum Towers",
-  "Mumbai Metro Line 4 Extension",
-  "Oberoi Three Sixty West",
-  "Chennai-Salem Expressway",
-]
-
 const reportSections = [
-  "Executive Summary",
-  "Project Overview",
-  "Survey Findings",
-  "Measurements",
-  "Photo Documentation",
-  "Risk Assessment",
-  "Recommendations",
+  "Executive Summary", "Project Overview", "Survey Findings", "Measurements",
+  "Photo Documentation", "Risk Assessment", "Recommendations",
 ]
 
 export default function ReportsPage() {
@@ -279,10 +103,31 @@ export default function ReportsPage() {
   const [selectedProject, setSelectedProject] = useState("All Projects")
   const [selectedSections, setSelectedSections] = useState<string[]>(reportSections)
   const [selectedFormat, setSelectedFormat] = useState("PDF")
+  const [reports, setReports] = useState<GeneratedReport[]>([])
+  const [loading, setLoading] = useState(true)
   const pageSize = 10
 
+  useEffect(() => {
+    async function fetchReports() {
+      try {
+        const res = await fetch("/api/reports")
+        if (res.ok) {
+          const data = await res.json()
+          setReports(data.data ?? data.reports ?? (Array.isArray(data) ? data : []))
+        }
+      } catch {
+        // API not available yet
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchReports()
+  }, [])
+
+  const projects = useMemo(() => ["All Projects", ...new Set(reports.map((r) => r.project))], [reports])
+
   const filteredReports = useMemo(() => {
-    return mockGeneratedReports.filter((report) => {
+    return reports.filter((report) => {
       const matchesSearch =
         searchQuery === "" ||
         report.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -291,7 +136,7 @@ export default function ReportsPage() {
       const matchesFormat = formatFilter === "all" || report.format === formatFilter
       return matchesSearch && matchesType && matchesFormat
     })
-  }, [searchQuery, typeFilter, formatFilter])
+  }, [reports, searchQuery, typeFilter, formatFilter])
 
   const totalPages = Math.ceil(filteredReports.length / pageSize)
   const paginatedReports = filteredReports.slice(
@@ -302,6 +147,26 @@ export default function ReportsPage() {
   const toggleSection = (section: string) => {
     setSelectedSections((prev) =>
       prev.includes(section) ? prev.filter((s) => s !== section) : [...prev, section]
+    )
+  }
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <PageHeader
+          title="Reports"
+          description="Generate, manage, and download project reports"
+          breadcrumbs={[{ label: "Dashboard", href: "/" }, { label: "Reports" }]}
+        />
+        <Card>
+          <CardContent className="flex items-center justify-center py-12">
+            <div className="text-center">
+              <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent mx-auto" />
+              <p className="mt-2 text-sm text-muted-foreground">Loading reports...</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     )
   }
 
@@ -322,7 +187,6 @@ export default function ReportsPage() {
         }
       />
 
-      {/* Report Templates */}
       <div>
         <h2 className="mb-4 text-lg font-semibold">Report Templates</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
@@ -350,34 +214,23 @@ export default function ReportsPage() {
         </div>
       </div>
 
-      {/* Recent Reports */}
       <Card>
         <CardHeader>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <CardTitle className="text-base font-semibold">Recent Reports</CardTitle>
             <div className="flex items-center gap-3">
-              <SearchInput
-                placeholder="Search reports..."
-                className="w-[220px]"
-                onSearch={setSearchQuery}
-              />
+              <SearchInput placeholder="Search reports..." className="w-[220px]" onSearch={setSearchQuery} />
               <Select value={typeFilter} onValueChange={setTypeFilter}>
-                <SelectTrigger className="w-[160px]">
-                  <SelectValue placeholder="All Types" />
-                </SelectTrigger>
+                <SelectTrigger className="w-[160px]"><SelectValue placeholder="All Types" /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Types</SelectItem>
                   {reportTemplates.map((t) => (
-                    <SelectItem key={t.id} value={t.name}>
-                      {t.name}
-                    </SelectItem>
+                    <SelectItem key={t.id} value={t.name}>{t.name}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
               <Select value={formatFilter} onValueChange={setFormatFilter}>
-                <SelectTrigger className="w-[130px]">
-                  <SelectValue placeholder="All Formats" />
-                </SelectTrigger>
+                <SelectTrigger className="w-[130px]"><SelectValue placeholder="All Formats" /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Formats</SelectItem>
                   <SelectItem value="PDF">PDF</SelectItem>
@@ -404,29 +257,16 @@ export default function ReportsPage() {
               {paginatedReports.map((report) => (
                 <TableRow key={report.id}>
                   <TableCell>
-                    <Link
-                      href={`/reports/${report.id}`}
-                      className="font-medium hover:text-primary transition-colors"
-                    >
+                    <Link href={`/reports/${report.id}`} className="font-medium hover:text-primary transition-colors">
                       {report.title}
                     </Link>
                   </TableCell>
-                  <TableCell className="text-sm text-muted-foreground max-w-[200px] truncate">
-                    {report.project}
-                  </TableCell>
+                  <TableCell className="text-sm text-muted-foreground max-w-[200px] truncate">{report.project}</TableCell>
                   <TableCell>
-                    <Badge className={cn("text-[10px]", reportTypeColors[report.type] || "")}>
-                      {report.type}
-                    </Badge>
+                    <Badge className={cn("text-[10px]", reportTypeColors[report.type] || "")}>{report.type}</Badge>
                   </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm">{report.generatedBy}</span>
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-sm text-muted-foreground">
-                    {formatDate(report.date)}
-                  </TableCell>
+                  <TableCell><span className="text-sm">{report.generatedBy}</span></TableCell>
+                  <TableCell className="text-sm text-muted-foreground">{formatDate(report.date)}</TableCell>
                   <TableCell>
                     <div className="flex items-center gap-1.5">
                       {formatIcon[report.format]}
@@ -443,18 +283,15 @@ export default function ReportsPage() {
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem asChild>
                           <Link href={`/reports/${report.id}`}>
-                            <Eye className="mr-2 h-4 w-4" />
-                            View
+                            <Eye className="mr-2 h-4 w-4" />View
                           </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem>
-                          <Download className="mr-2 h-4 w-4" />
-                          Download {report.format}
+                          <Download className="mr-2 h-4 w-4" />Download {report.format}
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem className="text-destructive">
-                          <Trash2 className="mr-2 h-4 w-4" />
-                          Delete
+                          <Trash2 className="mr-2 h-4 w-4" />Delete
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -469,24 +306,17 @@ export default function ReportsPage() {
               <FileText className="h-12 w-12 text-muted-foreground/50" />
               <h3 className="mt-4 text-lg font-semibold">No reports found</h3>
               <p className="mt-1 text-sm text-muted-foreground">
-                Try adjusting your search or filters
+                {reports.length === 0 ? "No reports yet. Generate your first report." : "Try adjusting your search or filters"}
               </p>
             </div>
           )}
 
           <div className="mt-4">
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              totalItems={filteredReports.length}
-              pageSize={pageSize}
-              onPageChange={setCurrentPage}
-            />
+            <Pagination currentPage={currentPage} totalPages={totalPages} totalItems={filteredReports.length} pageSize={pageSize} onPageChange={setCurrentPage} />
           </div>
         </CardContent>
       </Card>
 
-      {/* Generate Report Modal */}
       <Modal
         open={showGenerateModal}
         onOpenChange={setShowGenerateModal}
@@ -502,48 +332,33 @@ export default function ReportsPage() {
           <div className="space-y-2">
             <label className="text-sm font-medium">Project</label>
             <Select value={selectedProject} onValueChange={setSelectedProject}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select project" />
-              </SelectTrigger>
+              <SelectTrigger><SelectValue placeholder="Select project" /></SelectTrigger>
               <SelectContent>
                 {projects.map((p) => (
-                  <SelectItem key={p} value={p}>
-                    {p}
-                  </SelectItem>
+                  <SelectItem key={p} value={p}>{p}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
-
           <div className="grid grid-cols-2 gap-4">
             <DatePicker label="From Date" defaultValue="2026-06-01" />
             <DatePicker label="To Date" defaultValue="2026-07-11" />
           </div>
-
           <div className="space-y-2">
             <label className="text-sm font-medium">Sections to Include</label>
             <div className="grid grid-cols-2 gap-2">
               {reportSections.map((section) => (
-                <label
-                  key={section}
-                  className="flex items-center gap-2 rounded-md border p-2.5 text-sm cursor-pointer hover:bg-muted/50"
-                >
-                  <Checkbox
-                    checked={selectedSections.includes(section)}
-                    onCheckedChange={() => toggleSection(section)}
-                  />
+                <label key={section} className="flex items-center gap-2 rounded-md border p-2.5 text-sm cursor-pointer hover:bg-muted/50">
+                  <Checkbox checked={selectedSections.includes(section)} onCheckedChange={() => toggleSection(section)} />
                   {section}
                 </label>
               ))}
             </div>
           </div>
-
           <div className="space-y-2">
             <label className="text-sm font-medium">Output Format</label>
             <Select value={selectedFormat} onValueChange={setSelectedFormat}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
+              <SelectTrigger><SelectValue /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="PDF">PDF Document</SelectItem>
                 <SelectItem value="Excel">Excel Spreadsheet</SelectItem>

@@ -83,7 +83,15 @@ async function main() {
   }
   console.log('Surveyor users created')
 
-  // 5. Create Clients
+  // 5. Look up users for references
+  const engineerUsers = await Promise.all(
+    engineers.map(e => prisma.user.findUnique({ where: { email: e.email } }))
+  )
+  const surveyorUsers = await Promise.all(
+    surveyors.map(s => prisma.user.findUnique({ where: { email: s.email } }))
+  )
+
+  // 6. Create Clients
   const clients = [
     {
       companyName: 'Tata Realty & Infrastructure Ltd',
@@ -299,13 +307,18 @@ async function main() {
 
   const createdProjects = []
   for (const project of projects) {
-    const p = await prisma.project.create({ data: project })
-    createdProjects.push(p)
+    const existing = await prisma.project.findFirst({ where: { code: project.code } })
+    if (existing) {
+      createdProjects.push(existing)
+    } else {
+      const p = await prisma.project.create({ data: project })
+      createdProjects.push(p)
+    }
   }
-  console.log(`${createdProjects.length} projects created`)
+  console.log(`${createdProjects.length} projects (existing + new)`)
 
   // 7. Create Surveys
-  const surveys = [
+  const surveysInput = [
     {
       title: 'Initial Site Survey - Tata Primus',
       description: 'Comprehensive site survey for foundation assessment',
@@ -384,11 +397,16 @@ async function main() {
   ]
 
   const createdSurveys = []
-  for (const survey of surveys) {
-    const s = await prisma.survey.create({ data: survey })
-    createdSurveys.push(s)
+  for (const survey of surveysInput) {
+    const existing = await prisma.survey.findFirst({ where: { title: survey.title } })
+    if (existing) {
+      createdSurveys.push(existing)
+    } else {
+      const s = await prisma.survey.create({ data: survey })
+      createdSurveys.push(s)
+    }
   }
-  console.log(`${createdSurveys.length} surveys created`)
+  console.log(`${createdSurveys.length} surveys (existing + new)`)
 
   // 8. Create Leads
   const leads = [
@@ -400,9 +418,10 @@ async function main() {
   ]
 
   for (const lead of leads) {
-    await prisma.lead.create({ data: lead })
+    const existing = await prisma.lead.findFirst({ where: { email: lead.email } })
+    if (!existing) await prisma.lead.create({ data: lead })
   }
-  console.log(`${leads.length} leads created`)
+  console.log(`${leads.length} leads (existing + new)`)
 
   // 9. Create BOQ Items for Project 1
   const boqItems = [
@@ -419,12 +438,14 @@ async function main() {
   ]
 
   for (const item of boqItems) {
-    await prisma.bOQItem.create({ data: item })
+    const existing = await prisma.bOQItem.findFirst({ where: { description: item.description, projectId: item.projectId } })
+    if (!existing) await prisma.bOQItem.create({ data: item })
   }
-  console.log(`${boqItems.length} BOQ items created`)
+  console.log(`${boqItems.length} BOQ items (existing + new)`)
 
   // 10. Create Quotations
-  const quotation1 = await prisma.quotation.create({
+  const existingQuotation = await prisma.quotation.findFirst({ where: { quotationNumber: 'QUO-2024-001' } })
+  const quotation1 = existingQuotation || await prisma.quotation.create({
     data: {
       quotationNumber: 'QUO-2024-001',
       title: 'Survey & BOQ - Tata Primus Residences',
@@ -546,12 +567,245 @@ async function main() {
   }
   console.log(`${auditActions.length} audit logs created`)
 
+  // 16. Workflows (projectId is required)
+  const workflowData = [
+    { name: 'Site Survey Approval', description: 'Standard workflow for site survey completion and approval', status: 'ACTIVE' as const, projectId: createdProjects[0].id, totalSteps: 4 },
+    { name: 'Material Procurement', description: 'Workflow for material ordering and delivery tracking', status: 'ACTIVE' as const, projectId: createdProjects[1].id, totalSteps: 4 },
+    { name: 'Quality Inspection', description: 'Quality check workflow for completed construction phases', status: 'ACTIVE' as const, projectId: createdProjects[2].id, totalSteps: 3 },
+    { name: 'Client Approval Chain', description: 'Multi-step client approval for design changes', status: 'DRAFT' as const, projectId: createdProjects[3].id, totalSteps: 4 },
+    { name: 'Safety Compliance Review', description: 'Safety inspection and compliance verification workflow', status: 'ACTIVE' as const, projectId: createdProjects[4].id, totalSteps: 3 },
+    { name: 'Invoice Approval Process', description: 'Finance team approval for contractor invoices', status: 'ACTIVE' as const, projectId: createdProjects[5].id, totalSteps: 2 },
+  ]
+  const workflowRecords: any[] = []
+  for (const wf of workflowData) {
+    const record = await prisma.workflow.create({
+      data: {
+        ...wf,
+        createdBy: adminUser.id,
+      },
+    })
+    workflowRecords.push(record)
+  }
+  console.log(`${workflowData.length} workflows created`)
+
+  // 17. Workflow Steps (stepNumber, workflowId, assignedToId)
+  const stepTemplates = [
+    ['Submit Survey', 'Review by Manager', 'Client Approval', 'Final Sign-off'],
+    ['Raise Requisition', 'Manager Approval', 'Purchase Order', 'Delivery Confirmation'],
+    ['Initial Inspection', 'Quality Testing', 'Report Generation'],
+    ['Design Review', 'Cost Analysis', 'Client Presentation', 'Final Decision'],
+  ]
+  for (let i = 0; i < Math.min(workflowRecords.length, stepTemplates.length); i++) {
+    const steps = stepTemplates[i]
+    for (let j = 0; j < steps.length; j++) {
+      await prisma.workflowStep.create({
+        data: {
+          workflowId: workflowRecords[i].id,
+          stepNumber: j + 1,
+          name: steps[j],
+          assignedToId: j === 0 ? engineerUsers[0].id : j === 1 ? managerUser.id : adminUser.id,
+          status: j === 0 ? 'DONE' as const : j === 1 ? 'IN_PROGRESS' as const : 'TODO' as const,
+        },
+      })
+    }
+  }
+  console.log('Workflow steps created')
+
+  // 18. Approvals (entityType, entityId, requestedById required)
+  const firstBoqItem = await prisma.bOQItem.findFirst({ where: { projectId: createdProjects[0].id } })
+  const approvalData = [
+    { entityType: 'SURVEY', entityId: createdSurveys[0].id, status: 'PENDING' as const, requestedById: engineerUsers[0].id, approvedById: null, comments: 'Site survey completed, pending manager review' },
+    { entityType: 'BOQ_ITEM', entityId: firstBoqItem?.id || 'placeholder', status: 'PENDING' as const, requestedById: adminUser.id, approvedById: null, comments: 'Procurement request for 50 tons TMT steel' },
+    { entityType: 'SURVEY', entityId: createdSurveys[1].id, status: 'APPROVED' as const, requestedById: engineerUsers[1].id, approvedById: managerUser.id, comments: 'Quality test results reviewed and approved' },
+    { entityType: 'QUOTATION', entityId: quotation1.id, status: 'PENDING' as const, requestedById: adminUser.id, approvedById: null, comments: 'Client requested modification to 3rd floor layout' },
+    { entityType: 'SURVEY', entityId: createdSurveys[2].id, status: 'APPROVED' as const, requestedById: engineerUsers[2].id, approvedById: managerUser.id, comments: 'Monthly safety compliance audit completed' },
+    { entityType: 'INVOICE', entityId: 'invoice-placeholder', status: 'APPROVED' as const, requestedById: adminUser.id, approvedById: managerUser.id, comments: 'Contractor invoice for Phase 1 work approved' },
+    { entityType: 'SURVEY', entityId: createdSurveys[3].id, status: 'REJECTED' as const, requestedById: engineerUsers[3].id, approvedById: managerUser.id, comments: 'Survey data incomplete, needs revision' },
+    { entityType: 'SURVEY', entityId: createdSurveys[4].id, status: 'PENDING' as const, requestedById: engineerUsers[0].id, approvedById: null, comments: 'Monthly safety inspection report pending' },
+  ]
+  for (const approval of approvalData) {
+    await prisma.approval.create({ data: approval })
+  }
+  console.log(`${approvalData.length} approvals created`)
+
+  // 19. Cost Estimations (estimatedAmount, actualAmount, projectId required)
+  const estimationData = [
+    { category: 'Civil Works', description: 'Foundation and structural work', estimatedAmount: 4500000, actualAmount: 4200000, projectId: createdProjects[0].id },
+    { category: 'Electrical', description: 'Electrical wiring and fixtures', estimatedAmount: 1200000, actualAmount: 1350000, projectId: createdProjects[0].id },
+    { category: 'Plumbing', description: 'Water supply and drainage system', estimatedAmount: 800000, actualAmount: 750000, projectId: createdProjects[0].id },
+    { category: 'Finishing', description: 'Painting, flooring, and fixtures', estimatedAmount: 2000000, actualAmount: null, projectId: createdProjects[1].id },
+    { category: 'Civil Works', description: 'Road widening subgrade preparation', estimatedAmount: 3200000, actualAmount: 3100000, projectId: createdProjects[2].id },
+    { category: 'Landscaping', description: 'Garden and green belt development', estimatedAmount: 500000, actualAmount: null, projectId: createdProjects[3].id },
+    { category: 'MEP', description: 'HVAC system installation', estimatedAmount: 1800000, actualAmount: 1650000, projectId: createdProjects[4].id },
+    { category: 'Interior', description: 'Modular kitchen and wardrobes', estimatedAmount: 900000, actualAmount: null, projectId: createdProjects[5].id },
+  ]
+  for (const est of estimationData) {
+    await prisma.costEstimation.create({ data: est })
+  }
+  console.log(`${estimationData.length} cost estimations created`)
+
+  // 20. Digital Signatures (entityType, entityId, signatureData, userId required)
+  const sigData = [
+    { entityType: 'SURVEY', entityId: createdSurveys[0].id, userId: adminUser.id, signatureData: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVQI12NgAAIABQABNjN9GQAAAABJRU5ErkJggg==' },
+    { entityType: 'SURVEY', entityId: createdSurveys[1].id, userId: managerUser.id, signatureData: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVQI12NgAAIABQABNjN9GQAAAABJRU5ErkJggg==' },
+    { entityType: 'MEASUREMENT', entityId: 'meas-1', userId: engineerUsers[0].id, signatureData: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVQI12NgAAIABQABNjN9GQAAAABJRU5ErkJggg==' },
+    { entityType: 'DAILY_REPORT', entityId: 'dpr-1', userId: engineerUsers[1].id, signatureData: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVQI12NgAAIABQABNjN9GQAAAABJRU5ErkJggg==' },
+    { entityType: 'QUOTATION', entityId: quotation1.id, userId: adminUser.id, signatureData: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVQI12NgAAIABQABNjN9GQAAAABJRU5ErkJggg==' },
+    { entityType: 'SURVEY', entityId: createdSurveys[2].id, userId: managerUser.id, signatureData: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVQI12NgAAIABQABNjN9GQAAAABJRU5ErkJggg==' },
+  ]
+  for (const sig of sigData) {
+    await prisma.digitalSignature.create({ data: sig })
+  }
+  console.log(`${sigData.length} digital signatures created`)
+
+  // 21. Documents (type is DocumentType enum, projectId + uploadedById required)
+  const docData = [
+    { title: 'Site Survey Report - Metro Phase II', type: 'REPORT' as const, projectId: createdProjects[0].id, uploadedById: engineerUsers[0].id, fileUrl: '/docs/survey-report-metro.pdf', filename: 'survey-report-metro.pdf', fileSize: 2500000 },
+    { title: 'BOQ Master Sheet', type: 'REPORT' as const, projectId: createdProjects[1].id, uploadedById: adminUser.id, fileUrl: '/docs/boq-master.xlsx', filename: 'boq-master.xlsx', fileSize: 1200000 },
+    { title: 'Safety Compliance Certificate', type: 'OTHER' as const, projectId: createdProjects[2].id, uploadedById: managerUser.id, fileUrl: '/docs/safety-cert.pdf', filename: 'safety-cert.pdf', fileSize: 800000 },
+    { title: 'Client Approval Letter', type: 'CORRESPONDENCE' as const, projectId: createdProjects[3].id, uploadedById: adminUser.id, fileUrl: '/docs/client-approval.pdf', filename: 'client-approval.pdf', fileSize: 500000 },
+    { title: 'Material Test Report - Steel', type: 'REPORT' as const, projectId: createdProjects[4].id, uploadedById: engineerUsers[1].id, fileUrl: '/docs/steel-test-report.pdf', filename: 'steel-test-report.pdf', fileSize: 1500000 },
+    { title: 'Structural Design Drawing', type: 'DRAWING' as const, projectId: createdProjects[0].id, uploadedById: engineerUsers[0].id, fileUrl: '/docs/structural-drawing.pdf', filename: 'structural-drawing.pdf', fileSize: 4200000 },
+    { title: 'Contract Agreement', type: 'CONTRACT' as const, projectId: createdProjects[1].id, uploadedById: adminUser.id, fileUrl: '/docs/contract.pdf', filename: 'contract.pdf', fileSize: 3000000 },
+  ]
+  for (const doc of docData) {
+    await prisma.document.create({ data: doc })
+  }
+  console.log(`${docData.length} documents created`)
+
+  // 22. Photos (surveyId is required, url + filename required)
+  const photoData = [
+    { caption: 'Foundation work progress', surveyId: createdSurveys[0].id, url: '/photos/foundation-progress.jpg', filename: 'foundation-progress.jpg' },
+    { caption: 'Steel reinforcement check', surveyId: createdSurveys[0].id, url: '/photos/steel-reinforcement.jpg', filename: 'steel-reinforcement.jpg' },
+    { caption: 'Excavation complete', surveyId: createdSurveys[1].id, url: '/photos/excavation-complete.jpg', filename: 'excavation-complete.jpg' },
+    { caption: 'Safety equipment inspection', surveyId: createdSurveys[2].id, url: '/photos/safety-inspection.jpg', filename: 'safety-inspection.jpg' },
+    { caption: 'Road marking final', surveyId: createdSurveys[3].id, url: '/photos/road-marking.jpg', filename: 'road-marking.jpg' },
+    { caption: 'Crack detection - Column B3', surveyId: createdSurveys[4].id, url: '/photos/crack-detection.jpg', filename: 'crack-detection.jpg' },
+    { caption: 'Painting - Level 2', surveyId: createdSurveys[5].id, url: '/photos/painting-level2.jpg', filename: 'painting-level2.jpg' },
+    { caption: 'Plumbing rough-in', surveyId: createdSurveys[0].id, url: '/photos/plumbing-roughin.jpg', filename: 'plumbing-roughin.jpg' },
+    { caption: 'Site barricade setup', surveyId: createdSurveys[1].id, url: '/photos/barricade-setup.jpg', filename: 'barricade-setup.jpg' },
+    { caption: 'Roof slab pouring', surveyId: createdSurveys[2].id, url: '/photos/roof-slab.jpg', filename: 'roof-slab.jpg' },
+  ]
+  for (const photo of photoData) {
+    await prisma.photo.create({ data: { ...photo, latitude: 21.1458 + Math.random() * 0.05, longitude: 79.0882 + Math.random() * 0.05 } })
+  }
+  console.log(`${photoData.length} photos created`)
+
+  // 23. Measurements (surveyId is required, category required)
+  const measData = [
+    { category: 'Concrete', description: 'Foundation concrete - Block A', length: 10, width: 5, height: 0.9, area: 50, volume: 45, unit: 'm', surveyId: createdSurveys[0].id },
+    { category: 'Steel', description: 'Steel reinforcement - Grade Fe500', length: 12, width: 0.5, height: 0.5, area: 6, volume: 1.5, unit: 'kg', surveyId: createdSurveys[0].id },
+    { category: 'Masonry', description: 'Brickwork - External walls', length: 20, width: 0.23, height: 3, area: 60, volume: 13.8, unit: 'm', surveyId: createdSurveys[1].id },
+    { category: 'Plastering', description: 'Internal wall plastering', length: 15, width: 3, height: 0.012, area: 45, volume: 0.54, unit: 'm', surveyId: createdSurveys[2].id },
+    { category: 'Flooring', description: 'Vitrified tile flooring', length: 8, width: 6, height: 0.02, area: 48, volume: 0.96, unit: 'm', surveyId: createdSurveys[3].id },
+    { category: 'Painting', description: 'Primer coat application', length: 10, width: 3, height: 0.001, area: 30, volume: 0.03, unit: 'm', surveyId: createdSurveys[4].id },
+    { category: 'Waterproofing', description: 'Terrace waterproofing', length: 20, width: 10, height: 0.005, area: 200, volume: 1, unit: 'm', surveyId: createdSurveys[5].id },
+    { category: 'Electrical', description: 'Conduit laying', length: 50, width: 0.025, height: 0.025, area: 1.25, volume: 0.031, unit: 'm', surveyId: createdSurveys[0].id },
+  ]
+  for (const meas of measData) {
+    await prisma.measurement.create({ data: meas })
+  }
+  console.log(`${measData.length} measurements created`)
+
+  // 24. Risk Assessments (surveyId + identifiedById required, level is RiskLevel enum)
+  const riskData = [
+    { title: 'Monsoon delay risk', description: 'Heavy rainfall expected Jul-Sep, may delay foundation work', level: 'HIGH' as const, mitigation: 'Advance procurement, weather monitoring', surveyId: createdSurveys[0].id, identifiedById: engineerUsers[0].id },
+    { title: 'Material price fluctuation', description: 'Steel prices rising 8-12% YoY', level: 'MEDIUM' as const, mitigation: 'Bulk purchasing, forward contracts', surveyId: createdSurveys[1].id, identifiedById: managerUser.id },
+    { title: 'Labor shortage during festival', description: 'Diwali period may see 30% workforce reduction', level: 'MEDIUM' as const, mitigation: 'Advance scheduling, local labor sourcing', surveyId: createdSurveys[2].id, identifiedById: engineerUsers[1].id },
+    { title: 'Foundation soil instability', description: 'Soil test shows clay content above threshold', level: 'HIGH' as const, mitigation: 'Additional soil testing, pile foundation design', surveyId: createdSurveys[3].id, identifiedById: engineerUsers[0].id },
+    { title: 'Equipment breakdown', description: 'Critical crane may require maintenance', level: 'LOW' as const, mitigation: 'Regular maintenance schedule, backup equipment', surveyId: createdSurveys[4].id, identifiedById: engineerUsers[2].id },
+    { title: 'Client design changes', description: 'Frequent changes in facade design', level: 'HIGH' as const, mitigation: 'Freeze design early, change order process', surveyId: createdSurveys[5].id, identifiedById: managerUser.id },
+  ]
+  for (const risk of riskData) {
+    await prisma.riskAssessment.create({ data: risk })
+  }
+  console.log(`${riskData.length} risk assessments created`)
+
+  // 25. Material Requirements (surveyId required, materialName required)
+  const matData = [
+    { materialName: 'TMT Steel Fe500D', specification: '16mm dia, IS 1786', quantity: 50, unit: 'tons', estimatedCost: 4000000, surveyId: createdSurveys[0].id },
+    { materialName: 'OPC 53 Cement', specification: 'UltraTech/ACC, IS 12269', quantity: 200, unit: 'bags', estimatedCost: 140000, surveyId: createdSurveys[0].id },
+    { materialName: 'River Sand', specification: 'Fine-graded, zone II', quantity: 150, unit: 'cum', estimatedCost: 450000, surveyId: createdSurveys[1].id },
+    { materialName: 'Crushed Aggregate', specification: '20mm, IS 383', quantity: 100, unit: 'cum', estimatedCost: 300000, surveyId: createdSurveys[1].id },
+    { materialName: 'Red Bricks', specification: 'First class, IS 1077', quantity: 50000, unit: 'nos', estimatedCost: 350000, surveyId: createdSurveys[2].id },
+    { materialName: 'Ready Mix Concrete', specification: 'M25 grade, IS 456', quantity: 200, unit: 'cum', estimatedCost: 1600000, surveyId: createdSurveys[3].id },
+    { materialName: 'Aluminium Windows', specification: 'Powder coated, 5mm glass', quantity: 120, unit: 'nos', estimatedCost: 960000, surveyId: createdSurveys[4].id },
+    { materialName: 'Electrical Cable', specification: '4 sqmm copper, IS 694', quantity: 5000, unit: 'meters', estimatedCost: 250000, surveyId: createdSurveys[5].id },
+  ]
+  for (const mat of matData) {
+    await prisma.materialRequirement.create({ data: mat })
+  }
+  console.log(`${matData.length} material requirements created`)
+
+  // 26. Notifications (userId required)
+  const notifData = [
+    { title: 'New survey assigned', message: 'Survey S-001 assigned to you for Metro Phase II', type: 'INFO' as const, userId: engineerUsers[0].id },
+    { title: 'Invoice overdue', message: 'Invoice INV-001 payment is 15 days overdue', type: 'WARNING' as const, userId: adminUser.id },
+    { title: 'GPS alert - Geofence exit', message: 'Raj Mehta left site area at 2:30 PM', type: 'ERROR' as const, userId: managerUser.id },
+    { title: 'Approval required', message: 'Survey report pending your approval', type: 'INFO' as const, userId: managerUser.id },
+    { title: 'Material shortage warning', message: 'TMT steel stock below 10 tons at Metro site', type: 'WARNING' as const, userId: engineerUsers[1].id },
+    { title: 'Document uploaded', message: 'New structural drawing uploaded for Green Valley', type: 'INFO' as const, userId: adminUser.id },
+    { title: 'Measurement verified', message: 'Foundation concrete measurement approved', type: 'SUCCESS' as const, userId: engineerUsers[0].id },
+    { title: 'Risk escalated', message: 'Monsoon risk severity increased to CRITICAL', type: 'ERROR' as const, userId: managerUser.id },
+  ]
+  for (const notif of notifData) {
+    await prisma.notification.create({ data: notif })
+  }
+  console.log(`${notifData.length} notifications created`)
+
+  // 27. Activities
+  const activityData = [
+    { action: 'APPROVED' as const, description: 'Survey S-001 completed', entityType: 'Survey', entityId: 'S-001', projectId: createdProjects[0].id, userId: adminUser.id },
+    { action: 'CREATED' as const, description: 'Invoice INV-001 generated', entityType: 'Invoice', entityId: 'INV-001', projectId: createdProjects[1].id, userId: adminUser.id },
+    { action: 'UPLOADED' as const, description: 'Photo uploaded for site inspection', entityType: 'Photo', entityId: 'P-001', projectId: createdProjects[2].id, userId: engineerUsers[1].id },
+    { action: 'UPDATED' as const, description: 'Risk assessment updated', entityType: 'Risk', entityId: 'R-001', projectId: createdProjects[3].id, userId: managerUser.id },
+    { action: 'CREATED' as const, description: 'BOQ item added', entityType: 'BOQ', entityId: 'BOQ-001', projectId: createdProjects[0].id, userId: adminUser.id },
+    { action: 'ASSIGNED' as const, description: 'GPS tracking started', entityType: 'GPS', entityId: 'GPS-001', projectId: createdProjects[4].id, userId: engineerUsers[0].id },
+  ]
+  for (const act of activityData) {
+    await prisma.activity.create({
+      data: {
+        action: act.action,
+        description: act.description,
+        entityType: act.entityType,
+        entityId: act.entityId,
+        project: { connect: { id: act.projectId } },
+        user: { connect: { id: act.userId } },
+      },
+    })
+  }
+  console.log(`${activityData.length} activities created`)
+
+  // 28. Settings (group instead of category)
+  const additionalSettings = [
+    { key: 'company.name', value: 'BuildSurvey Pro Construction', group: 'COMPANY' },
+    { key: 'company.gstin', value: '27AABCU9603R1ZM', group: 'COMPANY' },
+    { key: 'company.phone', value: '+91 98765 43210', group: 'COMPANY' },
+    { key: 'company.email', value: 'admin@buildsurvey.in', group: 'COMPANY' },
+    { key: 'company.address', value: '123 Construction Nagar, Nagpur 440001', group: 'COMPANY' },
+    { key: 'billing.gstRate', value: '18', group: 'BILLING' },
+    { key: 'billing.paymentTerms', value: 'Net 30 days', group: 'BILLING' },
+    { key: 'gps.trackingInterval', value: '8', group: 'GPS' },
+    { key: 'gps.geofenceRadius', value: '500', group: 'GPS' },
+    { key: 'notifications.emailEnabled', value: 'true', group: 'NOTIFICATIONS' },
+    { key: 'notifications.smsEnabled', value: 'false', group: 'NOTIFICATIONS' },
+    { key: 'reports.autoGenerate', value: 'true', group: 'REPORTS' },
+  ]
+  for (const setting of additionalSettings) {
+    await prisma.setting.upsert({
+      where: { key: setting.key },
+      update: { value: setting.value },
+      create: setting,
+    })
+  }
+  console.log(`${additionalSettings.length} settings created`)
+
   console.log('\nSeeding completed successfully!')
   console.log('================================')
   console.log('Login credentials:')
-  console.log('Admin:   admin@buildsurvey.com')
-  console.log('Manager: manager@buildsurvey.com')
-  console.log('Engineer: priya.sharma@buildsurvey.com')
+  console.log('Admin:   admin@buildsurvey.com / Admin@123')
+  console.log('Manager: manager@buildsurvey.com / Manager@123')
+  console.log('Engineer: priya.sharma@buildsurvey.com / Engineer@123')
   console.log('================================')
 }
 

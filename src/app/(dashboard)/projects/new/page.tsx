@@ -49,14 +49,13 @@ const steps = [
 ]
 
 const projectTypes = [
-  "Residential Tower",
-  "Commercial Complex",
-  "Infrastructure",
-  "Industrial",
-  "Highway",
-  "Bridge",
-  "Institutional",
-  "Mixed Use",
+  { value: "RESIDENTIAL", label: "Residential" },
+  { value: "COMMERCIAL", label: "Commercial" },
+  { value: "INDUSTRIAL", label: "Industrial" },
+  { value: "INFRASTRUCTURE", label: "Infrastructure" },
+  { value: "INTERIOR", label: "Interior" },
+  { value: "MEP", label: "MEP" },
+  { value: "RENOVATION", label: "Renovation" },
 ]
 
 
@@ -139,6 +138,7 @@ export default function NewProjectPage() {
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) setClientList(data)
+        else if (data.data) setClientList(data.data)
         else if (data.clients) setClientList(data.clients)
       })
       .catch(() => {})
@@ -147,8 +147,10 @@ export default function NewProjectPage() {
     fetch('/api/users')
       .then((res) => res.json())
       .then((data) => {
-        const list = Array.isArray(data) ? data : data.users || []
-        setTeamMembers(list)
+        if (Array.isArray(data)) setTeamMembers(data)
+        else if (data.data) setTeamMembers(data.data)
+        else if (data.users) setTeamMembers(data.users)
+        else setTeamMembers([])
       })
       .catch(() => {})
       .finally(() => setUsersLoading(false))
@@ -363,8 +365,8 @@ export default function NewProjectPage() {
                         </SelectTrigger>
                         <SelectContent>
                           {projectTypes.map((type) => (
-                            <SelectItem key={type} value={type}>
-                              {type}
+                            <SelectItem key={type.value} value={type.value}>
+                              {type.label}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -471,6 +473,34 @@ export default function NewProjectPage() {
                         onChange={(e) => updateField("longitude", e.target.value)}
                       />
                     </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button type="button" variant="outline" size="sm" onClick={() => {
+                      if (!navigator.geolocation) { alert('Geolocation not supported'); return }
+                      navigator.geolocation.getCurrentPosition(
+                        (pos) => {
+                          updateField("latitude", pos.coords.latitude.toFixed(6))
+                          updateField("longitude", pos.coords.longitude.toFixed(6))
+                        },
+                        () => alert('Unable to get location. Please allow location access.')
+                      )
+                    }}>
+                      <MapPin className="mr-2 h-4 w-4" />Get Current Location
+                    </Button>
+                    <Button type="button" variant="outline" size="sm" onClick={async () => {
+                      const q = [formData.address, formData.city, formData.state, 'India'].filter(Boolean).join(', ')
+                      if (!q) { alert('Please enter city or address first'); return }
+                      try {
+                        const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q)}&limit=1`)
+                        const data = await res.json()
+                        if (data.length > 0) {
+                          updateField("latitude", data[0].lat)
+                          updateField("longitude", data[0].lon)
+                        } else { alert('Location not found for this address') }
+                      } catch { alert('Geocoding failed. Please try again.') }
+                    }}>
+                      <MapPin className="mr-2 h-4 w-4" />Auto-fill from Address
+                    </Button>
                   </div>
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div className="space-y-2">
@@ -714,7 +744,7 @@ export default function NewProjectPage() {
               {formData.type && (
                 <div>
                   <p className="text-muted-foreground text-xs">Type</p>
-                  <p className="font-medium">{formData.type}</p>
+                  <p className="font-medium">{projectTypes.find(t => t.value === formData.type)?.label || formData.type}</p>
                 </div>
               )}
               {formData.clientId && (

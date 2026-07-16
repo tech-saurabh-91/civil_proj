@@ -43,6 +43,11 @@ export type Project = Prisma.ProjectModel
  */
 export type Survey = Prisma.SurveyModel
 /**
+ * Model ApprovalLog
+ * 
+ */
+export type ApprovalLog = Prisma.ApprovalLogModel
+/**
  * Model SurveyChecklistItem
  * 
  */
@@ -183,6 +188,11 @@ export type ApiKey = Prisma.ApiKeyModel
  */
 export type GpsTracking = Prisma.GpsTrackingModel
 /**
+ * Model SiteVisit
+ * 
+ */
+export type SiteVisit = Prisma.SiteVisitModel
+/**
  * Model Meeting
  * 
  */
@@ -217,3 +227,23 @@ export type OfflineSync = Prisma.OfflineSyncModel
  * 
  */
 export type AccessRequest = Prisma.AccessRequestModel
+/**
+ * Model Invoice
+ * 
+ */
+export type Invoice = Prisma.InvoiceModel
+/**
+ * Model InvoiceItem
+ * 
+ */
+export type InvoiceItem = Prisma.InvoiceItemModel
+/**
+ * Model ApprovalLevelConfig
+ * 
+ */
+export type ApprovalLevelConfig = Prisma.ApprovalLevelConfigModel
+/**
+ * Model ApprovalLevelUser
+ * 
+ */
+export type ApprovalLevelUser = Prisma.ApprovalLevelUserModel

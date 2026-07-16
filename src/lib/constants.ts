@@ -66,58 +66,54 @@ export const SIDEBAR_NAV_ITEMS: readonly {
     group: 'Dashboard',
     items: [
       { label: 'Dashboard', href: '/', icon: 'LayoutDashboard' },
-    ],
-  },
-  {
-    group: 'CRM',
-    items: [
-      { label: 'Leads', href: '/leads', icon: 'Users', roles: ['SUPER_ADMIN', 'ADMIN', 'MANAGER'] },
-      { label: 'Clients', href: '/clients', icon: 'Building2', roles: ['SUPER_ADMIN', 'ADMIN', 'MANAGER'] },
+      { label: 'My Assignments', href: '/my-assignments', icon: 'ClipboardList' },
+      { label: 'Process Flow', href: '/process-flow', icon: 'GitBranch' },
     ],
   },
   {
     group: 'Projects',
     items: [
       { label: 'Projects', href: '/projects', icon: 'FolderKanban' },
+      { label: 'Workflows', href: '/workflows', icon: 'GitBranch' },
+      { label: 'Approvals', href: '/workflows/approvals', icon: 'CheckSquare' },
     ],
   },
   {
-    group: 'Survey & Field',
+    group: 'Procurement',
     items: [
-      { label: 'Surveys', href: '/surveys', icon: 'ClipboardList' },
-      { label: 'Assignments', href: '/surveys/assignments', icon: 'UserCheck', roles: ['SUPER_ADMIN', 'ADMIN', 'MANAGER'] },
-      { label: 'Checklists', href: '/surveys/checklist', icon: 'ListChecks' },
-      { label: 'GPS Tracking', href: '/surveys/gps', icon: 'MapPin' },
-      { label: 'Measurements', href: '/measurements', icon: 'Ruler' },
-    ],
-  },
-  {
-    group: 'Media',
-    items: [
-      { label: 'Media Hub', href: '/media', icon: 'Image' },
-      { label: 'Documents', href: '/documents', icon: 'File' },
-    ],
-  },
-  {
-    group: 'Risk & Materials',
-    items: [
-      { label: 'Risk Assessment', href: '/risks', icon: 'ShieldAlert', roles: ['SUPER_ADMIN', 'ADMIN', 'MANAGER', 'ENGINEER'] },
+      { label: 'BOQ', href: '/boq', icon: 'Calculator', roles: ['SUPER_ADMIN', 'ADMIN', 'MANAGER', 'ACCOUNTANT'] },
+      { label: 'Quotations', href: '/quotations', icon: 'FileText', roles: ['SUPER_ADMIN', 'ADMIN', 'MANAGER', 'ACCOUNTANT'] },
+      { label: 'Invoices', href: '/invoices', icon: 'Receipt', roles: ['SUPER_ADMIN', 'ADMIN', 'MANAGER', 'ACCOUNTANT'] },
+      { label: 'Estimation', href: '/estimation', icon: 'TrendingUp', roles: ['SUPER_ADMIN', 'ADMIN', 'MANAGER', 'ACCOUNTANT'] },
       { label: 'Materials', href: '/materials', icon: 'Package', roles: ['SUPER_ADMIN', 'ADMIN', 'MANAGER', 'ENGINEER'] },
     ],
   },
   {
-    group: 'Finance',
+    group: 'Execution',
     items: [
-      { label: 'BOQ', href: '/boq', icon: 'Calculator', roles: ['SUPER_ADMIN', 'ADMIN', 'MANAGER', 'ACCOUNTANT'] },
-      { label: 'Cost Estimation', href: '/estimation', icon: 'TrendingUp', roles: ['SUPER_ADMIN', 'ADMIN', 'MANAGER', 'ACCOUNTANT'] },
-      { label: 'Quotations', href: '/quotations', icon: 'FileText', roles: ['SUPER_ADMIN', 'ADMIN', 'MANAGER', 'ACCOUNTANT'] },
+      { label: 'Surveys', href: '/surveys', icon: 'ClipboardList' },
+      { label: 'Assignments', href: '/surveys/assignments', icon: 'UserCheck', roles: ['SUPER_ADMIN', 'ADMIN', 'MANAGER'] },
+      { label: 'Checklists', href: '/surveys/checklist', icon: 'ListChecks' },
+      { label: 'Measurements', href: '/measurements', icon: 'Ruler' },
+      { label: 'GPS Tracking', href: '/surveys/gps', icon: 'MapPin' },
+      { label: 'Approval Levels', href: '/approval-levels', icon: 'Settings', roles: ['SUPER_ADMIN', 'ADMIN'] },
+      { label: 'DPR', href: '/reports/generate', icon: 'FileBarChart', roles: ['SUPER_ADMIN', 'ADMIN', 'MANAGER', 'ENGINEER'] },
     ],
   },
   {
-    group: 'Workflow',
+    group: 'Site Management',
     items: [
-      { label: 'Workflows', href: '/workflows', icon: 'GitBranch', roles: ['SUPER_ADMIN', 'ADMIN', 'MANAGER'] },
-      { label: 'Digital Signatures', href: '/signatures', icon: 'PenTool' },
+      { label: 'Media Hub', href: '/media', icon: 'Image' },
+      { label: 'Documents', href: '/documents', icon: 'File' },
+      { label: 'Risk Assessment', href: '/risks', icon: 'ShieldAlert', roles: ['SUPER_ADMIN', 'ADMIN', 'MANAGER', 'ENGINEER'] },
+      { label: 'Signatures', href: '/signatures', icon: 'PenTool' },
+    ],
+  },
+  {
+    group: 'CRM',
+    items: [
+      { label: 'Leads', href: '/leads', icon: 'Users', roles: ['SUPER_ADMIN', 'ADMIN', 'MANAGER', 'ENGINEER', 'SURVEYOR'] },
+      { label: 'Clients', href: '/clients', icon: 'Building2', roles: ['SUPER_ADMIN', 'ADMIN', 'MANAGER'] },
     ],
   },
   {
@@ -125,7 +121,6 @@ export const SIDEBAR_NAV_ITEMS: readonly {
     items: [
       { label: 'Notifications', href: '/notifications', icon: 'Bell' },
       { label: 'Email', href: '/email', icon: 'Mail', roles: ['SUPER_ADMIN', 'ADMIN', 'MANAGER'] },
-      { label: 'WhatsApp', href: '/whatsapp', icon: 'MessageSquare', roles: ['SUPER_ADMIN', 'ADMIN', 'MANAGER'] },
     ],
   },
   {
@@ -133,12 +128,15 @@ export const SIDEBAR_NAV_ITEMS: readonly {
     items: [
       { label: 'Reports', href: '/reports', icon: 'FileBarChart' },
       { label: 'Analytics', href: '/analytics', icon: 'BarChart3', roles: ['SUPER_ADMIN', 'ADMIN', 'MANAGER'] },
+      { label: 'AI Hub', href: '/ai', icon: 'Bot', roles: ['SUPER_ADMIN', 'ADMIN', 'MANAGER'] },
+      { label: 'OCR Scanner', href: '/ai/ocr', icon: 'ScanLine', roles: ['SUPER_ADMIN', 'ADMIN', 'MANAGER'] },
     ],
   },
   {
     group: 'Administration',
     items: [
       { label: 'Users', href: '/users', icon: 'Users', roles: ['SUPER_ADMIN', 'ADMIN'] },
+      { label: 'Access Requests', href: '/access-requests', icon: 'UserCheck', roles: ['SUPER_ADMIN', 'ADMIN'] },
       { label: 'Roles', href: '/roles', icon: 'Lock', roles: ['SUPER_ADMIN', 'ADMIN'] },
       { label: 'Masters', href: '/masters', icon: 'Database', roles: ['SUPER_ADMIN', 'ADMIN'] },
       { label: 'Audit Log', href: '/audit', icon: 'ScrollText', roles: ['SUPER_ADMIN', 'ADMIN'] },
@@ -147,14 +145,7 @@ export const SIDEBAR_NAV_ITEMS: readonly {
     ],
   },
   {
-    group: 'AI & Automation',
-    items: [
-      { label: 'AI Hub', href: '/ai', icon: 'Bot', roles: ['SUPER_ADMIN', 'ADMIN', 'MANAGER'] },
-      { label: 'OCR Scanner', href: '/ai/ocr', icon: 'ScanLine', roles: ['SUPER_ADMIN', 'ADMIN', 'MANAGER'] },
-    ],
-  },
-  {
-    group: 'Help & Manual',
+    group: 'Help',
     items: [
       { label: 'User Manual', href: '/help', icon: 'BookOpen' },
     ],

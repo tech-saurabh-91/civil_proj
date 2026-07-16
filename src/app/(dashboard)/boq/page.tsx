@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useMemo, useCallback } from "react"
+import { useState, useEffect, useMemo, useCallback, useRef } from "react"
 import {
   FileText,
   FileSpreadsheet,
@@ -11,6 +11,9 @@ import {
   ChevronDown,
   ChevronRight,
   Loader2,
+  Upload,
+  X,
+  FileUp,
 } from "lucide-react"
 
 import { formatCurrency } from "@/lib/utils"
@@ -72,6 +75,7 @@ interface BOQItem {
   unitRate: number
   amount: number
   projectId: string
+  project?: { id: string; name: string; code: string }
 }
 
 const units = ["Cum", "Sqm", "Rmt", "Nos", "Set", "Mtr"]
@@ -92,6 +96,12 @@ export default function BOQPage() {
   const [formQty, setFormQty] = useState("")
   const [formRate, setFormRate] = useState("")
   const [formProjectId, setFormProjectId] = useState("")
+
+  const [csvFile, setCsvFile] = useState<File | null>(null)
+  const [csvPreview, setCsvPreview] = useState<Array<{ description: string; category: string; unit: string; quantity: number; unitRate: number }>>([])
+  const [showCsvModal, setShowCsvModal] = useState(false)
+  const [importing, setImporting] = useState(false)
+  const csvInputRef = useRef<HTMLInputElement>(null)
 
   const fetchProjects = useCallback(async () => {
     try {
@@ -148,6 +158,8 @@ export default function BOQPage() {
   }, [items])
 
   const categories = Object.keys(groupedItems)
+
+  const showProjectColumn = selectedProject === "all"
 
   const categoryTotals = useMemo(() => {
     const totals: Record<string, number> = {}
@@ -231,6 +243,90 @@ export default function BOQPage() {
     }
   }
 
+  const parseCSV = (text: string) => {
+    const lines = text.split("\n").filter((l) => l.trim())
+    if (lines.length < 2) return []
+    const headers = lines[0].split(",").map((h) => h.trim().toLowerCase().replace(/['"]/g, ""))
+    const descIdx = headers.findIndex((h) => h.includes("desc"))
+    const catIdx = headers.findIndex((h) => h.includes("cat"))
+    const unitIdx = headers.findIndex((h) => h.includes("unit"))
+    const qtyIdx = headers.findIndex((h) => h.includes("qty") || h.includes("quant"))
+    const rateIdx = headers.findIndex((h) => h.includes("rate"))
+
+    return lines.slice(1).map((line) => {
+      const cols = line.split(",").map((c) => c.trim().replace(/['"]/g, ""))
+      return {
+        description: cols[descIdx] || "",
+        category: cols[catIdx] || "General",
+        unit: cols[unitIdx] || "Nos",
+        quantity: parseFloat(cols[qtyIdx]) || 0,
+        unitRate: parseFloat(cols[rateIdx]) || 0,
+      }
+    }).filter((item) => item.description && item.quantity > 0)
+  }
+
+  const handleCsvUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    if (!file.name.endsWith(".csv")) {
+      showError("Please select a CSV file")
+      return
+    }
+    setCsvFile(file)
+    const reader = new FileReader()
+    reader.onload = (event) => {
+      const text = event.target?.result as string
+      const parsed = parseCSV(text)
+      if (parsed.length === 0) {
+        showError("No valid items found in CSV. Ensure columns: Description, Category, Unit, Quantity, Rate")
+        return
+      }
+      setCsvPreview(parsed)
+      setShowCsvModal(true)
+    }
+    reader.readAsText(file)
+    e.target.value = ""
+  }
+
+  const handleImportCsv = async () => {
+    if (!formProjectId) {
+      showError("Please select a project first")
+      return
+    }
+    try {
+      setImporting(true)
+      const res = await fetch("/api/boq/import", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          projectId: formProjectId,
+          items: csvPreview.map((item, idx) => ({
+            serialNumber: items.length + idx + 1,
+            description: item.description,
+            category: item.category,
+            unit: item.unit,
+            quantity: item.quantity,
+            unitRate: item.unitRate,
+          })),
+        }),
+      })
+      const data = await res.json()
+      if (data.success) {
+        showSuccess(`Imported ${csvPreview.length} BOQ items successfully`)
+        setShowCsvModal(false)
+        setCsvPreview([])
+        setCsvFile(null)
+        fetchItems()
+      } else {
+        showError(data.error || "Failed to import BOQ items")
+      }
+    } catch {
+      showError("Failed to import BOQ items")
+    } finally {
+      setImporting(false)
+    }
+  }
+
   return (
     <div className="space-y-6">
       <PageHeader
@@ -254,6 +350,17 @@ export default function BOQPage() {
               <Printer className="mr-2 h-4 w-4" />
               Print BOQ
             </Button>
+            <Button variant="outline" onClick={() => csvInputRef.current?.click()}>
+              <Upload className="mr-2 h-4 w-4" />
+              Upload CSV
+            </Button>
+            <input
+              ref={csvInputRef}
+              type="file"
+              accept=".csv"
+              className="hidden"
+              onChange={handleCsvUpload}
+            />
             <Button onClick={() => { resetForm(); setShowAddModal(true) }}>
               <Plus className="mr-2 h-4 w-4" />
               New BOQ Item
@@ -349,6 +456,7 @@ export default function BOQPage() {
                         <TableRow>
                           <TableHead className="w-[60px]">S.No</TableHead>
                           <TableHead>Description</TableHead>
+                          {showProjectColumn && <TableHead>Project</TableHead>}
                           <TableHead>Category</TableHead>
                           <TableHead>Unit</TableHead>
                           <TableHead className="text-right">Qty</TableHead>
@@ -362,6 +470,11 @@ export default function BOQPage() {
                           <TableRow key={item.id}>
                             <TableCell className="font-mono text-xs">{item.serialNumber}</TableCell>
                             <TableCell className="font-medium">{item.description}</TableCell>
+                            {showProjectColumn && (
+                              <TableCell className="text-sm text-muted-foreground max-w-[180px] truncate">
+                                {item.project?.name || "—"}
+                              </TableCell>
+                            )}
                             <TableCell>
                               <Badge variant="outline">{item.category}</Badge>
                             </TableCell>
@@ -392,7 +505,7 @@ export default function BOQPage() {
                           </TableRow>
                         ))}
                         <TableRow className="bg-muted/30">
-                          <TableCell colSpan={6} className="font-semibold text-right">
+                          <TableCell colSpan={showProjectColumn ? 7 : 6} className="font-semibold text-right">
                             Subtotal ({category})
                           </TableCell>
                           <TableCell className="text-right font-bold">{formatCurrency(catTotal)}</TableCell>
@@ -499,6 +612,68 @@ export default function BOQPage() {
                 value={formRate}
                 onChange={(e) => setFormRate(e.target.value)}
               />
+            </div>
+          </div>
+        </div>
+      </Modal>
+
+      <Modal
+        open={showCsvModal}
+        onOpenChange={setShowCsvModal}
+        title="Import BOQ Items from CSV"
+        description={`Found ${csvPreview.length} items ready to import`}
+        maxWidth="lg"
+        onCancel={() => { setShowCsvModal(false); setCsvPreview([]); setCsvFile(null) }}
+        onConfirm={handleImportCsv}
+        confirmLabel={importing ? "Importing..." : `Import ${csvPreview.length} Items`}
+        loading={importing}
+      >
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Select Project *</Label>
+            <Select value={formProjectId} onValueChange={setFormProjectId}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select project for imported items" />
+              </SelectTrigger>
+              <SelectContent>
+                {projects.map((p) => (
+                  <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="max-h-[400px] overflow-auto border rounded-lg">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[50px]">#</TableHead>
+                  <TableHead>Description</TableHead>
+                  <TableHead>Category</TableHead>
+                  <TableHead>Unit</TableHead>
+                  <TableHead className="text-right">Qty</TableHead>
+                  <TableHead className="text-right">Rate (₹)</TableHead>
+                  <TableHead className="text-right">Amount (₹)</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {csvPreview.map((item, idx) => (
+                  <TableRow key={idx}>
+                    <TableCell className="font-mono text-xs">{idx + 1}</TableCell>
+                    <TableCell className="font-medium">{item.description}</TableCell>
+                    <TableCell><Badge variant="outline">{item.category}</Badge></TableCell>
+                    <TableCell>{item.unit}</TableCell>
+                    <TableCell className="text-right">{item.quantity.toLocaleString("en-IN")}</TableCell>
+                    <TableCell className="text-right">{formatCurrency(item.unitRate)}</TableCell>
+                    <TableCell className="text-right font-medium">{formatCurrency(item.quantity * item.unitRate)}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+          <div className="flex justify-end border-t pt-3">
+            <div className="text-right">
+              <span className="text-sm text-muted-foreground">Import Total: </span>
+              <span className="font-bold">{formatCurrency(csvPreview.reduce((s, i) => s + i.quantity * i.unitRate, 0))}</span>
             </div>
           </div>
         </div>

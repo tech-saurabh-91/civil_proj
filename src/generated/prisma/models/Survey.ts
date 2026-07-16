@@ -30,12 +30,14 @@ export type SurveyAvgAggregateOutputType = {
   gpsLatitude: number | null
   gpsLongitude: number | null
   version: number | null
+  currentApprovalLevel: number | null
 }
 
 export type SurveySumAggregateOutputType = {
   gpsLatitude: number | null
   gpsLongitude: number | null
   version: number | null
+  currentApprovalLevel: number | null
 }
 
 export type SurveyMinAggregateOutputType = {
@@ -58,6 +60,8 @@ export type SurveyMinAggregateOutputType = {
   updatedBy: string | null
   isDeleted: boolean | null
   version: number | null
+  currentApprovalLevel: number | null
+  assignedApproverId: string | null
   projectId: string | null
   engineerId: string | null
 }
@@ -82,6 +86,8 @@ export type SurveyMaxAggregateOutputType = {
   updatedBy: string | null
   isDeleted: boolean | null
   version: number | null
+  currentApprovalLevel: number | null
+  assignedApproverId: string | null
   projectId: string | null
   engineerId: string | null
 }
@@ -106,6 +112,8 @@ export type SurveyCountAggregateOutputType = {
   updatedBy: number
   isDeleted: number
   version: number
+  currentApprovalLevel: number
+  assignedApproverId: number
   projectId: number
   engineerId: number
   _all: number
@@ -116,12 +124,14 @@ export type SurveyAvgAggregateInputType = {
   gpsLatitude?: true
   gpsLongitude?: true
   version?: true
+  currentApprovalLevel?: true
 }
 
 export type SurveySumAggregateInputType = {
   gpsLatitude?: true
   gpsLongitude?: true
   version?: true
+  currentApprovalLevel?: true
 }
 
 export type SurveyMinAggregateInputType = {
@@ -144,6 +154,8 @@ export type SurveyMinAggregateInputType = {
   updatedBy?: true
   isDeleted?: true
   version?: true
+  currentApprovalLevel?: true
+  assignedApproverId?: true
   projectId?: true
   engineerId?: true
 }
@@ -168,6 +180,8 @@ export type SurveyMaxAggregateInputType = {
   updatedBy?: true
   isDeleted?: true
   version?: true
+  currentApprovalLevel?: true
+  assignedApproverId?: true
   projectId?: true
   engineerId?: true
 }
@@ -192,6 +206,8 @@ export type SurveyCountAggregateInputType = {
   updatedBy?: true
   isDeleted?: true
   version?: true
+  currentApprovalLevel?: true
+  assignedApproverId?: true
   projectId?: true
   engineerId?: true
   _all?: true
@@ -303,6 +319,8 @@ export type SurveyGroupByOutputType = {
   updatedBy: string | null
   isDeleted: boolean
   version: number
+  currentApprovalLevel: number
+  assignedApproverId: string | null
   projectId: string
   engineerId: string | null
   _count: SurveyCountAggregateOutputType | null
@@ -350,8 +368,11 @@ export type SurveyWhereInput = {
   updatedBy?: Prisma.StringNullableFilter<"Survey"> | string | null
   isDeleted?: Prisma.BoolFilter<"Survey"> | boolean
   version?: Prisma.IntFilter<"Survey"> | number
+  currentApprovalLevel?: Prisma.IntFilter<"Survey"> | number
+  assignedApproverId?: Prisma.StringNullableFilter<"Survey"> | string | null
   projectId?: Prisma.StringFilter<"Survey"> | string
   engineerId?: Prisma.StringNullableFilter<"Survey"> | string | null
+  assignedApprover?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   project?: Prisma.XOR<Prisma.ProjectScalarRelationFilter, Prisma.ProjectWhereInput>
   engineer?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   checklistItems?: Prisma.SurveyChecklistItemListRelationFilter
@@ -362,6 +383,8 @@ export type SurveyWhereInput = {
   measurements?: Prisma.MeasurementListRelationFilter
   riskAssessments?: Prisma.RiskAssessmentListRelationFilter
   materialRequirements?: Prisma.MaterialRequirementListRelationFilter
+  siteVisits?: Prisma.SiteVisitListRelationFilter
+  approvalLogs?: Prisma.ApprovalLogListRelationFilter
 }
 
 export type SurveyOrderByWithRelationInput = {
@@ -384,8 +407,11 @@ export type SurveyOrderByWithRelationInput = {
   updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   isDeleted?: Prisma.SortOrder
   version?: Prisma.SortOrder
+  currentApprovalLevel?: Prisma.SortOrder
+  assignedApproverId?: Prisma.SortOrderInput | Prisma.SortOrder
   projectId?: Prisma.SortOrder
   engineerId?: Prisma.SortOrderInput | Prisma.SortOrder
+  assignedApprover?: Prisma.UserOrderByWithRelationInput
   project?: Prisma.ProjectOrderByWithRelationInput
   engineer?: Prisma.UserOrderByWithRelationInput
   checklistItems?: Prisma.SurveyChecklistItemOrderByRelationAggregateInput
@@ -396,6 +422,8 @@ export type SurveyOrderByWithRelationInput = {
   measurements?: Prisma.MeasurementOrderByRelationAggregateInput
   riskAssessments?: Prisma.RiskAssessmentOrderByRelationAggregateInput
   materialRequirements?: Prisma.MaterialRequirementOrderByRelationAggregateInput
+  siteVisits?: Prisma.SiteVisitOrderByRelationAggregateInput
+  approvalLogs?: Prisma.ApprovalLogOrderByRelationAggregateInput
 }
 
 export type SurveyWhereUniqueInput = Prisma.AtLeast<{
@@ -421,8 +449,11 @@ export type SurveyWhereUniqueInput = Prisma.AtLeast<{
   updatedBy?: Prisma.StringNullableFilter<"Survey"> | string | null
   isDeleted?: Prisma.BoolFilter<"Survey"> | boolean
   version?: Prisma.IntFilter<"Survey"> | number
+  currentApprovalLevel?: Prisma.IntFilter<"Survey"> | number
+  assignedApproverId?: Prisma.StringNullableFilter<"Survey"> | string | null
   projectId?: Prisma.StringFilter<"Survey"> | string
   engineerId?: Prisma.StringNullableFilter<"Survey"> | string | null
+  assignedApprover?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   project?: Prisma.XOR<Prisma.ProjectScalarRelationFilter, Prisma.ProjectWhereInput>
   engineer?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   checklistItems?: Prisma.SurveyChecklistItemListRelationFilter
@@ -433,6 +464,8 @@ export type SurveyWhereUniqueInput = Prisma.AtLeast<{
   measurements?: Prisma.MeasurementListRelationFilter
   riskAssessments?: Prisma.RiskAssessmentListRelationFilter
   materialRequirements?: Prisma.MaterialRequirementListRelationFilter
+  siteVisits?: Prisma.SiteVisitListRelationFilter
+  approvalLogs?: Prisma.ApprovalLogListRelationFilter
 }, "id">
 
 export type SurveyOrderByWithAggregationInput = {
@@ -455,6 +488,8 @@ export type SurveyOrderByWithAggregationInput = {
   updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   isDeleted?: Prisma.SortOrder
   version?: Prisma.SortOrder
+  currentApprovalLevel?: Prisma.SortOrder
+  assignedApproverId?: Prisma.SortOrderInput | Prisma.SortOrder
   projectId?: Prisma.SortOrder
   engineerId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.SurveyCountOrderByAggregateInput
@@ -487,6 +522,8 @@ export type SurveyScalarWhereWithAggregatesInput = {
   updatedBy?: Prisma.StringNullableWithAggregatesFilter<"Survey"> | string | null
   isDeleted?: Prisma.BoolWithAggregatesFilter<"Survey"> | boolean
   version?: Prisma.IntWithAggregatesFilter<"Survey"> | number
+  currentApprovalLevel?: Prisma.IntWithAggregatesFilter<"Survey"> | number
+  assignedApproverId?: Prisma.StringNullableWithAggregatesFilter<"Survey"> | string | null
   projectId?: Prisma.StringWithAggregatesFilter<"Survey"> | string
   engineerId?: Prisma.StringNullableWithAggregatesFilter<"Survey"> | string | null
 }
@@ -511,6 +548,8 @@ export type SurveyCreateInput = {
   updatedBy?: string | null
   isDeleted?: boolean
   version?: number
+  currentApprovalLevel?: number
+  assignedApprover?: Prisma.UserCreateNestedOneWithoutApprovedSurveysInput
   project: Prisma.ProjectCreateNestedOneWithoutSurveysInput
   engineer?: Prisma.UserCreateNestedOneWithoutAssignedSurveysInput
   checklistItems?: Prisma.SurveyChecklistItemCreateNestedManyWithoutSurveyInput
@@ -521,6 +560,8 @@ export type SurveyCreateInput = {
   measurements?: Prisma.MeasurementCreateNestedManyWithoutSurveyInput
   riskAssessments?: Prisma.RiskAssessmentCreateNestedManyWithoutSurveyInput
   materialRequirements?: Prisma.MaterialRequirementCreateNestedManyWithoutSurveyInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutSurveyInput
+  approvalLogs?: Prisma.ApprovalLogCreateNestedManyWithoutSurveyInput
 }
 
 export type SurveyUncheckedCreateInput = {
@@ -543,6 +584,8 @@ export type SurveyUncheckedCreateInput = {
   updatedBy?: string | null
   isDeleted?: boolean
   version?: number
+  currentApprovalLevel?: number
+  assignedApproverId?: string | null
   projectId: string
   engineerId?: string | null
   checklistItems?: Prisma.SurveyChecklistItemUncheckedCreateNestedManyWithoutSurveyInput
@@ -553,6 +596,8 @@ export type SurveyUncheckedCreateInput = {
   measurements?: Prisma.MeasurementUncheckedCreateNestedManyWithoutSurveyInput
   riskAssessments?: Prisma.RiskAssessmentUncheckedCreateNestedManyWithoutSurveyInput
   materialRequirements?: Prisma.MaterialRequirementUncheckedCreateNestedManyWithoutSurveyInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutSurveyInput
+  approvalLogs?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutSurveyInput
 }
 
 export type SurveyUpdateInput = {
@@ -575,6 +620,8 @@ export type SurveyUpdateInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
+  currentApprovalLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  assignedApprover?: Prisma.UserUpdateOneWithoutApprovedSurveysNestedInput
   project?: Prisma.ProjectUpdateOneRequiredWithoutSurveysNestedInput
   engineer?: Prisma.UserUpdateOneWithoutAssignedSurveysNestedInput
   checklistItems?: Prisma.SurveyChecklistItemUpdateManyWithoutSurveyNestedInput
@@ -585,6 +632,8 @@ export type SurveyUpdateInput = {
   measurements?: Prisma.MeasurementUpdateManyWithoutSurveyNestedInput
   riskAssessments?: Prisma.RiskAssessmentUpdateManyWithoutSurveyNestedInput
   materialRequirements?: Prisma.MaterialRequirementUpdateManyWithoutSurveyNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutSurveyNestedInput
+  approvalLogs?: Prisma.ApprovalLogUpdateManyWithoutSurveyNestedInput
 }
 
 export type SurveyUncheckedUpdateInput = {
@@ -607,6 +656,8 @@ export type SurveyUncheckedUpdateInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
+  currentApprovalLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  assignedApproverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectId?: Prisma.StringFieldUpdateOperationsInput | string
   engineerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   checklistItems?: Prisma.SurveyChecklistItemUncheckedUpdateManyWithoutSurveyNestedInput
@@ -617,6 +668,8 @@ export type SurveyUncheckedUpdateInput = {
   measurements?: Prisma.MeasurementUncheckedUpdateManyWithoutSurveyNestedInput
   riskAssessments?: Prisma.RiskAssessmentUncheckedUpdateManyWithoutSurveyNestedInput
   materialRequirements?: Prisma.MaterialRequirementUncheckedUpdateManyWithoutSurveyNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutSurveyNestedInput
+  approvalLogs?: Prisma.ApprovalLogUncheckedUpdateManyWithoutSurveyNestedInput
 }
 
 export type SurveyCreateManyInput = {
@@ -639,6 +692,8 @@ export type SurveyCreateManyInput = {
   updatedBy?: string | null
   isDeleted?: boolean
   version?: number
+  currentApprovalLevel?: number
+  assignedApproverId?: string | null
   projectId: string
   engineerId?: string | null
 }
@@ -663,6 +718,7 @@ export type SurveyUpdateManyMutationInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
+  currentApprovalLevel?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type SurveyUncheckedUpdateManyInput = {
@@ -685,6 +741,8 @@ export type SurveyUncheckedUpdateManyInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
+  currentApprovalLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  assignedApproverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectId?: Prisma.StringFieldUpdateOperationsInput | string
   engineerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -719,6 +777,8 @@ export type SurveyCountOrderByAggregateInput = {
   updatedBy?: Prisma.SortOrder
   isDeleted?: Prisma.SortOrder
   version?: Prisma.SortOrder
+  currentApprovalLevel?: Prisma.SortOrder
+  assignedApproverId?: Prisma.SortOrder
   projectId?: Prisma.SortOrder
   engineerId?: Prisma.SortOrder
 }
@@ -727,6 +787,7 @@ export type SurveyAvgOrderByAggregateInput = {
   gpsLatitude?: Prisma.SortOrder
   gpsLongitude?: Prisma.SortOrder
   version?: Prisma.SortOrder
+  currentApprovalLevel?: Prisma.SortOrder
 }
 
 export type SurveyMaxOrderByAggregateInput = {
@@ -749,6 +810,8 @@ export type SurveyMaxOrderByAggregateInput = {
   updatedBy?: Prisma.SortOrder
   isDeleted?: Prisma.SortOrder
   version?: Prisma.SortOrder
+  currentApprovalLevel?: Prisma.SortOrder
+  assignedApproverId?: Prisma.SortOrder
   projectId?: Prisma.SortOrder
   engineerId?: Prisma.SortOrder
 }
@@ -773,6 +836,8 @@ export type SurveyMinOrderByAggregateInput = {
   updatedBy?: Prisma.SortOrder
   isDeleted?: Prisma.SortOrder
   version?: Prisma.SortOrder
+  currentApprovalLevel?: Prisma.SortOrder
+  assignedApproverId?: Prisma.SortOrder
   projectId?: Prisma.SortOrder
   engineerId?: Prisma.SortOrder
 }
@@ -781,11 +846,17 @@ export type SurveySumOrderByAggregateInput = {
   gpsLatitude?: Prisma.SortOrder
   gpsLongitude?: Prisma.SortOrder
   version?: Prisma.SortOrder
+  currentApprovalLevel?: Prisma.SortOrder
 }
 
 export type SurveyScalarRelationFilter = {
   is?: Prisma.SurveyWhereInput
   isNot?: Prisma.SurveyWhereInput
+}
+
+export type SurveyNullableScalarRelationFilter = {
+  is?: Prisma.SurveyWhereInput | null
+  isNot?: Prisma.SurveyWhereInput | null
 }
 
 export type SurveyCreateNestedManyWithoutEngineerInput = {
@@ -795,10 +866,24 @@ export type SurveyCreateNestedManyWithoutEngineerInput = {
   connect?: Prisma.SurveyWhereUniqueInput | Prisma.SurveyWhereUniqueInput[]
 }
 
+export type SurveyCreateNestedManyWithoutAssignedApproverInput = {
+  create?: Prisma.XOR<Prisma.SurveyCreateWithoutAssignedApproverInput, Prisma.SurveyUncheckedCreateWithoutAssignedApproverInput> | Prisma.SurveyCreateWithoutAssignedApproverInput[] | Prisma.SurveyUncheckedCreateWithoutAssignedApproverInput[]
+  connectOrCreate?: Prisma.SurveyCreateOrConnectWithoutAssignedApproverInput | Prisma.SurveyCreateOrConnectWithoutAssignedApproverInput[]
+  createMany?: Prisma.SurveyCreateManyAssignedApproverInputEnvelope
+  connect?: Prisma.SurveyWhereUniqueInput | Prisma.SurveyWhereUniqueInput[]
+}
+
 export type SurveyUncheckedCreateNestedManyWithoutEngineerInput = {
   create?: Prisma.XOR<Prisma.SurveyCreateWithoutEngineerInput, Prisma.SurveyUncheckedCreateWithoutEngineerInput> | Prisma.SurveyCreateWithoutEngineerInput[] | Prisma.SurveyUncheckedCreateWithoutEngineerInput[]
   connectOrCreate?: Prisma.SurveyCreateOrConnectWithoutEngineerInput | Prisma.SurveyCreateOrConnectWithoutEngineerInput[]
   createMany?: Prisma.SurveyCreateManyEngineerInputEnvelope
+  connect?: Prisma.SurveyWhereUniqueInput | Prisma.SurveyWhereUniqueInput[]
+}
+
+export type SurveyUncheckedCreateNestedManyWithoutAssignedApproverInput = {
+  create?: Prisma.XOR<Prisma.SurveyCreateWithoutAssignedApproverInput, Prisma.SurveyUncheckedCreateWithoutAssignedApproverInput> | Prisma.SurveyCreateWithoutAssignedApproverInput[] | Prisma.SurveyUncheckedCreateWithoutAssignedApproverInput[]
+  connectOrCreate?: Prisma.SurveyCreateOrConnectWithoutAssignedApproverInput | Prisma.SurveyCreateOrConnectWithoutAssignedApproverInput[]
+  createMany?: Prisma.SurveyCreateManyAssignedApproverInputEnvelope
   connect?: Prisma.SurveyWhereUniqueInput | Prisma.SurveyWhereUniqueInput[]
 }
 
@@ -816,6 +901,20 @@ export type SurveyUpdateManyWithoutEngineerNestedInput = {
   deleteMany?: Prisma.SurveyScalarWhereInput | Prisma.SurveyScalarWhereInput[]
 }
 
+export type SurveyUpdateManyWithoutAssignedApproverNestedInput = {
+  create?: Prisma.XOR<Prisma.SurveyCreateWithoutAssignedApproverInput, Prisma.SurveyUncheckedCreateWithoutAssignedApproverInput> | Prisma.SurveyCreateWithoutAssignedApproverInput[] | Prisma.SurveyUncheckedCreateWithoutAssignedApproverInput[]
+  connectOrCreate?: Prisma.SurveyCreateOrConnectWithoutAssignedApproverInput | Prisma.SurveyCreateOrConnectWithoutAssignedApproverInput[]
+  upsert?: Prisma.SurveyUpsertWithWhereUniqueWithoutAssignedApproverInput | Prisma.SurveyUpsertWithWhereUniqueWithoutAssignedApproverInput[]
+  createMany?: Prisma.SurveyCreateManyAssignedApproverInputEnvelope
+  set?: Prisma.SurveyWhereUniqueInput | Prisma.SurveyWhereUniqueInput[]
+  disconnect?: Prisma.SurveyWhereUniqueInput | Prisma.SurveyWhereUniqueInput[]
+  delete?: Prisma.SurveyWhereUniqueInput | Prisma.SurveyWhereUniqueInput[]
+  connect?: Prisma.SurveyWhereUniqueInput | Prisma.SurveyWhereUniqueInput[]
+  update?: Prisma.SurveyUpdateWithWhereUniqueWithoutAssignedApproverInput | Prisma.SurveyUpdateWithWhereUniqueWithoutAssignedApproverInput[]
+  updateMany?: Prisma.SurveyUpdateManyWithWhereWithoutAssignedApproverInput | Prisma.SurveyUpdateManyWithWhereWithoutAssignedApproverInput[]
+  deleteMany?: Prisma.SurveyScalarWhereInput | Prisma.SurveyScalarWhereInput[]
+}
+
 export type SurveyUncheckedUpdateManyWithoutEngineerNestedInput = {
   create?: Prisma.XOR<Prisma.SurveyCreateWithoutEngineerInput, Prisma.SurveyUncheckedCreateWithoutEngineerInput> | Prisma.SurveyCreateWithoutEngineerInput[] | Prisma.SurveyUncheckedCreateWithoutEngineerInput[]
   connectOrCreate?: Prisma.SurveyCreateOrConnectWithoutEngineerInput | Prisma.SurveyCreateOrConnectWithoutEngineerInput[]
@@ -827,6 +926,20 @@ export type SurveyUncheckedUpdateManyWithoutEngineerNestedInput = {
   connect?: Prisma.SurveyWhereUniqueInput | Prisma.SurveyWhereUniqueInput[]
   update?: Prisma.SurveyUpdateWithWhereUniqueWithoutEngineerInput | Prisma.SurveyUpdateWithWhereUniqueWithoutEngineerInput[]
   updateMany?: Prisma.SurveyUpdateManyWithWhereWithoutEngineerInput | Prisma.SurveyUpdateManyWithWhereWithoutEngineerInput[]
+  deleteMany?: Prisma.SurveyScalarWhereInput | Prisma.SurveyScalarWhereInput[]
+}
+
+export type SurveyUncheckedUpdateManyWithoutAssignedApproverNestedInput = {
+  create?: Prisma.XOR<Prisma.SurveyCreateWithoutAssignedApproverInput, Prisma.SurveyUncheckedCreateWithoutAssignedApproverInput> | Prisma.SurveyCreateWithoutAssignedApproverInput[] | Prisma.SurveyUncheckedCreateWithoutAssignedApproverInput[]
+  connectOrCreate?: Prisma.SurveyCreateOrConnectWithoutAssignedApproverInput | Prisma.SurveyCreateOrConnectWithoutAssignedApproverInput[]
+  upsert?: Prisma.SurveyUpsertWithWhereUniqueWithoutAssignedApproverInput | Prisma.SurveyUpsertWithWhereUniqueWithoutAssignedApproverInput[]
+  createMany?: Prisma.SurveyCreateManyAssignedApproverInputEnvelope
+  set?: Prisma.SurveyWhereUniqueInput | Prisma.SurveyWhereUniqueInput[]
+  disconnect?: Prisma.SurveyWhereUniqueInput | Prisma.SurveyWhereUniqueInput[]
+  delete?: Prisma.SurveyWhereUniqueInput | Prisma.SurveyWhereUniqueInput[]
+  connect?: Prisma.SurveyWhereUniqueInput | Prisma.SurveyWhereUniqueInput[]
+  update?: Prisma.SurveyUpdateWithWhereUniqueWithoutAssignedApproverInput | Prisma.SurveyUpdateWithWhereUniqueWithoutAssignedApproverInput[]
+  updateMany?: Prisma.SurveyUpdateManyWithWhereWithoutAssignedApproverInput | Prisma.SurveyUpdateManyWithWhereWithoutAssignedApproverInput[]
   deleteMany?: Prisma.SurveyScalarWhereInput | Prisma.SurveyScalarWhereInput[]
 }
 
@@ -878,6 +991,20 @@ export type EnumSurveyTypeFieldUpdateOperationsInput = {
 
 export type EnumSurveyStatusFieldUpdateOperationsInput = {
   set?: $Enums.SurveyStatus
+}
+
+export type SurveyCreateNestedOneWithoutApprovalLogsInput = {
+  create?: Prisma.XOR<Prisma.SurveyCreateWithoutApprovalLogsInput, Prisma.SurveyUncheckedCreateWithoutApprovalLogsInput>
+  connectOrCreate?: Prisma.SurveyCreateOrConnectWithoutApprovalLogsInput
+  connect?: Prisma.SurveyWhereUniqueInput
+}
+
+export type SurveyUpdateOneRequiredWithoutApprovalLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.SurveyCreateWithoutApprovalLogsInput, Prisma.SurveyUncheckedCreateWithoutApprovalLogsInput>
+  connectOrCreate?: Prisma.SurveyCreateOrConnectWithoutApprovalLogsInput
+  upsert?: Prisma.SurveyUpsertWithoutApprovalLogsInput
+  connect?: Prisma.SurveyWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SurveyUpdateToOneWithWhereWithoutApprovalLogsInput, Prisma.SurveyUpdateWithoutApprovalLogsInput>, Prisma.SurveyUncheckedUpdateWithoutApprovalLogsInput>
 }
 
 export type SurveyCreateNestedOneWithoutChecklistItemsInput = {
@@ -992,6 +1119,22 @@ export type SurveyUpdateOneRequiredWithoutMaterialRequirementsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.SurveyUpdateToOneWithWhereWithoutMaterialRequirementsInput, Prisma.SurveyUpdateWithoutMaterialRequirementsInput>, Prisma.SurveyUncheckedUpdateWithoutMaterialRequirementsInput>
 }
 
+export type SurveyCreateNestedOneWithoutSiteVisitsInput = {
+  create?: Prisma.XOR<Prisma.SurveyCreateWithoutSiteVisitsInput, Prisma.SurveyUncheckedCreateWithoutSiteVisitsInput>
+  connectOrCreate?: Prisma.SurveyCreateOrConnectWithoutSiteVisitsInput
+  connect?: Prisma.SurveyWhereUniqueInput
+}
+
+export type SurveyUpdateOneWithoutSiteVisitsNestedInput = {
+  create?: Prisma.XOR<Prisma.SurveyCreateWithoutSiteVisitsInput, Prisma.SurveyUncheckedCreateWithoutSiteVisitsInput>
+  connectOrCreate?: Prisma.SurveyCreateOrConnectWithoutSiteVisitsInput
+  upsert?: Prisma.SurveyUpsertWithoutSiteVisitsInput
+  disconnect?: Prisma.SurveyWhereInput | boolean
+  delete?: Prisma.SurveyWhereInput | boolean
+  connect?: Prisma.SurveyWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SurveyUpdateToOneWithWhereWithoutSiteVisitsInput, Prisma.SurveyUpdateWithoutSiteVisitsInput>, Prisma.SurveyUncheckedUpdateWithoutSiteVisitsInput>
+}
+
 export type SurveyCreateWithoutEngineerInput = {
   id?: string
   title: string
@@ -1012,6 +1155,8 @@ export type SurveyCreateWithoutEngineerInput = {
   updatedBy?: string | null
   isDeleted?: boolean
   version?: number
+  currentApprovalLevel?: number
+  assignedApprover?: Prisma.UserCreateNestedOneWithoutApprovedSurveysInput
   project: Prisma.ProjectCreateNestedOneWithoutSurveysInput
   checklistItems?: Prisma.SurveyChecklistItemCreateNestedManyWithoutSurveyInput
   photos?: Prisma.PhotoCreateNestedManyWithoutSurveyInput
@@ -1021,6 +1166,8 @@ export type SurveyCreateWithoutEngineerInput = {
   measurements?: Prisma.MeasurementCreateNestedManyWithoutSurveyInput
   riskAssessments?: Prisma.RiskAssessmentCreateNestedManyWithoutSurveyInput
   materialRequirements?: Prisma.MaterialRequirementCreateNestedManyWithoutSurveyInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutSurveyInput
+  approvalLogs?: Prisma.ApprovalLogCreateNestedManyWithoutSurveyInput
 }
 
 export type SurveyUncheckedCreateWithoutEngineerInput = {
@@ -1043,6 +1190,8 @@ export type SurveyUncheckedCreateWithoutEngineerInput = {
   updatedBy?: string | null
   isDeleted?: boolean
   version?: number
+  currentApprovalLevel?: number
+  assignedApproverId?: string | null
   projectId: string
   checklistItems?: Prisma.SurveyChecklistItemUncheckedCreateNestedManyWithoutSurveyInput
   photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutSurveyInput
@@ -1052,6 +1201,8 @@ export type SurveyUncheckedCreateWithoutEngineerInput = {
   measurements?: Prisma.MeasurementUncheckedCreateNestedManyWithoutSurveyInput
   riskAssessments?: Prisma.RiskAssessmentUncheckedCreateNestedManyWithoutSurveyInput
   materialRequirements?: Prisma.MaterialRequirementUncheckedCreateNestedManyWithoutSurveyInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutSurveyInput
+  approvalLogs?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutSurveyInput
 }
 
 export type SurveyCreateOrConnectWithoutEngineerInput = {
@@ -1061,6 +1212,86 @@ export type SurveyCreateOrConnectWithoutEngineerInput = {
 
 export type SurveyCreateManyEngineerInputEnvelope = {
   data: Prisma.SurveyCreateManyEngineerInput | Prisma.SurveyCreateManyEngineerInput[]
+  skipDuplicates?: boolean
+}
+
+export type SurveyCreateWithoutAssignedApproverInput = {
+  id?: string
+  title: string
+  description?: string | null
+  type?: $Enums.SurveyType
+  status?: $Enums.SurveyStatus
+  scheduledDate?: Date | string | null
+  completedDate?: Date | string | null
+  gpsLatitude?: number | null
+  gpsLongitude?: number | null
+  weatherCondition?: string | null
+  siteCondition?: string | null
+  accessDetails?: string | null
+  notes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy?: string | null
+  updatedBy?: string | null
+  isDeleted?: boolean
+  version?: number
+  currentApprovalLevel?: number
+  project: Prisma.ProjectCreateNestedOneWithoutSurveysInput
+  engineer?: Prisma.UserCreateNestedOneWithoutAssignedSurveysInput
+  checklistItems?: Prisma.SurveyChecklistItemCreateNestedManyWithoutSurveyInput
+  photos?: Prisma.PhotoCreateNestedManyWithoutSurveyInput
+  videos?: Prisma.VideoCreateNestedManyWithoutSurveyInput
+  voiceNotes?: Prisma.VoiceNoteCreateNestedManyWithoutSurveyInput
+  sketches?: Prisma.SketchCreateNestedManyWithoutSurveyInput
+  measurements?: Prisma.MeasurementCreateNestedManyWithoutSurveyInput
+  riskAssessments?: Prisma.RiskAssessmentCreateNestedManyWithoutSurveyInput
+  materialRequirements?: Prisma.MaterialRequirementCreateNestedManyWithoutSurveyInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutSurveyInput
+  approvalLogs?: Prisma.ApprovalLogCreateNestedManyWithoutSurveyInput
+}
+
+export type SurveyUncheckedCreateWithoutAssignedApproverInput = {
+  id?: string
+  title: string
+  description?: string | null
+  type?: $Enums.SurveyType
+  status?: $Enums.SurveyStatus
+  scheduledDate?: Date | string | null
+  completedDate?: Date | string | null
+  gpsLatitude?: number | null
+  gpsLongitude?: number | null
+  weatherCondition?: string | null
+  siteCondition?: string | null
+  accessDetails?: string | null
+  notes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy?: string | null
+  updatedBy?: string | null
+  isDeleted?: boolean
+  version?: number
+  currentApprovalLevel?: number
+  projectId: string
+  engineerId?: string | null
+  checklistItems?: Prisma.SurveyChecklistItemUncheckedCreateNestedManyWithoutSurveyInput
+  photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutSurveyInput
+  videos?: Prisma.VideoUncheckedCreateNestedManyWithoutSurveyInput
+  voiceNotes?: Prisma.VoiceNoteUncheckedCreateNestedManyWithoutSurveyInput
+  sketches?: Prisma.SketchUncheckedCreateNestedManyWithoutSurveyInput
+  measurements?: Prisma.MeasurementUncheckedCreateNestedManyWithoutSurveyInput
+  riskAssessments?: Prisma.RiskAssessmentUncheckedCreateNestedManyWithoutSurveyInput
+  materialRequirements?: Prisma.MaterialRequirementUncheckedCreateNestedManyWithoutSurveyInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutSurveyInput
+  approvalLogs?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutSurveyInput
+}
+
+export type SurveyCreateOrConnectWithoutAssignedApproverInput = {
+  where: Prisma.SurveyWhereUniqueInput
+  create: Prisma.XOR<Prisma.SurveyCreateWithoutAssignedApproverInput, Prisma.SurveyUncheckedCreateWithoutAssignedApproverInput>
+}
+
+export type SurveyCreateManyAssignedApproverInputEnvelope = {
+  data: Prisma.SurveyCreateManyAssignedApproverInput | Prisma.SurveyCreateManyAssignedApproverInput[]
   skipDuplicates?: boolean
 }
 
@@ -1103,8 +1334,26 @@ export type SurveyScalarWhereInput = {
   updatedBy?: Prisma.StringNullableFilter<"Survey"> | string | null
   isDeleted?: Prisma.BoolFilter<"Survey"> | boolean
   version?: Prisma.IntFilter<"Survey"> | number
+  currentApprovalLevel?: Prisma.IntFilter<"Survey"> | number
+  assignedApproverId?: Prisma.StringNullableFilter<"Survey"> | string | null
   projectId?: Prisma.StringFilter<"Survey"> | string
   engineerId?: Prisma.StringNullableFilter<"Survey"> | string | null
+}
+
+export type SurveyUpsertWithWhereUniqueWithoutAssignedApproverInput = {
+  where: Prisma.SurveyWhereUniqueInput
+  update: Prisma.XOR<Prisma.SurveyUpdateWithoutAssignedApproverInput, Prisma.SurveyUncheckedUpdateWithoutAssignedApproverInput>
+  create: Prisma.XOR<Prisma.SurveyCreateWithoutAssignedApproverInput, Prisma.SurveyUncheckedCreateWithoutAssignedApproverInput>
+}
+
+export type SurveyUpdateWithWhereUniqueWithoutAssignedApproverInput = {
+  where: Prisma.SurveyWhereUniqueInput
+  data: Prisma.XOR<Prisma.SurveyUpdateWithoutAssignedApproverInput, Prisma.SurveyUncheckedUpdateWithoutAssignedApproverInput>
+}
+
+export type SurveyUpdateManyWithWhereWithoutAssignedApproverInput = {
+  where: Prisma.SurveyScalarWhereInput
+  data: Prisma.XOR<Prisma.SurveyUpdateManyMutationInput, Prisma.SurveyUncheckedUpdateManyWithoutAssignedApproverInput>
 }
 
 export type SurveyCreateWithoutProjectInput = {
@@ -1127,6 +1376,8 @@ export type SurveyCreateWithoutProjectInput = {
   updatedBy?: string | null
   isDeleted?: boolean
   version?: number
+  currentApprovalLevel?: number
+  assignedApprover?: Prisma.UserCreateNestedOneWithoutApprovedSurveysInput
   engineer?: Prisma.UserCreateNestedOneWithoutAssignedSurveysInput
   checklistItems?: Prisma.SurveyChecklistItemCreateNestedManyWithoutSurveyInput
   photos?: Prisma.PhotoCreateNestedManyWithoutSurveyInput
@@ -1136,6 +1387,8 @@ export type SurveyCreateWithoutProjectInput = {
   measurements?: Prisma.MeasurementCreateNestedManyWithoutSurveyInput
   riskAssessments?: Prisma.RiskAssessmentCreateNestedManyWithoutSurveyInput
   materialRequirements?: Prisma.MaterialRequirementCreateNestedManyWithoutSurveyInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutSurveyInput
+  approvalLogs?: Prisma.ApprovalLogCreateNestedManyWithoutSurveyInput
 }
 
 export type SurveyUncheckedCreateWithoutProjectInput = {
@@ -1158,6 +1411,8 @@ export type SurveyUncheckedCreateWithoutProjectInput = {
   updatedBy?: string | null
   isDeleted?: boolean
   version?: number
+  currentApprovalLevel?: number
+  assignedApproverId?: string | null
   engineerId?: string | null
   checklistItems?: Prisma.SurveyChecklistItemUncheckedCreateNestedManyWithoutSurveyInput
   photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutSurveyInput
@@ -1167,6 +1422,8 @@ export type SurveyUncheckedCreateWithoutProjectInput = {
   measurements?: Prisma.MeasurementUncheckedCreateNestedManyWithoutSurveyInput
   riskAssessments?: Prisma.RiskAssessmentUncheckedCreateNestedManyWithoutSurveyInput
   materialRequirements?: Prisma.MaterialRequirementUncheckedCreateNestedManyWithoutSurveyInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutSurveyInput
+  approvalLogs?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutSurveyInput
 }
 
 export type SurveyCreateOrConnectWithoutProjectInput = {
@@ -1195,6 +1452,162 @@ export type SurveyUpdateManyWithWhereWithoutProjectInput = {
   data: Prisma.XOR<Prisma.SurveyUpdateManyMutationInput, Prisma.SurveyUncheckedUpdateManyWithoutProjectInput>
 }
 
+export type SurveyCreateWithoutApprovalLogsInput = {
+  id?: string
+  title: string
+  description?: string | null
+  type?: $Enums.SurveyType
+  status?: $Enums.SurveyStatus
+  scheduledDate?: Date | string | null
+  completedDate?: Date | string | null
+  gpsLatitude?: number | null
+  gpsLongitude?: number | null
+  weatherCondition?: string | null
+  siteCondition?: string | null
+  accessDetails?: string | null
+  notes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy?: string | null
+  updatedBy?: string | null
+  isDeleted?: boolean
+  version?: number
+  currentApprovalLevel?: number
+  assignedApprover?: Prisma.UserCreateNestedOneWithoutApprovedSurveysInput
+  project: Prisma.ProjectCreateNestedOneWithoutSurveysInput
+  engineer?: Prisma.UserCreateNestedOneWithoutAssignedSurveysInput
+  checklistItems?: Prisma.SurveyChecklistItemCreateNestedManyWithoutSurveyInput
+  photos?: Prisma.PhotoCreateNestedManyWithoutSurveyInput
+  videos?: Prisma.VideoCreateNestedManyWithoutSurveyInput
+  voiceNotes?: Prisma.VoiceNoteCreateNestedManyWithoutSurveyInput
+  sketches?: Prisma.SketchCreateNestedManyWithoutSurveyInput
+  measurements?: Prisma.MeasurementCreateNestedManyWithoutSurveyInput
+  riskAssessments?: Prisma.RiskAssessmentCreateNestedManyWithoutSurveyInput
+  materialRequirements?: Prisma.MaterialRequirementCreateNestedManyWithoutSurveyInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutSurveyInput
+}
+
+export type SurveyUncheckedCreateWithoutApprovalLogsInput = {
+  id?: string
+  title: string
+  description?: string | null
+  type?: $Enums.SurveyType
+  status?: $Enums.SurveyStatus
+  scheduledDate?: Date | string | null
+  completedDate?: Date | string | null
+  gpsLatitude?: number | null
+  gpsLongitude?: number | null
+  weatherCondition?: string | null
+  siteCondition?: string | null
+  accessDetails?: string | null
+  notes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy?: string | null
+  updatedBy?: string | null
+  isDeleted?: boolean
+  version?: number
+  currentApprovalLevel?: number
+  assignedApproverId?: string | null
+  projectId: string
+  engineerId?: string | null
+  checklistItems?: Prisma.SurveyChecklistItemUncheckedCreateNestedManyWithoutSurveyInput
+  photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutSurveyInput
+  videos?: Prisma.VideoUncheckedCreateNestedManyWithoutSurveyInput
+  voiceNotes?: Prisma.VoiceNoteUncheckedCreateNestedManyWithoutSurveyInput
+  sketches?: Prisma.SketchUncheckedCreateNestedManyWithoutSurveyInput
+  measurements?: Prisma.MeasurementUncheckedCreateNestedManyWithoutSurveyInput
+  riskAssessments?: Prisma.RiskAssessmentUncheckedCreateNestedManyWithoutSurveyInput
+  materialRequirements?: Prisma.MaterialRequirementUncheckedCreateNestedManyWithoutSurveyInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutSurveyInput
+}
+
+export type SurveyCreateOrConnectWithoutApprovalLogsInput = {
+  where: Prisma.SurveyWhereUniqueInput
+  create: Prisma.XOR<Prisma.SurveyCreateWithoutApprovalLogsInput, Prisma.SurveyUncheckedCreateWithoutApprovalLogsInput>
+}
+
+export type SurveyUpsertWithoutApprovalLogsInput = {
+  update: Prisma.XOR<Prisma.SurveyUpdateWithoutApprovalLogsInput, Prisma.SurveyUncheckedUpdateWithoutApprovalLogsInput>
+  create: Prisma.XOR<Prisma.SurveyCreateWithoutApprovalLogsInput, Prisma.SurveyUncheckedCreateWithoutApprovalLogsInput>
+  where?: Prisma.SurveyWhereInput
+}
+
+export type SurveyUpdateToOneWithWhereWithoutApprovalLogsInput = {
+  where?: Prisma.SurveyWhereInput
+  data: Prisma.XOR<Prisma.SurveyUpdateWithoutApprovalLogsInput, Prisma.SurveyUncheckedUpdateWithoutApprovalLogsInput>
+}
+
+export type SurveyUpdateWithoutApprovalLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumSurveyTypeFieldUpdateOperationsInput | $Enums.SurveyType
+  status?: Prisma.EnumSurveyStatusFieldUpdateOperationsInput | $Enums.SurveyStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gpsLatitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  gpsLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  weatherCondition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteCondition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  currentApprovalLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  assignedApprover?: Prisma.UserUpdateOneWithoutApprovedSurveysNestedInput
+  project?: Prisma.ProjectUpdateOneRequiredWithoutSurveysNestedInput
+  engineer?: Prisma.UserUpdateOneWithoutAssignedSurveysNestedInput
+  checklistItems?: Prisma.SurveyChecklistItemUpdateManyWithoutSurveyNestedInput
+  photos?: Prisma.PhotoUpdateManyWithoutSurveyNestedInput
+  videos?: Prisma.VideoUpdateManyWithoutSurveyNestedInput
+  voiceNotes?: Prisma.VoiceNoteUpdateManyWithoutSurveyNestedInput
+  sketches?: Prisma.SketchUpdateManyWithoutSurveyNestedInput
+  measurements?: Prisma.MeasurementUpdateManyWithoutSurveyNestedInput
+  riskAssessments?: Prisma.RiskAssessmentUpdateManyWithoutSurveyNestedInput
+  materialRequirements?: Prisma.MaterialRequirementUpdateManyWithoutSurveyNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutSurveyNestedInput
+}
+
+export type SurveyUncheckedUpdateWithoutApprovalLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumSurveyTypeFieldUpdateOperationsInput | $Enums.SurveyType
+  status?: Prisma.EnumSurveyStatusFieldUpdateOperationsInput | $Enums.SurveyStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gpsLatitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  gpsLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  weatherCondition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteCondition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  currentApprovalLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  assignedApproverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  projectId?: Prisma.StringFieldUpdateOperationsInput | string
+  engineerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checklistItems?: Prisma.SurveyChecklistItemUncheckedUpdateManyWithoutSurveyNestedInput
+  photos?: Prisma.PhotoUncheckedUpdateManyWithoutSurveyNestedInput
+  videos?: Prisma.VideoUncheckedUpdateManyWithoutSurveyNestedInput
+  voiceNotes?: Prisma.VoiceNoteUncheckedUpdateManyWithoutSurveyNestedInput
+  sketches?: Prisma.SketchUncheckedUpdateManyWithoutSurveyNestedInput
+  measurements?: Prisma.MeasurementUncheckedUpdateManyWithoutSurveyNestedInput
+  riskAssessments?: Prisma.RiskAssessmentUncheckedUpdateManyWithoutSurveyNestedInput
+  materialRequirements?: Prisma.MaterialRequirementUncheckedUpdateManyWithoutSurveyNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutSurveyNestedInput
+}
+
 export type SurveyCreateWithoutChecklistItemsInput = {
   id?: string
   title: string
@@ -1215,6 +1628,8 @@ export type SurveyCreateWithoutChecklistItemsInput = {
   updatedBy?: string | null
   isDeleted?: boolean
   version?: number
+  currentApprovalLevel?: number
+  assignedApprover?: Prisma.UserCreateNestedOneWithoutApprovedSurveysInput
   project: Prisma.ProjectCreateNestedOneWithoutSurveysInput
   engineer?: Prisma.UserCreateNestedOneWithoutAssignedSurveysInput
   photos?: Prisma.PhotoCreateNestedManyWithoutSurveyInput
@@ -1224,6 +1639,8 @@ export type SurveyCreateWithoutChecklistItemsInput = {
   measurements?: Prisma.MeasurementCreateNestedManyWithoutSurveyInput
   riskAssessments?: Prisma.RiskAssessmentCreateNestedManyWithoutSurveyInput
   materialRequirements?: Prisma.MaterialRequirementCreateNestedManyWithoutSurveyInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutSurveyInput
+  approvalLogs?: Prisma.ApprovalLogCreateNestedManyWithoutSurveyInput
 }
 
 export type SurveyUncheckedCreateWithoutChecklistItemsInput = {
@@ -1246,6 +1663,8 @@ export type SurveyUncheckedCreateWithoutChecklistItemsInput = {
   updatedBy?: string | null
   isDeleted?: boolean
   version?: number
+  currentApprovalLevel?: number
+  assignedApproverId?: string | null
   projectId: string
   engineerId?: string | null
   photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutSurveyInput
@@ -1255,6 +1674,8 @@ export type SurveyUncheckedCreateWithoutChecklistItemsInput = {
   measurements?: Prisma.MeasurementUncheckedCreateNestedManyWithoutSurveyInput
   riskAssessments?: Prisma.RiskAssessmentUncheckedCreateNestedManyWithoutSurveyInput
   materialRequirements?: Prisma.MaterialRequirementUncheckedCreateNestedManyWithoutSurveyInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutSurveyInput
+  approvalLogs?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutSurveyInput
 }
 
 export type SurveyCreateOrConnectWithoutChecklistItemsInput = {
@@ -1293,6 +1714,8 @@ export type SurveyUpdateWithoutChecklistItemsInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
+  currentApprovalLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  assignedApprover?: Prisma.UserUpdateOneWithoutApprovedSurveysNestedInput
   project?: Prisma.ProjectUpdateOneRequiredWithoutSurveysNestedInput
   engineer?: Prisma.UserUpdateOneWithoutAssignedSurveysNestedInput
   photos?: Prisma.PhotoUpdateManyWithoutSurveyNestedInput
@@ -1302,6 +1725,8 @@ export type SurveyUpdateWithoutChecklistItemsInput = {
   measurements?: Prisma.MeasurementUpdateManyWithoutSurveyNestedInput
   riskAssessments?: Prisma.RiskAssessmentUpdateManyWithoutSurveyNestedInput
   materialRequirements?: Prisma.MaterialRequirementUpdateManyWithoutSurveyNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutSurveyNestedInput
+  approvalLogs?: Prisma.ApprovalLogUpdateManyWithoutSurveyNestedInput
 }
 
 export type SurveyUncheckedUpdateWithoutChecklistItemsInput = {
@@ -1324,6 +1749,8 @@ export type SurveyUncheckedUpdateWithoutChecklistItemsInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
+  currentApprovalLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  assignedApproverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectId?: Prisma.StringFieldUpdateOperationsInput | string
   engineerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photos?: Prisma.PhotoUncheckedUpdateManyWithoutSurveyNestedInput
@@ -1333,6 +1760,8 @@ export type SurveyUncheckedUpdateWithoutChecklistItemsInput = {
   measurements?: Prisma.MeasurementUncheckedUpdateManyWithoutSurveyNestedInput
   riskAssessments?: Prisma.RiskAssessmentUncheckedUpdateManyWithoutSurveyNestedInput
   materialRequirements?: Prisma.MaterialRequirementUncheckedUpdateManyWithoutSurveyNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutSurveyNestedInput
+  approvalLogs?: Prisma.ApprovalLogUncheckedUpdateManyWithoutSurveyNestedInput
 }
 
 export type SurveyCreateWithoutPhotosInput = {
@@ -1355,6 +1784,8 @@ export type SurveyCreateWithoutPhotosInput = {
   updatedBy?: string | null
   isDeleted?: boolean
   version?: number
+  currentApprovalLevel?: number
+  assignedApprover?: Prisma.UserCreateNestedOneWithoutApprovedSurveysInput
   project: Prisma.ProjectCreateNestedOneWithoutSurveysInput
   engineer?: Prisma.UserCreateNestedOneWithoutAssignedSurveysInput
   checklistItems?: Prisma.SurveyChecklistItemCreateNestedManyWithoutSurveyInput
@@ -1364,6 +1795,8 @@ export type SurveyCreateWithoutPhotosInput = {
   measurements?: Prisma.MeasurementCreateNestedManyWithoutSurveyInput
   riskAssessments?: Prisma.RiskAssessmentCreateNestedManyWithoutSurveyInput
   materialRequirements?: Prisma.MaterialRequirementCreateNestedManyWithoutSurveyInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutSurveyInput
+  approvalLogs?: Prisma.ApprovalLogCreateNestedManyWithoutSurveyInput
 }
 
 export type SurveyUncheckedCreateWithoutPhotosInput = {
@@ -1386,6 +1819,8 @@ export type SurveyUncheckedCreateWithoutPhotosInput = {
   updatedBy?: string | null
   isDeleted?: boolean
   version?: number
+  currentApprovalLevel?: number
+  assignedApproverId?: string | null
   projectId: string
   engineerId?: string | null
   checklistItems?: Prisma.SurveyChecklistItemUncheckedCreateNestedManyWithoutSurveyInput
@@ -1395,6 +1830,8 @@ export type SurveyUncheckedCreateWithoutPhotosInput = {
   measurements?: Prisma.MeasurementUncheckedCreateNestedManyWithoutSurveyInput
   riskAssessments?: Prisma.RiskAssessmentUncheckedCreateNestedManyWithoutSurveyInput
   materialRequirements?: Prisma.MaterialRequirementUncheckedCreateNestedManyWithoutSurveyInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutSurveyInput
+  approvalLogs?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutSurveyInput
 }
 
 export type SurveyCreateOrConnectWithoutPhotosInput = {
@@ -1433,6 +1870,8 @@ export type SurveyUpdateWithoutPhotosInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
+  currentApprovalLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  assignedApprover?: Prisma.UserUpdateOneWithoutApprovedSurveysNestedInput
   project?: Prisma.ProjectUpdateOneRequiredWithoutSurveysNestedInput
   engineer?: Prisma.UserUpdateOneWithoutAssignedSurveysNestedInput
   checklistItems?: Prisma.SurveyChecklistItemUpdateManyWithoutSurveyNestedInput
@@ -1442,6 +1881,8 @@ export type SurveyUpdateWithoutPhotosInput = {
   measurements?: Prisma.MeasurementUpdateManyWithoutSurveyNestedInput
   riskAssessments?: Prisma.RiskAssessmentUpdateManyWithoutSurveyNestedInput
   materialRequirements?: Prisma.MaterialRequirementUpdateManyWithoutSurveyNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutSurveyNestedInput
+  approvalLogs?: Prisma.ApprovalLogUpdateManyWithoutSurveyNestedInput
 }
 
 export type SurveyUncheckedUpdateWithoutPhotosInput = {
@@ -1464,6 +1905,8 @@ export type SurveyUncheckedUpdateWithoutPhotosInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
+  currentApprovalLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  assignedApproverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectId?: Prisma.StringFieldUpdateOperationsInput | string
   engineerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   checklistItems?: Prisma.SurveyChecklistItemUncheckedUpdateManyWithoutSurveyNestedInput
@@ -1473,6 +1916,8 @@ export type SurveyUncheckedUpdateWithoutPhotosInput = {
   measurements?: Prisma.MeasurementUncheckedUpdateManyWithoutSurveyNestedInput
   riskAssessments?: Prisma.RiskAssessmentUncheckedUpdateManyWithoutSurveyNestedInput
   materialRequirements?: Prisma.MaterialRequirementUncheckedUpdateManyWithoutSurveyNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutSurveyNestedInput
+  approvalLogs?: Prisma.ApprovalLogUncheckedUpdateManyWithoutSurveyNestedInput
 }
 
 export type SurveyCreateWithoutVideosInput = {
@@ -1495,6 +1940,8 @@ export type SurveyCreateWithoutVideosInput = {
   updatedBy?: string | null
   isDeleted?: boolean
   version?: number
+  currentApprovalLevel?: number
+  assignedApprover?: Prisma.UserCreateNestedOneWithoutApprovedSurveysInput
   project: Prisma.ProjectCreateNestedOneWithoutSurveysInput
   engineer?: Prisma.UserCreateNestedOneWithoutAssignedSurveysInput
   checklistItems?: Prisma.SurveyChecklistItemCreateNestedManyWithoutSurveyInput
@@ -1504,6 +1951,8 @@ export type SurveyCreateWithoutVideosInput = {
   measurements?: Prisma.MeasurementCreateNestedManyWithoutSurveyInput
   riskAssessments?: Prisma.RiskAssessmentCreateNestedManyWithoutSurveyInput
   materialRequirements?: Prisma.MaterialRequirementCreateNestedManyWithoutSurveyInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutSurveyInput
+  approvalLogs?: Prisma.ApprovalLogCreateNestedManyWithoutSurveyInput
 }
 
 export type SurveyUncheckedCreateWithoutVideosInput = {
@@ -1526,6 +1975,8 @@ export type SurveyUncheckedCreateWithoutVideosInput = {
   updatedBy?: string | null
   isDeleted?: boolean
   version?: number
+  currentApprovalLevel?: number
+  assignedApproverId?: string | null
   projectId: string
   engineerId?: string | null
   checklistItems?: Prisma.SurveyChecklistItemUncheckedCreateNestedManyWithoutSurveyInput
@@ -1535,6 +1986,8 @@ export type SurveyUncheckedCreateWithoutVideosInput = {
   measurements?: Prisma.MeasurementUncheckedCreateNestedManyWithoutSurveyInput
   riskAssessments?: Prisma.RiskAssessmentUncheckedCreateNestedManyWithoutSurveyInput
   materialRequirements?: Prisma.MaterialRequirementUncheckedCreateNestedManyWithoutSurveyInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutSurveyInput
+  approvalLogs?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutSurveyInput
 }
 
 export type SurveyCreateOrConnectWithoutVideosInput = {
@@ -1573,6 +2026,8 @@ export type SurveyUpdateWithoutVideosInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
+  currentApprovalLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  assignedApprover?: Prisma.UserUpdateOneWithoutApprovedSurveysNestedInput
   project?: Prisma.ProjectUpdateOneRequiredWithoutSurveysNestedInput
   engineer?: Prisma.UserUpdateOneWithoutAssignedSurveysNestedInput
   checklistItems?: Prisma.SurveyChecklistItemUpdateManyWithoutSurveyNestedInput
@@ -1582,6 +2037,8 @@ export type SurveyUpdateWithoutVideosInput = {
   measurements?: Prisma.MeasurementUpdateManyWithoutSurveyNestedInput
   riskAssessments?: Prisma.RiskAssessmentUpdateManyWithoutSurveyNestedInput
   materialRequirements?: Prisma.MaterialRequirementUpdateManyWithoutSurveyNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutSurveyNestedInput
+  approvalLogs?: Prisma.ApprovalLogUpdateManyWithoutSurveyNestedInput
 }
 
 export type SurveyUncheckedUpdateWithoutVideosInput = {
@@ -1604,6 +2061,8 @@ export type SurveyUncheckedUpdateWithoutVideosInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
+  currentApprovalLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  assignedApproverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectId?: Prisma.StringFieldUpdateOperationsInput | string
   engineerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   checklistItems?: Prisma.SurveyChecklistItemUncheckedUpdateManyWithoutSurveyNestedInput
@@ -1613,6 +2072,8 @@ export type SurveyUncheckedUpdateWithoutVideosInput = {
   measurements?: Prisma.MeasurementUncheckedUpdateManyWithoutSurveyNestedInput
   riskAssessments?: Prisma.RiskAssessmentUncheckedUpdateManyWithoutSurveyNestedInput
   materialRequirements?: Prisma.MaterialRequirementUncheckedUpdateManyWithoutSurveyNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutSurveyNestedInput
+  approvalLogs?: Prisma.ApprovalLogUncheckedUpdateManyWithoutSurveyNestedInput
 }
 
 export type SurveyCreateWithoutVoiceNotesInput = {
@@ -1635,6 +2096,8 @@ export type SurveyCreateWithoutVoiceNotesInput = {
   updatedBy?: string | null
   isDeleted?: boolean
   version?: number
+  currentApprovalLevel?: number
+  assignedApprover?: Prisma.UserCreateNestedOneWithoutApprovedSurveysInput
   project: Prisma.ProjectCreateNestedOneWithoutSurveysInput
   engineer?: Prisma.UserCreateNestedOneWithoutAssignedSurveysInput
   checklistItems?: Prisma.SurveyChecklistItemCreateNestedManyWithoutSurveyInput
@@ -1644,6 +2107,8 @@ export type SurveyCreateWithoutVoiceNotesInput = {
   measurements?: Prisma.MeasurementCreateNestedManyWithoutSurveyInput
   riskAssessments?: Prisma.RiskAssessmentCreateNestedManyWithoutSurveyInput
   materialRequirements?: Prisma.MaterialRequirementCreateNestedManyWithoutSurveyInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutSurveyInput
+  approvalLogs?: Prisma.ApprovalLogCreateNestedManyWithoutSurveyInput
 }
 
 export type SurveyUncheckedCreateWithoutVoiceNotesInput = {
@@ -1666,6 +2131,8 @@ export type SurveyUncheckedCreateWithoutVoiceNotesInput = {
   updatedBy?: string | null
   isDeleted?: boolean
   version?: number
+  currentApprovalLevel?: number
+  assignedApproverId?: string | null
   projectId: string
   engineerId?: string | null
   checklistItems?: Prisma.SurveyChecklistItemUncheckedCreateNestedManyWithoutSurveyInput
@@ -1675,6 +2142,8 @@ export type SurveyUncheckedCreateWithoutVoiceNotesInput = {
   measurements?: Prisma.MeasurementUncheckedCreateNestedManyWithoutSurveyInput
   riskAssessments?: Prisma.RiskAssessmentUncheckedCreateNestedManyWithoutSurveyInput
   materialRequirements?: Prisma.MaterialRequirementUncheckedCreateNestedManyWithoutSurveyInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutSurveyInput
+  approvalLogs?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutSurveyInput
 }
 
 export type SurveyCreateOrConnectWithoutVoiceNotesInput = {
@@ -1713,6 +2182,8 @@ export type SurveyUpdateWithoutVoiceNotesInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
+  currentApprovalLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  assignedApprover?: Prisma.UserUpdateOneWithoutApprovedSurveysNestedInput
   project?: Prisma.ProjectUpdateOneRequiredWithoutSurveysNestedInput
   engineer?: Prisma.UserUpdateOneWithoutAssignedSurveysNestedInput
   checklistItems?: Prisma.SurveyChecklistItemUpdateManyWithoutSurveyNestedInput
@@ -1722,6 +2193,8 @@ export type SurveyUpdateWithoutVoiceNotesInput = {
   measurements?: Prisma.MeasurementUpdateManyWithoutSurveyNestedInput
   riskAssessments?: Prisma.RiskAssessmentUpdateManyWithoutSurveyNestedInput
   materialRequirements?: Prisma.MaterialRequirementUpdateManyWithoutSurveyNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutSurveyNestedInput
+  approvalLogs?: Prisma.ApprovalLogUpdateManyWithoutSurveyNestedInput
 }
 
 export type SurveyUncheckedUpdateWithoutVoiceNotesInput = {
@@ -1744,6 +2217,8 @@ export type SurveyUncheckedUpdateWithoutVoiceNotesInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
+  currentApprovalLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  assignedApproverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectId?: Prisma.StringFieldUpdateOperationsInput | string
   engineerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   checklistItems?: Prisma.SurveyChecklistItemUncheckedUpdateManyWithoutSurveyNestedInput
@@ -1753,6 +2228,8 @@ export type SurveyUncheckedUpdateWithoutVoiceNotesInput = {
   measurements?: Prisma.MeasurementUncheckedUpdateManyWithoutSurveyNestedInput
   riskAssessments?: Prisma.RiskAssessmentUncheckedUpdateManyWithoutSurveyNestedInput
   materialRequirements?: Prisma.MaterialRequirementUncheckedUpdateManyWithoutSurveyNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutSurveyNestedInput
+  approvalLogs?: Prisma.ApprovalLogUncheckedUpdateManyWithoutSurveyNestedInput
 }
 
 export type SurveyCreateWithoutSketchesInput = {
@@ -1775,6 +2252,8 @@ export type SurveyCreateWithoutSketchesInput = {
   updatedBy?: string | null
   isDeleted?: boolean
   version?: number
+  currentApprovalLevel?: number
+  assignedApprover?: Prisma.UserCreateNestedOneWithoutApprovedSurveysInput
   project: Prisma.ProjectCreateNestedOneWithoutSurveysInput
   engineer?: Prisma.UserCreateNestedOneWithoutAssignedSurveysInput
   checklistItems?: Prisma.SurveyChecklistItemCreateNestedManyWithoutSurveyInput
@@ -1784,6 +2263,8 @@ export type SurveyCreateWithoutSketchesInput = {
   measurements?: Prisma.MeasurementCreateNestedManyWithoutSurveyInput
   riskAssessments?: Prisma.RiskAssessmentCreateNestedManyWithoutSurveyInput
   materialRequirements?: Prisma.MaterialRequirementCreateNestedManyWithoutSurveyInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutSurveyInput
+  approvalLogs?: Prisma.ApprovalLogCreateNestedManyWithoutSurveyInput
 }
 
 export type SurveyUncheckedCreateWithoutSketchesInput = {
@@ -1806,6 +2287,8 @@ export type SurveyUncheckedCreateWithoutSketchesInput = {
   updatedBy?: string | null
   isDeleted?: boolean
   version?: number
+  currentApprovalLevel?: number
+  assignedApproverId?: string | null
   projectId: string
   engineerId?: string | null
   checklistItems?: Prisma.SurveyChecklistItemUncheckedCreateNestedManyWithoutSurveyInput
@@ -1815,6 +2298,8 @@ export type SurveyUncheckedCreateWithoutSketchesInput = {
   measurements?: Prisma.MeasurementUncheckedCreateNestedManyWithoutSurveyInput
   riskAssessments?: Prisma.RiskAssessmentUncheckedCreateNestedManyWithoutSurveyInput
   materialRequirements?: Prisma.MaterialRequirementUncheckedCreateNestedManyWithoutSurveyInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutSurveyInput
+  approvalLogs?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutSurveyInput
 }
 
 export type SurveyCreateOrConnectWithoutSketchesInput = {
@@ -1853,6 +2338,8 @@ export type SurveyUpdateWithoutSketchesInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
+  currentApprovalLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  assignedApprover?: Prisma.UserUpdateOneWithoutApprovedSurveysNestedInput
   project?: Prisma.ProjectUpdateOneRequiredWithoutSurveysNestedInput
   engineer?: Prisma.UserUpdateOneWithoutAssignedSurveysNestedInput
   checklistItems?: Prisma.SurveyChecklistItemUpdateManyWithoutSurveyNestedInput
@@ -1862,6 +2349,8 @@ export type SurveyUpdateWithoutSketchesInput = {
   measurements?: Prisma.MeasurementUpdateManyWithoutSurveyNestedInput
   riskAssessments?: Prisma.RiskAssessmentUpdateManyWithoutSurveyNestedInput
   materialRequirements?: Prisma.MaterialRequirementUpdateManyWithoutSurveyNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutSurveyNestedInput
+  approvalLogs?: Prisma.ApprovalLogUpdateManyWithoutSurveyNestedInput
 }
 
 export type SurveyUncheckedUpdateWithoutSketchesInput = {
@@ -1884,6 +2373,8 @@ export type SurveyUncheckedUpdateWithoutSketchesInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
+  currentApprovalLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  assignedApproverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectId?: Prisma.StringFieldUpdateOperationsInput | string
   engineerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   checklistItems?: Prisma.SurveyChecklistItemUncheckedUpdateManyWithoutSurveyNestedInput
@@ -1893,6 +2384,8 @@ export type SurveyUncheckedUpdateWithoutSketchesInput = {
   measurements?: Prisma.MeasurementUncheckedUpdateManyWithoutSurveyNestedInput
   riskAssessments?: Prisma.RiskAssessmentUncheckedUpdateManyWithoutSurveyNestedInput
   materialRequirements?: Prisma.MaterialRequirementUncheckedUpdateManyWithoutSurveyNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutSurveyNestedInput
+  approvalLogs?: Prisma.ApprovalLogUncheckedUpdateManyWithoutSurveyNestedInput
 }
 
 export type SurveyCreateWithoutMeasurementsInput = {
@@ -1915,6 +2408,8 @@ export type SurveyCreateWithoutMeasurementsInput = {
   updatedBy?: string | null
   isDeleted?: boolean
   version?: number
+  currentApprovalLevel?: number
+  assignedApprover?: Prisma.UserCreateNestedOneWithoutApprovedSurveysInput
   project: Prisma.ProjectCreateNestedOneWithoutSurveysInput
   engineer?: Prisma.UserCreateNestedOneWithoutAssignedSurveysInput
   checklistItems?: Prisma.SurveyChecklistItemCreateNestedManyWithoutSurveyInput
@@ -1924,6 +2419,8 @@ export type SurveyCreateWithoutMeasurementsInput = {
   sketches?: Prisma.SketchCreateNestedManyWithoutSurveyInput
   riskAssessments?: Prisma.RiskAssessmentCreateNestedManyWithoutSurveyInput
   materialRequirements?: Prisma.MaterialRequirementCreateNestedManyWithoutSurveyInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutSurveyInput
+  approvalLogs?: Prisma.ApprovalLogCreateNestedManyWithoutSurveyInput
 }
 
 export type SurveyUncheckedCreateWithoutMeasurementsInput = {
@@ -1946,6 +2443,8 @@ export type SurveyUncheckedCreateWithoutMeasurementsInput = {
   updatedBy?: string | null
   isDeleted?: boolean
   version?: number
+  currentApprovalLevel?: number
+  assignedApproverId?: string | null
   projectId: string
   engineerId?: string | null
   checklistItems?: Prisma.SurveyChecklistItemUncheckedCreateNestedManyWithoutSurveyInput
@@ -1955,6 +2454,8 @@ export type SurveyUncheckedCreateWithoutMeasurementsInput = {
   sketches?: Prisma.SketchUncheckedCreateNestedManyWithoutSurveyInput
   riskAssessments?: Prisma.RiskAssessmentUncheckedCreateNestedManyWithoutSurveyInput
   materialRequirements?: Prisma.MaterialRequirementUncheckedCreateNestedManyWithoutSurveyInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutSurveyInput
+  approvalLogs?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutSurveyInput
 }
 
 export type SurveyCreateOrConnectWithoutMeasurementsInput = {
@@ -1993,6 +2494,8 @@ export type SurveyUpdateWithoutMeasurementsInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
+  currentApprovalLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  assignedApprover?: Prisma.UserUpdateOneWithoutApprovedSurveysNestedInput
   project?: Prisma.ProjectUpdateOneRequiredWithoutSurveysNestedInput
   engineer?: Prisma.UserUpdateOneWithoutAssignedSurveysNestedInput
   checklistItems?: Prisma.SurveyChecklistItemUpdateManyWithoutSurveyNestedInput
@@ -2002,6 +2505,8 @@ export type SurveyUpdateWithoutMeasurementsInput = {
   sketches?: Prisma.SketchUpdateManyWithoutSurveyNestedInput
   riskAssessments?: Prisma.RiskAssessmentUpdateManyWithoutSurveyNestedInput
   materialRequirements?: Prisma.MaterialRequirementUpdateManyWithoutSurveyNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutSurveyNestedInput
+  approvalLogs?: Prisma.ApprovalLogUpdateManyWithoutSurveyNestedInput
 }
 
 export type SurveyUncheckedUpdateWithoutMeasurementsInput = {
@@ -2024,6 +2529,8 @@ export type SurveyUncheckedUpdateWithoutMeasurementsInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
+  currentApprovalLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  assignedApproverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectId?: Prisma.StringFieldUpdateOperationsInput | string
   engineerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   checklistItems?: Prisma.SurveyChecklistItemUncheckedUpdateManyWithoutSurveyNestedInput
@@ -2033,6 +2540,8 @@ export type SurveyUncheckedUpdateWithoutMeasurementsInput = {
   sketches?: Prisma.SketchUncheckedUpdateManyWithoutSurveyNestedInput
   riskAssessments?: Prisma.RiskAssessmentUncheckedUpdateManyWithoutSurveyNestedInput
   materialRequirements?: Prisma.MaterialRequirementUncheckedUpdateManyWithoutSurveyNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutSurveyNestedInput
+  approvalLogs?: Prisma.ApprovalLogUncheckedUpdateManyWithoutSurveyNestedInput
 }
 
 export type SurveyCreateWithoutRiskAssessmentsInput = {
@@ -2055,6 +2564,8 @@ export type SurveyCreateWithoutRiskAssessmentsInput = {
   updatedBy?: string | null
   isDeleted?: boolean
   version?: number
+  currentApprovalLevel?: number
+  assignedApprover?: Prisma.UserCreateNestedOneWithoutApprovedSurveysInput
   project: Prisma.ProjectCreateNestedOneWithoutSurveysInput
   engineer?: Prisma.UserCreateNestedOneWithoutAssignedSurveysInput
   checklistItems?: Prisma.SurveyChecklistItemCreateNestedManyWithoutSurveyInput
@@ -2064,6 +2575,8 @@ export type SurveyCreateWithoutRiskAssessmentsInput = {
   sketches?: Prisma.SketchCreateNestedManyWithoutSurveyInput
   measurements?: Prisma.MeasurementCreateNestedManyWithoutSurveyInput
   materialRequirements?: Prisma.MaterialRequirementCreateNestedManyWithoutSurveyInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutSurveyInput
+  approvalLogs?: Prisma.ApprovalLogCreateNestedManyWithoutSurveyInput
 }
 
 export type SurveyUncheckedCreateWithoutRiskAssessmentsInput = {
@@ -2086,6 +2599,8 @@ export type SurveyUncheckedCreateWithoutRiskAssessmentsInput = {
   updatedBy?: string | null
   isDeleted?: boolean
   version?: number
+  currentApprovalLevel?: number
+  assignedApproverId?: string | null
   projectId: string
   engineerId?: string | null
   checklistItems?: Prisma.SurveyChecklistItemUncheckedCreateNestedManyWithoutSurveyInput
@@ -2095,6 +2610,8 @@ export type SurveyUncheckedCreateWithoutRiskAssessmentsInput = {
   sketches?: Prisma.SketchUncheckedCreateNestedManyWithoutSurveyInput
   measurements?: Prisma.MeasurementUncheckedCreateNestedManyWithoutSurveyInput
   materialRequirements?: Prisma.MaterialRequirementUncheckedCreateNestedManyWithoutSurveyInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutSurveyInput
+  approvalLogs?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutSurveyInput
 }
 
 export type SurveyCreateOrConnectWithoutRiskAssessmentsInput = {
@@ -2133,6 +2650,8 @@ export type SurveyUpdateWithoutRiskAssessmentsInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
+  currentApprovalLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  assignedApprover?: Prisma.UserUpdateOneWithoutApprovedSurveysNestedInput
   project?: Prisma.ProjectUpdateOneRequiredWithoutSurveysNestedInput
   engineer?: Prisma.UserUpdateOneWithoutAssignedSurveysNestedInput
   checklistItems?: Prisma.SurveyChecklistItemUpdateManyWithoutSurveyNestedInput
@@ -2142,6 +2661,8 @@ export type SurveyUpdateWithoutRiskAssessmentsInput = {
   sketches?: Prisma.SketchUpdateManyWithoutSurveyNestedInput
   measurements?: Prisma.MeasurementUpdateManyWithoutSurveyNestedInput
   materialRequirements?: Prisma.MaterialRequirementUpdateManyWithoutSurveyNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutSurveyNestedInput
+  approvalLogs?: Prisma.ApprovalLogUpdateManyWithoutSurveyNestedInput
 }
 
 export type SurveyUncheckedUpdateWithoutRiskAssessmentsInput = {
@@ -2164,6 +2685,8 @@ export type SurveyUncheckedUpdateWithoutRiskAssessmentsInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
+  currentApprovalLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  assignedApproverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectId?: Prisma.StringFieldUpdateOperationsInput | string
   engineerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   checklistItems?: Prisma.SurveyChecklistItemUncheckedUpdateManyWithoutSurveyNestedInput
@@ -2173,6 +2696,8 @@ export type SurveyUncheckedUpdateWithoutRiskAssessmentsInput = {
   sketches?: Prisma.SketchUncheckedUpdateManyWithoutSurveyNestedInput
   measurements?: Prisma.MeasurementUncheckedUpdateManyWithoutSurveyNestedInput
   materialRequirements?: Prisma.MaterialRequirementUncheckedUpdateManyWithoutSurveyNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutSurveyNestedInput
+  approvalLogs?: Prisma.ApprovalLogUncheckedUpdateManyWithoutSurveyNestedInput
 }
 
 export type SurveyCreateWithoutMaterialRequirementsInput = {
@@ -2195,6 +2720,8 @@ export type SurveyCreateWithoutMaterialRequirementsInput = {
   updatedBy?: string | null
   isDeleted?: boolean
   version?: number
+  currentApprovalLevel?: number
+  assignedApprover?: Prisma.UserCreateNestedOneWithoutApprovedSurveysInput
   project: Prisma.ProjectCreateNestedOneWithoutSurveysInput
   engineer?: Prisma.UserCreateNestedOneWithoutAssignedSurveysInput
   checklistItems?: Prisma.SurveyChecklistItemCreateNestedManyWithoutSurveyInput
@@ -2204,6 +2731,8 @@ export type SurveyCreateWithoutMaterialRequirementsInput = {
   sketches?: Prisma.SketchCreateNestedManyWithoutSurveyInput
   measurements?: Prisma.MeasurementCreateNestedManyWithoutSurveyInput
   riskAssessments?: Prisma.RiskAssessmentCreateNestedManyWithoutSurveyInput
+  siteVisits?: Prisma.SiteVisitCreateNestedManyWithoutSurveyInput
+  approvalLogs?: Prisma.ApprovalLogCreateNestedManyWithoutSurveyInput
 }
 
 export type SurveyUncheckedCreateWithoutMaterialRequirementsInput = {
@@ -2226,6 +2755,8 @@ export type SurveyUncheckedCreateWithoutMaterialRequirementsInput = {
   updatedBy?: string | null
   isDeleted?: boolean
   version?: number
+  currentApprovalLevel?: number
+  assignedApproverId?: string | null
   projectId: string
   engineerId?: string | null
   checklistItems?: Prisma.SurveyChecklistItemUncheckedCreateNestedManyWithoutSurveyInput
@@ -2235,6 +2766,8 @@ export type SurveyUncheckedCreateWithoutMaterialRequirementsInput = {
   sketches?: Prisma.SketchUncheckedCreateNestedManyWithoutSurveyInput
   measurements?: Prisma.MeasurementUncheckedCreateNestedManyWithoutSurveyInput
   riskAssessments?: Prisma.RiskAssessmentUncheckedCreateNestedManyWithoutSurveyInput
+  siteVisits?: Prisma.SiteVisitUncheckedCreateNestedManyWithoutSurveyInput
+  approvalLogs?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutSurveyInput
 }
 
 export type SurveyCreateOrConnectWithoutMaterialRequirementsInput = {
@@ -2273,6 +2806,8 @@ export type SurveyUpdateWithoutMaterialRequirementsInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
+  currentApprovalLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  assignedApprover?: Prisma.UserUpdateOneWithoutApprovedSurveysNestedInput
   project?: Prisma.ProjectUpdateOneRequiredWithoutSurveysNestedInput
   engineer?: Prisma.UserUpdateOneWithoutAssignedSurveysNestedInput
   checklistItems?: Prisma.SurveyChecklistItemUpdateManyWithoutSurveyNestedInput
@@ -2282,6 +2817,8 @@ export type SurveyUpdateWithoutMaterialRequirementsInput = {
   sketches?: Prisma.SketchUpdateManyWithoutSurveyNestedInput
   measurements?: Prisma.MeasurementUpdateManyWithoutSurveyNestedInput
   riskAssessments?: Prisma.RiskAssessmentUpdateManyWithoutSurveyNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutSurveyNestedInput
+  approvalLogs?: Prisma.ApprovalLogUpdateManyWithoutSurveyNestedInput
 }
 
 export type SurveyUncheckedUpdateWithoutMaterialRequirementsInput = {
@@ -2304,6 +2841,8 @@ export type SurveyUncheckedUpdateWithoutMaterialRequirementsInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
+  currentApprovalLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  assignedApproverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectId?: Prisma.StringFieldUpdateOperationsInput | string
   engineerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   checklistItems?: Prisma.SurveyChecklistItemUncheckedUpdateManyWithoutSurveyNestedInput
@@ -2313,6 +2852,164 @@ export type SurveyUncheckedUpdateWithoutMaterialRequirementsInput = {
   sketches?: Prisma.SketchUncheckedUpdateManyWithoutSurveyNestedInput
   measurements?: Prisma.MeasurementUncheckedUpdateManyWithoutSurveyNestedInput
   riskAssessments?: Prisma.RiskAssessmentUncheckedUpdateManyWithoutSurveyNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutSurveyNestedInput
+  approvalLogs?: Prisma.ApprovalLogUncheckedUpdateManyWithoutSurveyNestedInput
+}
+
+export type SurveyCreateWithoutSiteVisitsInput = {
+  id?: string
+  title: string
+  description?: string | null
+  type?: $Enums.SurveyType
+  status?: $Enums.SurveyStatus
+  scheduledDate?: Date | string | null
+  completedDate?: Date | string | null
+  gpsLatitude?: number | null
+  gpsLongitude?: number | null
+  weatherCondition?: string | null
+  siteCondition?: string | null
+  accessDetails?: string | null
+  notes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy?: string | null
+  updatedBy?: string | null
+  isDeleted?: boolean
+  version?: number
+  currentApprovalLevel?: number
+  assignedApprover?: Prisma.UserCreateNestedOneWithoutApprovedSurveysInput
+  project: Prisma.ProjectCreateNestedOneWithoutSurveysInput
+  engineer?: Prisma.UserCreateNestedOneWithoutAssignedSurveysInput
+  checklistItems?: Prisma.SurveyChecklistItemCreateNestedManyWithoutSurveyInput
+  photos?: Prisma.PhotoCreateNestedManyWithoutSurveyInput
+  videos?: Prisma.VideoCreateNestedManyWithoutSurveyInput
+  voiceNotes?: Prisma.VoiceNoteCreateNestedManyWithoutSurveyInput
+  sketches?: Prisma.SketchCreateNestedManyWithoutSurveyInput
+  measurements?: Prisma.MeasurementCreateNestedManyWithoutSurveyInput
+  riskAssessments?: Prisma.RiskAssessmentCreateNestedManyWithoutSurveyInput
+  materialRequirements?: Prisma.MaterialRequirementCreateNestedManyWithoutSurveyInput
+  approvalLogs?: Prisma.ApprovalLogCreateNestedManyWithoutSurveyInput
+}
+
+export type SurveyUncheckedCreateWithoutSiteVisitsInput = {
+  id?: string
+  title: string
+  description?: string | null
+  type?: $Enums.SurveyType
+  status?: $Enums.SurveyStatus
+  scheduledDate?: Date | string | null
+  completedDate?: Date | string | null
+  gpsLatitude?: number | null
+  gpsLongitude?: number | null
+  weatherCondition?: string | null
+  siteCondition?: string | null
+  accessDetails?: string | null
+  notes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy?: string | null
+  updatedBy?: string | null
+  isDeleted?: boolean
+  version?: number
+  currentApprovalLevel?: number
+  assignedApproverId?: string | null
+  projectId: string
+  engineerId?: string | null
+  checklistItems?: Prisma.SurveyChecklistItemUncheckedCreateNestedManyWithoutSurveyInput
+  photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutSurveyInput
+  videos?: Prisma.VideoUncheckedCreateNestedManyWithoutSurveyInput
+  voiceNotes?: Prisma.VoiceNoteUncheckedCreateNestedManyWithoutSurveyInput
+  sketches?: Prisma.SketchUncheckedCreateNestedManyWithoutSurveyInput
+  measurements?: Prisma.MeasurementUncheckedCreateNestedManyWithoutSurveyInput
+  riskAssessments?: Prisma.RiskAssessmentUncheckedCreateNestedManyWithoutSurveyInput
+  materialRequirements?: Prisma.MaterialRequirementUncheckedCreateNestedManyWithoutSurveyInput
+  approvalLogs?: Prisma.ApprovalLogUncheckedCreateNestedManyWithoutSurveyInput
+}
+
+export type SurveyCreateOrConnectWithoutSiteVisitsInput = {
+  where: Prisma.SurveyWhereUniqueInput
+  create: Prisma.XOR<Prisma.SurveyCreateWithoutSiteVisitsInput, Prisma.SurveyUncheckedCreateWithoutSiteVisitsInput>
+}
+
+export type SurveyUpsertWithoutSiteVisitsInput = {
+  update: Prisma.XOR<Prisma.SurveyUpdateWithoutSiteVisitsInput, Prisma.SurveyUncheckedUpdateWithoutSiteVisitsInput>
+  create: Prisma.XOR<Prisma.SurveyCreateWithoutSiteVisitsInput, Prisma.SurveyUncheckedCreateWithoutSiteVisitsInput>
+  where?: Prisma.SurveyWhereInput
+}
+
+export type SurveyUpdateToOneWithWhereWithoutSiteVisitsInput = {
+  where?: Prisma.SurveyWhereInput
+  data: Prisma.XOR<Prisma.SurveyUpdateWithoutSiteVisitsInput, Prisma.SurveyUncheckedUpdateWithoutSiteVisitsInput>
+}
+
+export type SurveyUpdateWithoutSiteVisitsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumSurveyTypeFieldUpdateOperationsInput | $Enums.SurveyType
+  status?: Prisma.EnumSurveyStatusFieldUpdateOperationsInput | $Enums.SurveyStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gpsLatitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  gpsLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  weatherCondition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteCondition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  currentApprovalLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  assignedApprover?: Prisma.UserUpdateOneWithoutApprovedSurveysNestedInput
+  project?: Prisma.ProjectUpdateOneRequiredWithoutSurveysNestedInput
+  engineer?: Prisma.UserUpdateOneWithoutAssignedSurveysNestedInput
+  checklistItems?: Prisma.SurveyChecklistItemUpdateManyWithoutSurveyNestedInput
+  photos?: Prisma.PhotoUpdateManyWithoutSurveyNestedInput
+  videos?: Prisma.VideoUpdateManyWithoutSurveyNestedInput
+  voiceNotes?: Prisma.VoiceNoteUpdateManyWithoutSurveyNestedInput
+  sketches?: Prisma.SketchUpdateManyWithoutSurveyNestedInput
+  measurements?: Prisma.MeasurementUpdateManyWithoutSurveyNestedInput
+  riskAssessments?: Prisma.RiskAssessmentUpdateManyWithoutSurveyNestedInput
+  materialRequirements?: Prisma.MaterialRequirementUpdateManyWithoutSurveyNestedInput
+  approvalLogs?: Prisma.ApprovalLogUpdateManyWithoutSurveyNestedInput
+}
+
+export type SurveyUncheckedUpdateWithoutSiteVisitsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumSurveyTypeFieldUpdateOperationsInput | $Enums.SurveyType
+  status?: Prisma.EnumSurveyStatusFieldUpdateOperationsInput | $Enums.SurveyStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gpsLatitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  gpsLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  weatherCondition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteCondition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  currentApprovalLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  assignedApproverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  projectId?: Prisma.StringFieldUpdateOperationsInput | string
+  engineerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checklistItems?: Prisma.SurveyChecklistItemUncheckedUpdateManyWithoutSurveyNestedInput
+  photos?: Prisma.PhotoUncheckedUpdateManyWithoutSurveyNestedInput
+  videos?: Prisma.VideoUncheckedUpdateManyWithoutSurveyNestedInput
+  voiceNotes?: Prisma.VoiceNoteUncheckedUpdateManyWithoutSurveyNestedInput
+  sketches?: Prisma.SketchUncheckedUpdateManyWithoutSurveyNestedInput
+  measurements?: Prisma.MeasurementUncheckedUpdateManyWithoutSurveyNestedInput
+  riskAssessments?: Prisma.RiskAssessmentUncheckedUpdateManyWithoutSurveyNestedInput
+  materialRequirements?: Prisma.MaterialRequirementUncheckedUpdateManyWithoutSurveyNestedInput
+  approvalLogs?: Prisma.ApprovalLogUncheckedUpdateManyWithoutSurveyNestedInput
 }
 
 export type SurveyCreateManyEngineerInput = {
@@ -2335,7 +3032,34 @@ export type SurveyCreateManyEngineerInput = {
   updatedBy?: string | null
   isDeleted?: boolean
   version?: number
+  currentApprovalLevel?: number
+  assignedApproverId?: string | null
   projectId: string
+}
+
+export type SurveyCreateManyAssignedApproverInput = {
+  id?: string
+  title: string
+  description?: string | null
+  type?: $Enums.SurveyType
+  status?: $Enums.SurveyStatus
+  scheduledDate?: Date | string | null
+  completedDate?: Date | string | null
+  gpsLatitude?: number | null
+  gpsLongitude?: number | null
+  weatherCondition?: string | null
+  siteCondition?: string | null
+  accessDetails?: string | null
+  notes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy?: string | null
+  updatedBy?: string | null
+  isDeleted?: boolean
+  version?: number
+  currentApprovalLevel?: number
+  projectId: string
+  engineerId?: string | null
 }
 
 export type SurveyUpdateWithoutEngineerInput = {
@@ -2358,6 +3082,8 @@ export type SurveyUpdateWithoutEngineerInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
+  currentApprovalLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  assignedApprover?: Prisma.UserUpdateOneWithoutApprovedSurveysNestedInput
   project?: Prisma.ProjectUpdateOneRequiredWithoutSurveysNestedInput
   checklistItems?: Prisma.SurveyChecklistItemUpdateManyWithoutSurveyNestedInput
   photos?: Prisma.PhotoUpdateManyWithoutSurveyNestedInput
@@ -2367,6 +3093,8 @@ export type SurveyUpdateWithoutEngineerInput = {
   measurements?: Prisma.MeasurementUpdateManyWithoutSurveyNestedInput
   riskAssessments?: Prisma.RiskAssessmentUpdateManyWithoutSurveyNestedInput
   materialRequirements?: Prisma.MaterialRequirementUpdateManyWithoutSurveyNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutSurveyNestedInput
+  approvalLogs?: Prisma.ApprovalLogUpdateManyWithoutSurveyNestedInput
 }
 
 export type SurveyUncheckedUpdateWithoutEngineerInput = {
@@ -2389,6 +3117,8 @@ export type SurveyUncheckedUpdateWithoutEngineerInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
+  currentApprovalLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  assignedApproverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectId?: Prisma.StringFieldUpdateOperationsInput | string
   checklistItems?: Prisma.SurveyChecklistItemUncheckedUpdateManyWithoutSurveyNestedInput
   photos?: Prisma.PhotoUncheckedUpdateManyWithoutSurveyNestedInput
@@ -2398,6 +3128,8 @@ export type SurveyUncheckedUpdateWithoutEngineerInput = {
   measurements?: Prisma.MeasurementUncheckedUpdateManyWithoutSurveyNestedInput
   riskAssessments?: Prisma.RiskAssessmentUncheckedUpdateManyWithoutSurveyNestedInput
   materialRequirements?: Prisma.MaterialRequirementUncheckedUpdateManyWithoutSurveyNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutSurveyNestedInput
+  approvalLogs?: Prisma.ApprovalLogUncheckedUpdateManyWithoutSurveyNestedInput
 }
 
 export type SurveyUncheckedUpdateManyWithoutEngineerInput = {
@@ -2420,7 +3152,104 @@ export type SurveyUncheckedUpdateManyWithoutEngineerInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
+  currentApprovalLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  assignedApproverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectId?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+export type SurveyUpdateWithoutAssignedApproverInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumSurveyTypeFieldUpdateOperationsInput | $Enums.SurveyType
+  status?: Prisma.EnumSurveyStatusFieldUpdateOperationsInput | $Enums.SurveyStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gpsLatitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  gpsLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  weatherCondition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteCondition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  currentApprovalLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  project?: Prisma.ProjectUpdateOneRequiredWithoutSurveysNestedInput
+  engineer?: Prisma.UserUpdateOneWithoutAssignedSurveysNestedInput
+  checklistItems?: Prisma.SurveyChecklistItemUpdateManyWithoutSurveyNestedInput
+  photos?: Prisma.PhotoUpdateManyWithoutSurveyNestedInput
+  videos?: Prisma.VideoUpdateManyWithoutSurveyNestedInput
+  voiceNotes?: Prisma.VoiceNoteUpdateManyWithoutSurveyNestedInput
+  sketches?: Prisma.SketchUpdateManyWithoutSurveyNestedInput
+  measurements?: Prisma.MeasurementUpdateManyWithoutSurveyNestedInput
+  riskAssessments?: Prisma.RiskAssessmentUpdateManyWithoutSurveyNestedInput
+  materialRequirements?: Prisma.MaterialRequirementUpdateManyWithoutSurveyNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutSurveyNestedInput
+  approvalLogs?: Prisma.ApprovalLogUpdateManyWithoutSurveyNestedInput
+}
+
+export type SurveyUncheckedUpdateWithoutAssignedApproverInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumSurveyTypeFieldUpdateOperationsInput | $Enums.SurveyType
+  status?: Prisma.EnumSurveyStatusFieldUpdateOperationsInput | $Enums.SurveyStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gpsLatitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  gpsLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  weatherCondition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteCondition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  currentApprovalLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  projectId?: Prisma.StringFieldUpdateOperationsInput | string
+  engineerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checklistItems?: Prisma.SurveyChecklistItemUncheckedUpdateManyWithoutSurveyNestedInput
+  photos?: Prisma.PhotoUncheckedUpdateManyWithoutSurveyNestedInput
+  videos?: Prisma.VideoUncheckedUpdateManyWithoutSurveyNestedInput
+  voiceNotes?: Prisma.VoiceNoteUncheckedUpdateManyWithoutSurveyNestedInput
+  sketches?: Prisma.SketchUncheckedUpdateManyWithoutSurveyNestedInput
+  measurements?: Prisma.MeasurementUncheckedUpdateManyWithoutSurveyNestedInput
+  riskAssessments?: Prisma.RiskAssessmentUncheckedUpdateManyWithoutSurveyNestedInput
+  materialRequirements?: Prisma.MaterialRequirementUncheckedUpdateManyWithoutSurveyNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutSurveyNestedInput
+  approvalLogs?: Prisma.ApprovalLogUncheckedUpdateManyWithoutSurveyNestedInput
+}
+
+export type SurveyUncheckedUpdateManyWithoutAssignedApproverInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumSurveyTypeFieldUpdateOperationsInput | $Enums.SurveyType
+  status?: Prisma.EnumSurveyStatusFieldUpdateOperationsInput | $Enums.SurveyStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gpsLatitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  gpsLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  weatherCondition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteCondition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  currentApprovalLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  projectId?: Prisma.StringFieldUpdateOperationsInput | string
+  engineerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SurveyCreateManyProjectInput = {
@@ -2443,6 +3272,8 @@ export type SurveyCreateManyProjectInput = {
   updatedBy?: string | null
   isDeleted?: boolean
   version?: number
+  currentApprovalLevel?: number
+  assignedApproverId?: string | null
   engineerId?: string | null
 }
 
@@ -2466,6 +3297,8 @@ export type SurveyUpdateWithoutProjectInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
+  currentApprovalLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  assignedApprover?: Prisma.UserUpdateOneWithoutApprovedSurveysNestedInput
   engineer?: Prisma.UserUpdateOneWithoutAssignedSurveysNestedInput
   checklistItems?: Prisma.SurveyChecklistItemUpdateManyWithoutSurveyNestedInput
   photos?: Prisma.PhotoUpdateManyWithoutSurveyNestedInput
@@ -2475,6 +3308,8 @@ export type SurveyUpdateWithoutProjectInput = {
   measurements?: Prisma.MeasurementUpdateManyWithoutSurveyNestedInput
   riskAssessments?: Prisma.RiskAssessmentUpdateManyWithoutSurveyNestedInput
   materialRequirements?: Prisma.MaterialRequirementUpdateManyWithoutSurveyNestedInput
+  siteVisits?: Prisma.SiteVisitUpdateManyWithoutSurveyNestedInput
+  approvalLogs?: Prisma.ApprovalLogUpdateManyWithoutSurveyNestedInput
 }
 
 export type SurveyUncheckedUpdateWithoutProjectInput = {
@@ -2497,6 +3332,8 @@ export type SurveyUncheckedUpdateWithoutProjectInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
+  currentApprovalLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  assignedApproverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   engineerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   checklistItems?: Prisma.SurveyChecklistItemUncheckedUpdateManyWithoutSurveyNestedInput
   photos?: Prisma.PhotoUncheckedUpdateManyWithoutSurveyNestedInput
@@ -2506,6 +3343,8 @@ export type SurveyUncheckedUpdateWithoutProjectInput = {
   measurements?: Prisma.MeasurementUncheckedUpdateManyWithoutSurveyNestedInput
   riskAssessments?: Prisma.RiskAssessmentUncheckedUpdateManyWithoutSurveyNestedInput
   materialRequirements?: Prisma.MaterialRequirementUncheckedUpdateManyWithoutSurveyNestedInput
+  siteVisits?: Prisma.SiteVisitUncheckedUpdateManyWithoutSurveyNestedInput
+  approvalLogs?: Prisma.ApprovalLogUncheckedUpdateManyWithoutSurveyNestedInput
 }
 
 export type SurveyUncheckedUpdateManyWithoutProjectInput = {
@@ -2528,6 +3367,8 @@ export type SurveyUncheckedUpdateManyWithoutProjectInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
+  currentApprovalLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  assignedApproverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   engineerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
@@ -2545,6 +3386,8 @@ export type SurveyCountOutputType = {
   measurements: number
   riskAssessments: number
   materialRequirements: number
+  siteVisits: number
+  approvalLogs: number
 }
 
 export type SurveyCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2556,6 +3399,8 @@ export type SurveyCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions
   measurements?: boolean | SurveyCountOutputTypeCountMeasurementsArgs
   riskAssessments?: boolean | SurveyCountOutputTypeCountRiskAssessmentsArgs
   materialRequirements?: boolean | SurveyCountOutputTypeCountMaterialRequirementsArgs
+  siteVisits?: boolean | SurveyCountOutputTypeCountSiteVisitsArgs
+  approvalLogs?: boolean | SurveyCountOutputTypeCountApprovalLogsArgs
 }
 
 /**
@@ -2624,6 +3469,20 @@ export type SurveyCountOutputTypeCountMaterialRequirementsArgs<ExtArgs extends r
   where?: Prisma.MaterialRequirementWhereInput
 }
 
+/**
+ * SurveyCountOutputType without action
+ */
+export type SurveyCountOutputTypeCountSiteVisitsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SiteVisitWhereInput
+}
+
+/**
+ * SurveyCountOutputType without action
+ */
+export type SurveyCountOutputTypeCountApprovalLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ApprovalLogWhereInput
+}
+
 
 export type SurveySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2645,8 +3504,11 @@ export type SurveySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   updatedBy?: boolean
   isDeleted?: boolean
   version?: boolean
+  currentApprovalLevel?: boolean
+  assignedApproverId?: boolean
   projectId?: boolean
   engineerId?: boolean
+  assignedApprover?: boolean | Prisma.Survey$assignedApproverArgs<ExtArgs>
   project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
   engineer?: boolean | Prisma.Survey$engineerArgs<ExtArgs>
   checklistItems?: boolean | Prisma.Survey$checklistItemsArgs<ExtArgs>
@@ -2657,6 +3519,8 @@ export type SurveySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   measurements?: boolean | Prisma.Survey$measurementsArgs<ExtArgs>
   riskAssessments?: boolean | Prisma.Survey$riskAssessmentsArgs<ExtArgs>
   materialRequirements?: boolean | Prisma.Survey$materialRequirementsArgs<ExtArgs>
+  siteVisits?: boolean | Prisma.Survey$siteVisitsArgs<ExtArgs>
+  approvalLogs?: boolean | Prisma.Survey$approvalLogsArgs<ExtArgs>
   _count?: boolean | Prisma.SurveyCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["survey"]>
 
@@ -2680,8 +3544,11 @@ export type SurveySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   updatedBy?: boolean
   isDeleted?: boolean
   version?: boolean
+  currentApprovalLevel?: boolean
+  assignedApproverId?: boolean
   projectId?: boolean
   engineerId?: boolean
+  assignedApprover?: boolean | Prisma.Survey$assignedApproverArgs<ExtArgs>
   project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
   engineer?: boolean | Prisma.Survey$engineerArgs<ExtArgs>
 }, ExtArgs["result"]["survey"]>
@@ -2706,8 +3573,11 @@ export type SurveySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   updatedBy?: boolean
   isDeleted?: boolean
   version?: boolean
+  currentApprovalLevel?: boolean
+  assignedApproverId?: boolean
   projectId?: boolean
   engineerId?: boolean
+  assignedApprover?: boolean | Prisma.Survey$assignedApproverArgs<ExtArgs>
   project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
   engineer?: boolean | Prisma.Survey$engineerArgs<ExtArgs>
 }, ExtArgs["result"]["survey"]>
@@ -2732,12 +3602,15 @@ export type SurveySelectScalar = {
   updatedBy?: boolean
   isDeleted?: boolean
   version?: boolean
+  currentApprovalLevel?: boolean
+  assignedApproverId?: boolean
   projectId?: boolean
   engineerId?: boolean
 }
 
-export type SurveyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "type" | "status" | "scheduledDate" | "completedDate" | "gpsLatitude" | "gpsLongitude" | "weatherCondition" | "siteCondition" | "accessDetails" | "notes" | "createdAt" | "updatedAt" | "createdBy" | "updatedBy" | "isDeleted" | "version" | "projectId" | "engineerId", ExtArgs["result"]["survey"]>
+export type SurveyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "type" | "status" | "scheduledDate" | "completedDate" | "gpsLatitude" | "gpsLongitude" | "weatherCondition" | "siteCondition" | "accessDetails" | "notes" | "createdAt" | "updatedAt" | "createdBy" | "updatedBy" | "isDeleted" | "version" | "currentApprovalLevel" | "assignedApproverId" | "projectId" | "engineerId", ExtArgs["result"]["survey"]>
 export type SurveyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  assignedApprover?: boolean | Prisma.Survey$assignedApproverArgs<ExtArgs>
   project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
   engineer?: boolean | Prisma.Survey$engineerArgs<ExtArgs>
   checklistItems?: boolean | Prisma.Survey$checklistItemsArgs<ExtArgs>
@@ -2748,13 +3621,17 @@ export type SurveyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   measurements?: boolean | Prisma.Survey$measurementsArgs<ExtArgs>
   riskAssessments?: boolean | Prisma.Survey$riskAssessmentsArgs<ExtArgs>
   materialRequirements?: boolean | Prisma.Survey$materialRequirementsArgs<ExtArgs>
+  siteVisits?: boolean | Prisma.Survey$siteVisitsArgs<ExtArgs>
+  approvalLogs?: boolean | Prisma.Survey$approvalLogsArgs<ExtArgs>
   _count?: boolean | Prisma.SurveyCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type SurveyIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  assignedApprover?: boolean | Prisma.Survey$assignedApproverArgs<ExtArgs>
   project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
   engineer?: boolean | Prisma.Survey$engineerArgs<ExtArgs>
 }
 export type SurveyIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  assignedApprover?: boolean | Prisma.Survey$assignedApproverArgs<ExtArgs>
   project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
   engineer?: boolean | Prisma.Survey$engineerArgs<ExtArgs>
 }
@@ -2762,6 +3639,7 @@ export type SurveyIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
 export type $SurveyPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Survey"
   objects: {
+    assignedApprover: Prisma.$UserPayload<ExtArgs> | null
     project: Prisma.$ProjectPayload<ExtArgs>
     engineer: Prisma.$UserPayload<ExtArgs> | null
     checklistItems: Prisma.$SurveyChecklistItemPayload<ExtArgs>[]
@@ -2772,6 +3650,8 @@ export type $SurveyPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     measurements: Prisma.$MeasurementPayload<ExtArgs>[]
     riskAssessments: Prisma.$RiskAssessmentPayload<ExtArgs>[]
     materialRequirements: Prisma.$MaterialRequirementPayload<ExtArgs>[]
+    siteVisits: Prisma.$SiteVisitPayload<ExtArgs>[]
+    approvalLogs: Prisma.$ApprovalLogPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2793,6 +3673,8 @@ export type $SurveyPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     updatedBy: string | null
     isDeleted: boolean
     version: number
+    currentApprovalLevel: number
+    assignedApproverId: string | null
     projectId: string
     engineerId: string | null
   }, ExtArgs["result"]["survey"]>
@@ -3189,6 +4071,7 @@ readonly fields: SurveyFieldRefs;
  */
 export interface Prisma__SurveyClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  assignedApprover<T extends Prisma.Survey$assignedApproverArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Survey$assignedApproverArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   project<T extends Prisma.ProjectDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProjectDefaultArgs<ExtArgs>>): Prisma.Prisma__ProjectClient<runtime.Types.Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   engineer<T extends Prisma.Survey$engineerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Survey$engineerArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   checklistItems<T extends Prisma.Survey$checklistItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Survey$checklistItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SurveyChecklistItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -3199,6 +4082,8 @@ export interface Prisma__SurveyClient<T, Null = never, ExtArgs extends runtime.T
   measurements<T extends Prisma.Survey$measurementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Survey$measurementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MeasurementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   riskAssessments<T extends Prisma.Survey$riskAssessmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Survey$riskAssessmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RiskAssessmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   materialRequirements<T extends Prisma.Survey$materialRequirementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Survey$materialRequirementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MaterialRequirementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  siteVisits<T extends Prisma.Survey$siteVisitsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Survey$siteVisitsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SiteVisitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  approvalLogs<T extends Prisma.Survey$approvalLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Survey$approvalLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApprovalLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3247,6 +4132,8 @@ export interface SurveyFieldRefs {
   readonly updatedBy: Prisma.FieldRef<"Survey", 'String'>
   readonly isDeleted: Prisma.FieldRef<"Survey", 'Boolean'>
   readonly version: Prisma.FieldRef<"Survey", 'Int'>
+  readonly currentApprovalLevel: Prisma.FieldRef<"Survey", 'Int'>
+  readonly assignedApproverId: Prisma.FieldRef<"Survey", 'String'>
   readonly projectId: Prisma.FieldRef<"Survey", 'String'>
   readonly engineerId: Prisma.FieldRef<"Survey", 'String'>
 }
@@ -3650,6 +4537,25 @@ export type SurveyDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
 }
 
 /**
+ * Survey.assignedApprover
+ */
+export type Survey$assignedApproverArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+}
+
+/**
  * Survey.engineer
  */
 export type Survey$engineerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3858,6 +4764,54 @@ export type Survey$materialRequirementsArgs<ExtArgs extends runtime.Types.Extens
   take?: number
   skip?: number
   distinct?: Prisma.MaterialRequirementScalarFieldEnum | Prisma.MaterialRequirementScalarFieldEnum[]
+}
+
+/**
+ * Survey.siteVisits
+ */
+export type Survey$siteVisitsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SiteVisit
+   */
+  select?: Prisma.SiteVisitSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SiteVisit
+   */
+  omit?: Prisma.SiteVisitOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SiteVisitInclude<ExtArgs> | null
+  where?: Prisma.SiteVisitWhereInput
+  orderBy?: Prisma.SiteVisitOrderByWithRelationInput | Prisma.SiteVisitOrderByWithRelationInput[]
+  cursor?: Prisma.SiteVisitWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SiteVisitScalarFieldEnum | Prisma.SiteVisitScalarFieldEnum[]
+}
+
+/**
+ * Survey.approvalLogs
+ */
+export type Survey$approvalLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ApprovalLog
+   */
+  select?: Prisma.ApprovalLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ApprovalLog
+   */
+  omit?: Prisma.ApprovalLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ApprovalLogInclude<ExtArgs> | null
+  where?: Prisma.ApprovalLogWhereInput
+  orderBy?: Prisma.ApprovalLogOrderByWithRelationInput | Prisma.ApprovalLogOrderByWithRelationInput[]
+  cursor?: Prisma.ApprovalLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ApprovalLogScalarFieldEnum | Prisma.ApprovalLogScalarFieldEnum[]
 }
 
 /**

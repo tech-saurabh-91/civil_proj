@@ -53,6 +53,7 @@ enum SurveyStatus {
   IN_PROGRESS
   SUBMITTED
   UNDER_REVIEW
+  MANAGER_APPROVED
   APPROVED
   REJECTED
 }
@@ -167,6 +168,10 @@ model User {
   ledProjects               Project[]          @relation("LedProjects")
   managedProjects           Project[]          @relation("ManagedProjects")
   assignedSurveys           Survey[]           @relation("SurveyEngineer")
+  approvedSurveys           Survey[]           @relation("SurveyApprover")
+  approvalLogsGiven         ApprovalLog[]      @relation("ApprovalLogFrom")
+  approvalLogsReceived      ApprovalLog[]      @relation("ApprovalLogTo")
+  approvalLevelAssignments  ApprovalLevelUser[]
   auditLogs                 AuditLog[]
   notifications             Notification[]
   signatures                DigitalSignature[]
@@ -181,6 +186,7 @@ model User {
   changeOrdersRequested     ChangeOrder[]      @relation("COResuestedBy")
   changeOrdersApproved      ChangeOrder[]      @relation("COApprovedBy")
   leadsAssigned             Lead[]             @relation("LeadAssignee")
+  siteVisits                SiteVisit[]
 
   @@index([email])
   @@index([role])
@@ -282,6 +288,7 @@ model Project {
   boqItems        BOQItem[]
   costEstimations CostEstimation[]
   quotations      Quotation[]
+  invoices        Invoice[]
   documents       Document[]
   workflows       Workflow[]
   activities      Activity[]
@@ -289,6 +296,8 @@ model Project {
   gpsTracking     GpsTracking[]
   meetings        Meeting[]
   changeOrders    ChangeOrder[]
+  photos          Photo[]
+  siteVisits      SiteVisit[]
 
   @@index([code])
   @@index([clientId])
@@ -320,6 +329,10 @@ model Survey {
   isDeleted        Boolean      @default(false)
   version          Int          @default(1)
 
+  currentApprovalLevel Int      @default(0)
+  assignedApproverId   String?
+  assignedApprover     User?    @relation("SurveyApprover", fields: [assignedApproverId], references: [id])
+
   projectId  String
   project    Project @relation(fields: [projectId], references: [id])
   engineerId String?
@@ -333,13 +346,34 @@ model Survey {
   measurements         Measurement[]
   riskAssessments      RiskAssessment[]
   materialRequirements MaterialRequirement[]
+  siteVisits           SiteVisit[]
+  approvalLogs         ApprovalLog[]
 
   @@index([projectId])
   @@index([engineerId])
+  @@index([assignedApproverId])
   @@index([status])
   @@index([type])
   @@index([scheduledDate])
   @@index([createdAt])
+}
+
+model ApprovalLog {
+  id              String   @id @default(uuid())
+  surveyId        String
+  survey          Survey   @relation(fields: [surveyId], references: [id])
+  level           Int
+  action          String
+  fromUserId      String
+  fromUser        User     @relation("ApprovalLogFrom", fields: [fromUserId], references: [id])
+  toUserId        String?
+  toUser          User?    @relation("ApprovalLogTo", fields: [toUserId], references: [id])
+  notes           String?  @db.Text
+  createdAt       DateTime @default(now())
+
+  @@index([surveyId])
+  @@index([fromUserId])
+  @@index([action])
 }
 
 model SurveyChecklistItem {
@@ -363,24 +397,27 @@ model SurveyChecklistItem {
 }
 
 model Photo {
-  id        String    @id @default(uuid())
-  url       String
-  filename  String
-  caption   String?
-  latitude  Float?
-  longitude Float?
-  takenAt   DateTime?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  createdBy String?
-  updatedBy String?
-  isDeleted Boolean   @default(false)
-  version   Int       @default(1)
+  id          String    @id @default(uuid())
+  url         String    @db.Text
+  filename    String
+  caption     String?
+  latitude    Float?
+  longitude   Float?
+  takenAt     DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  createdBy   String?
+  updatedBy   String?
+  isDeleted   Boolean   @default(false)
+  version     Int       @default(1)
 
-  surveyId String
-  survey   Survey @relation(fields: [surveyId], references: [id], onDelete: Cascade)
+  surveyId    String
+  survey      Survey    @relation(fields: [surveyId], references: [id], onDelete: Cascade)
+  projectId   String?
+  project     Project?  @relation(fields: [projectId], references: [id])
 
   @@index([surveyId])
+  @@index([projectId])
   @@index([takenAt])
 }
 
@@ -795,9 +832,10 @@ model Document {
   title       String
   description String?
   type        DocumentType @default(OTHER)
-  fileUrl     String
+  fileUrl     String       @db.Text
   filename    String
   fileSize    Int?
+  mimeType    String?
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   createdBy   String?
@@ -972,6 +1010,33 @@ model GpsTracking {
   @@index([timestamp])
 }
 
+model SiteVisit {
+  id          String    @id @default(uuid())
+  checkInAt   DateTime  @default(now())
+  checkOutAt  DateTime?
+  latitude    Float
+  longitude   Float
+  accuracy    Float?
+  notes       String?
+  status      String    @default("CHECKED_IN")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  createdBy   String?
+  isDeleted   Boolean   @default(false)
+
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  projectId String?
+  project   Project? @relation(fields: [projectId], references: [id])
+  surveyId  String?
+  survey    Survey?  @relation(fields: [surveyId], references: [id])
+
+  @@index([userId])
+  @@index([projectId])
+  @@index([checkInAt])
+  @@index([status])
+}
+
 model Meeting {
   id          String   @id @default(uuid())
   title       String
@@ -1093,4 +1158,92 @@ model AccessRequest {
 
   @@index([status])
   @@index([email])
+}
+
+model Invoice {
+  id              String        @id @default(uuid())
+  invoiceNumber   String        @unique
+  title           String
+  description     String?
+  totalAmount     Float
+  taxAmount       Float         @default(0)
+  discountAmount  Float         @default(0)
+  grandTotal      Float
+  dueDate         DateTime?
+  paidDate        DateTime?
+  status          PaymentStatus @default(PENDING)
+  notes           String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  createdBy       String?
+  updatedBy       String?
+  isDeleted       Boolean       @default(false)
+  version         Int           @default(1)
+  projectId       String
+  project         Project       @relation(fields: [projectId], references: [id])
+  quotationId     String?
+  items           InvoiceItem[]
+
+  @@index([invoiceNumber])
+  @@index([projectId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model InvoiceItem {
+  id          String   @id @default(uuid())
+  description String
+  unit        String
+  quantity    Float
+  unitRate    Float
+  amount      Float
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  createdBy   String?
+  updatedBy   String?
+  isDeleted   Boolean  @default(false)
+  version     Int      @default(1)
+  invoiceId   String
+  invoice     Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@index([invoiceId])
+}
+
+model ApprovalLevelConfig {
+  id              String   @id @default(uuid())
+  entityType      String
+  level           Int
+  name            String
+  description     String?
+  requiredRole    String
+  allowForward    Boolean  @default(true)
+  allowEscalate   Boolean  @default(true)
+  allowReverse    Boolean  @default(true)
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  createdBy       String?
+  updatedBy       String?
+  isDeleted       Boolean  @default(false)
+  version         Int      @default(1)
+
+  approvers       ApprovalLevelUser[]
+
+  @@unique([entityType, level])
+  @@index([entityType])
+  @@index([level])
+}
+
+model ApprovalLevelUser {
+  id              String   @id @default(uuid())
+  configId        String
+  config          ApprovalLevelConfig @relation(fields: [configId], references: [id])
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+
+  @@unique([configId, userId])
+  @@index([configId])
+  @@index([userId])
 }
