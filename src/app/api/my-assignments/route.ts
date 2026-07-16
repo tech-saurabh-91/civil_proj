@@ -1,30 +1,36 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
+import { auth } from '@/lib/auth'
 
 export async function GET(req: NextRequest) {
   try {
-    const { searchParams } = new URL(req.url)
-    const userId = searchParams.get('userId')
+    const session = await auth()
+    const userId = (session?.user as any)?.id
+    const userRole = (session?.user as any)?.role
 
     if (!userId) {
-      return NextResponse.json({ success: false, error: 'userId is required' }, { status: 400 })
+      return NextResponse.json({ success: false, error: 'Not authenticated' }, { status: 401 })
+    }
+
+    const whereLeads: any = { isDeleted: false }
+    const whereProjects: any = { isDeleted: false }
+    const whereSurveys: any = { isDeleted: false, engineerId: userId }
+
+    if (userRole === 'ENGINEER' || userRole === 'SURVEYOR') {
+      whereLeads.assignedToId = userId
+      whereProjects.OR = [{ managerId: userId }]
     }
 
     const [leads, projects, surveys] = await Promise.all([
       db.lead.findMany({
-        where: { assignedToId: userId, isDeleted: false },
+        where: whereLeads,
         orderBy: { createdAt: 'desc' },
         include: {
           client: { select: { id: true, companyName: true } },
         },
       }),
       db.project.findMany({
-        where: {
-          isDeleted: false,
-          OR: [
-            { managerId: userId },
-          ],
-        },
+        where: whereProjects,
         orderBy: { createdAt: 'desc' },
         include: {
           client: { select: { id: true, companyName: true } },
@@ -32,7 +38,7 @@ export async function GET(req: NextRequest) {
         },
       }),
       db.survey.findMany({
-        where: { engineerId: userId, isDeleted: false },
+        where: whereSurveys,
         orderBy: { createdAt: 'desc' },
         include: {
           project: { select: { name: true } },
