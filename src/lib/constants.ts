@@ -71,6 +71,13 @@ export const SIDEBAR_NAV_ITEMS: readonly {
     ],
   },
   {
+    group: 'CRM',
+    items: [
+      { label: 'Leads', href: '/leads', icon: 'Users', roles: ['SUPER_ADMIN', 'ADMIN', 'MANAGER', 'ENGINEER', 'SURVEYOR'] },
+      { label: 'Clients', href: '/clients', icon: 'Building2', roles: ['SUPER_ADMIN', 'ADMIN', 'MANAGER'] },
+    ],
+  },
+  {
     group: 'Projects',
     items: [
       { label: 'Projects', href: '/projects', icon: 'FolderKanban' },
@@ -107,13 +114,6 @@ export const SIDEBAR_NAV_ITEMS: readonly {
       { label: 'Documents', href: '/documents', icon: 'File' },
       { label: 'Risk Assessment', href: '/risks', icon: 'ShieldAlert', roles: ['SUPER_ADMIN', 'ADMIN', 'MANAGER', 'ENGINEER'] },
       { label: 'Signatures', href: '/signatures', icon: 'PenTool' },
-    ],
-  },
-  {
-    group: 'CRM',
-    items: [
-      { label: 'Leads', href: '/leads', icon: 'Users', roles: ['SUPER_ADMIN', 'ADMIN', 'MANAGER', 'ENGINEER', 'SURVEYOR'] },
-      { label: 'Clients', href: '/clients', icon: 'Building2', roles: ['SUPER_ADMIN', 'ADMIN', 'MANAGER'] },
     ],
   },
   {
