@@ -161,7 +161,7 @@ export default function EstimationPage() {
   if (loading) {
     return (
       <div className="space-y-6">
-        <PageHeader title="Cost Estimation" description="Track estimated vs actual costs across project categories" breadcrumbs={[{ label: "Dashboard", href: "/" }, { label: "Estimation" }]} />
+        <PageHeader title="Cost Estimation" description="Track estimated vs actual costs across project categories" breadcrumbs={[{ label: "Dashboard", href: '/dashboard' }, { label: "Estimation" }]} />
         <div className="flex items-center justify-center py-20">
           <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
           <span className="ml-3 text-muted-foreground">Loading estimations...</span>
@@ -173,7 +173,7 @@ export default function EstimationPage() {
   if (error) {
     return (
       <div className="space-y-6">
-        <PageHeader title="Cost Estimation" description="Track estimated vs actual costs across project categories" breadcrumbs={[{ label: "Dashboard", href: "/" }, { label: "Estimation" }]} />
+        <PageHeader title="Cost Estimation" description="Track estimated vs actual costs across project categories" breadcrumbs={[{ label: "Dashboard", href: '/dashboard' }, { label: "Estimation" }]} />
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-16">
             <p className="text-destructive font-medium mb-4">{error}</p>
@@ -189,7 +189,7 @@ export default function EstimationPage() {
       <PageHeader
         title="Cost Estimation"
         description="Track estimated vs actual costs across project categories"
-        breadcrumbs={[{ label: "Dashboard", href: "/" }, { label: "Estimation" }]}
+        breadcrumbs={[{ label: "Dashboard", href: '/dashboard' }, { label: "Estimation" }]}
         actions={
           <div className="flex gap-2">
             <Button variant="outline" onClick={() => setShowCreateForm(!showCreateForm)}>

@@ -156,7 +156,7 @@ export default function AssignmentsPage() {
         title="Survey Assignments"
         description="Assign surveys to engineers and manage workloads"
         breadcrumbs={[
-          { label: 'Dashboard', href: '/' },
+          { label: 'Dashboard', href: '/dashboard' },
           { label: 'Surveys', href: '/surveys' },
           { label: 'Assignments' },
         ]}

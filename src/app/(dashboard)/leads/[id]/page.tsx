@@ -184,7 +184,7 @@ export default function LeadDetailPage() {
   if (loading) {
     return (
       <div className="space-y-6">
-        <PageHeader title="Loading..." description="" breadcrumbs={[{ label: 'Dashboard', href: '/' }, { label: 'Leads', href: '/leads' }, { label: 'Loading...' }]} />
+        <PageHeader title="Loading..." description="" breadcrumbs={[{ label: 'Dashboard', href: '/dashboard' }, { label: 'Leads', href: '/leads' }, { label: 'Loading...' }]} />
         <Card><CardContent className="flex items-center justify-center py-12"><div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" /></CardContent></Card>
       </div>
     )
@@ -193,7 +193,7 @@ export default function LeadDetailPage() {
   if (!lead) {
     return (
       <div className="space-y-6">
-        <PageHeader title="Lead Not Found" description="" breadcrumbs={[{ label: 'Dashboard', href: '/' }, { label: 'Leads', href: '/leads' }, { label: 'Not Found' }]} />
+        <PageHeader title="Lead Not Found" description="" breadcrumbs={[{ label: 'Dashboard', href: '/dashboard' }, { label: 'Leads', href: '/leads' }, { label: 'Not Found' }]} />
         <Card><CardContent className="flex flex-col items-center justify-center py-12"><p className="text-muted-foreground">Lead not found.</p><Button asChild className="mt-4"><Link href="/leads">Back to Leads</Link></Button></CardContent></Card>
       </div>
     )
@@ -212,7 +212,7 @@ export default function LeadDetailPage() {
         title={editMode ? 'Edit Lead' : lead.name}
         description={`${lead.company || 'No company'} · ${lead.source || 'Unknown source'}`}
         breadcrumbs={[
-          { label: 'Dashboard', href: '/' },
+          { label: 'Dashboard', href: '/dashboard' },
           { label: 'Leads', href: '/leads' },
           { label: editMode ? 'Edit' : lead.name },
         ]}

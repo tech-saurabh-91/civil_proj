@@ -154,7 +154,7 @@ export default function AuditPage() {
         title="Audit Trail"
         description="Complete log of all system activities and changes"
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "Audit Log" },
         ]}
         actions={

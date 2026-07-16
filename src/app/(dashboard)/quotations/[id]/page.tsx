@@ -105,7 +105,7 @@ export default function QuotationDetailPage({ params: _params }: { params: Promi
         title={q.id}
         description={q.title}
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "Quotations", href: "/quotations" },
           { label: q.id },
         ]}

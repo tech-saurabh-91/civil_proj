@@ -153,7 +153,7 @@ export default function NewUserPage() {
         title="Create New User"
         description="Add a new user to the platform with appropriate role and permissions"
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "Users", href: "/users" },
           { label: "New User" },
         ]}

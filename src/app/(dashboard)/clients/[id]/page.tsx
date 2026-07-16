@@ -159,7 +159,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
   if (loading) {
     return (
       <div className="space-y-6">
-        <PageHeader title="Loading..." description="" breadcrumbs={[{ label: "Dashboard", href: "/" }, { label: "Clients", href: "/clients" }, { label: "Loading..." }]} />
+        <PageHeader title="Loading..." description="" breadcrumbs={[{ label: "Dashboard", href: '/dashboard' }, { label: "Clients", href: "/clients" }, { label: "Loading..." }]} />
         <Card><CardContent className="flex items-center justify-center py-12"><div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" /></CardContent></Card>
       </div>
     )
@@ -168,7 +168,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
   if (!client) {
     return (
       <div className="space-y-6">
-        <PageHeader title="Client Not Found" description="" breadcrumbs={[{ label: "Dashboard", href: "/" }, { label: "Clients", href: "/clients" }, { label: "Not Found" }]} />
+        <PageHeader title="Client Not Found" description="" breadcrumbs={[{ label: "Dashboard", href: '/dashboard' }, { label: "Clients", href: "/clients" }, { label: "Not Found" }]} />
         <Card><CardContent className="flex flex-col items-center justify-center py-12"><p className="text-muted-foreground">Client not found.</p><Button asChild className="mt-4"><Link href="/clients">Back to Clients</Link></Button></CardContent></Card>
       </div>
     )
@@ -184,7 +184,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
         title={editMode ? "Edit Client" : client.companyName}
         description={`Client ID: ${client.id}`}
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "Clients", href: "/clients" },
           { label: editMode ? "Edit" : client.companyName },
         ]}

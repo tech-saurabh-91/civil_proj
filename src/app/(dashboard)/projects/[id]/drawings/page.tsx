@@ -108,7 +108,7 @@ export default function DrawingsPage({ params }: { params: Promise<{ id: string 
         title="Drawings & Documents"
         description={`${drawings.length} document(s)`}
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "Projects", href: "/projects" },
           { label: "Drawings" },
         ]}

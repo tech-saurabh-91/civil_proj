@@ -218,7 +218,7 @@ export default function ChecklistPage() {
         title="Checklist Templates"
         description="Manage survey checklist templates and categories"
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "Surveys", href: "/surveys" },
           { label: "Checklist Templates" },
         ]}

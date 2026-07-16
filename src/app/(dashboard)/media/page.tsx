@@ -77,7 +77,7 @@ export default function MediaPage() {
         title="Media Management"
         description="Manage photos, videos, voice notes, and drawings"
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "Media" },
         ]}
         actions={

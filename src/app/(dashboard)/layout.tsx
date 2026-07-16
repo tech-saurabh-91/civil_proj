@@ -6,12 +6,14 @@ import Sidebar from '@/components/layout/sidebar'
 import Header from '@/components/layout/header'
 import MobileSidebar from '@/components/layout/mobile-sidebar'
 import NotificationPanel from '@/components/layout/notification-panel'
+import SessionTimeout from '@/components/session-timeout'
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { sidebarCollapsed } = useUIStore()
 
   return (
     <div className="min-h-screen bg-background">
+      <SessionTimeout />
       {/* Desktop Sidebar */}
       <div className="hidden lg:block">
         <Sidebar />

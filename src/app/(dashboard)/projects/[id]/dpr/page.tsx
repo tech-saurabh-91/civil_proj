@@ -102,7 +102,7 @@ export default function DprPage({ params }: { params: Promise<{ id: string }> })
         title="Daily Progress Report"
         description={`${project.name} — ${today}`}
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "Projects", href: "/projects" },
           { label: project.name, href: `/projects/${id}` },
           { label: "DPR" },

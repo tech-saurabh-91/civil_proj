@@ -132,7 +132,7 @@ export default function FinancialAnalyticsPage() {
         title="Financial Analytics"
         description="Revenue, expenses, profit margins, and payment tracking"
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "Analytics", href: "/analytics" },
           { label: "Financial" },
         ]}

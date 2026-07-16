@@ -233,7 +233,7 @@ export default function ProjectBOQPage({ params }: { params: Promise<{ projectId
             : "Loading project details..."
         }
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "BOQ", href: "/boq" },
           { label: project?.name || "Project" },
         ]}

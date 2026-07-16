@@ -268,7 +268,7 @@ export default function SettingsPage() {
         title="Settings"
         description="Manage application configuration and system preferences"
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "Settings" },
         ]}
         actions={

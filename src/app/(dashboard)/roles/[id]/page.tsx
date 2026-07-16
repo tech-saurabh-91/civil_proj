@@ -72,7 +72,7 @@ export default function RoleDetailPage() {
         title={`${meta.name} — Users`}
         description={`Users assigned to the ${meta.name} role`}
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "Roles", href: "/roles" },
           { label: meta.name },
         ]}

@@ -180,7 +180,7 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ id: st
     <div className="space-y-6">
       <PageHeader
         title={project.name} description={project.code}
-        breadcrumbs={[{ label: "Dashboard", href: "/" }, { label: "Projects", href: "/projects" }, { label: project.name }]}
+        breadcrumbs={[{ label: "Dashboard", href: '/dashboard' }, { label: "Projects", href: "/projects" }, { label: project.name }]}
         actions={
           <div className="flex items-center gap-2">
             <Button variant="outline" asChild><Link href="/projects"><ArrowLeft className="mr-2 h-4 w-4" />Back</Link></Button>

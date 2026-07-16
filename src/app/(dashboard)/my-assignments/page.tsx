@@ -169,7 +169,7 @@ export default function MyAssignmentsPage() {
   if (loading) {
     return (
       <div className="space-y-6">
-        <PageHeader title="My Assignments" description="Your assigned leads and projects" breadcrumbs={[{ label: 'Dashboard', href: '/' }, { label: 'My Assignments' }]} />
+        <PageHeader title="My Assignments" description="Your assigned leads and projects" breadcrumbs={[{ label: 'Dashboard', href: '/dashboard' }, { label: 'My Assignments' }]} />
         <Card><CardContent className="flex items-center justify-center py-12"><div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent mx-auto" /><p className="mt-2 text-sm text-muted-foreground">Loading assignments...</p></CardContent></Card>
       </div>
     )
@@ -180,7 +180,7 @@ export default function MyAssignmentsPage() {
       <PageHeader
         title="My Assignments"
         description={`Leads and projects assigned to ${session?.user?.name || 'you'}`}
-        breadcrumbs={[{ label: 'Dashboard', href: '/' }, { label: 'My Assignments' }]}
+        breadcrumbs={[{ label: 'Dashboard', href: '/dashboard' }, { label: 'My Assignments' }]}
       />
 
       {/* Stats */}

@@ -137,7 +137,7 @@ export default function MaterialsPage() {
   if (loading) {
     return (
       <div className="space-y-6">
-        <PageHeader title="Material Requirements" description="Manage and track all material requirements across projects" breadcrumbs={[{ label: "Dashboard", href: "/" }, { label: "Materials" }]} />
+        <PageHeader title="Material Requirements" description="Manage and track all material requirements across projects" breadcrumbs={[{ label: "Dashboard", href: '/dashboard' }, { label: "Materials" }]} />
         <Card>
           <CardContent className="flex items-center justify-center py-12">
             <div className="text-center">
@@ -155,7 +155,7 @@ export default function MaterialsPage() {
       <PageHeader
         title="Material Requirements"
         description="Manage and track all material requirements across projects"
-        breadcrumbs={[{ label: "Dashboard", href: "/" }, { label: "Materials" }]}
+        breadcrumbs={[{ label: "Dashboard", href: '/dashboard' }, { label: "Materials" }]}
         actions={
           <div className="flex items-center gap-2">
             <Button variant="outline" onClick={handleExportCSV}>

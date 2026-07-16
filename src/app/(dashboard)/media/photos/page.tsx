@@ -112,7 +112,7 @@ export default function PhotosPage() {
   if (loading) {
     return (
       <div className="space-y-6">
-        <PageHeader title="Photo Management" description="Upload, organize, and manage site survey photos" breadcrumbs={[{ label: "Dashboard", href: "/" }, { label: "Media", href: "/media" }, { label: "Photos" }]} />
+        <PageHeader title="Photo Management" description="Upload, organize, and manage site survey photos" breadcrumbs={[{ label: "Dashboard", href: '/dashboard' }, { label: "Media", href: "/media" }, { label: "Photos" }]} />
         <Card>
           <CardContent className="flex items-center justify-center py-12">
             <div className="text-center">
@@ -130,7 +130,7 @@ export default function PhotosPage() {
       <PageHeader
         title="Photo Management"
         description="Upload, organize, and manage site survey photos"
-        breadcrumbs={[{ label: "Dashboard", href: "/" }, { label: "Media", href: "/media" }, { label: "Photos" }]}
+        breadcrumbs={[{ label: "Dashboard", href: '/dashboard' }, { label: "Media", href: "/media" }, { label: "Photos" }]}
         actions={
           <Button onClick={() => document.getElementById("photo-upload-input")?.click()}>
             <Upload className="h-4 w-4 mr-2" />Upload Photos

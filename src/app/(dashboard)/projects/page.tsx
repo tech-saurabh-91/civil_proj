@@ -750,7 +750,7 @@ export default function ProjectsPage() {
         <PageHeader
           title="Project Management"
           description="Track and manage all construction projects across clients"
-          breadcrumbs={[{ label: "Dashboard", href: "/" }, { label: "Projects" }]}
+          breadcrumbs={[{ label: "Dashboard", href: '/dashboard' }, { label: "Projects" }]}
         />
         <Card>
           <CardContent className="flex items-center justify-center py-12">
@@ -769,7 +769,7 @@ export default function ProjectsPage() {
       <PageHeader
         title="Project Management"
         description="Track and manage all construction projects across clients"
-        breadcrumbs={[{ label: "Dashboard", href: "/" }, { label: "Projects" }]}
+        breadcrumbs={[{ label: "Dashboard", href: '/dashboard' }, { label: "Projects" }]}
         actions={
           <div className="flex items-center gap-2">
             <div className="flex items-center rounded-lg border bg-background p-1">

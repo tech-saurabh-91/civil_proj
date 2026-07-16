@@ -180,7 +180,7 @@ export default function AnalyticsPage() {
         title="Analytics Dashboard"
         description="Comprehensive insights into business performance and operations"
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "Analytics" },
         ]}
         actions={

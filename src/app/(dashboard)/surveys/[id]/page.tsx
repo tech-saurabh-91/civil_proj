@@ -289,7 +289,7 @@ export default function SurveyDetailPage() {
         <PageHeader
           title="Survey Details"
           description="Loading..."
-          breadcrumbs={[{ label: 'Dashboard', href: '/' }, { label: 'Surveys', href: '/surveys' }, { label: 'Details' }]}
+          breadcrumbs={[{ label: 'Dashboard', href: '/dashboard' }, { label: 'Surveys', href: '/surveys' }, { label: 'Details' }]}
         />
         <Card>
           <CardContent className="flex items-center justify-center py-16">
@@ -306,7 +306,7 @@ export default function SurveyDetailPage() {
         <PageHeader
           title="Survey Not Found"
           description="The survey you're looking for doesn't exist."
-          breadcrumbs={[{ label: 'Dashboard', href: '/' }, { label: 'Surveys', href: '/surveys' }, { label: 'Not Found' }]}
+          breadcrumbs={[{ label: 'Dashboard', href: '/dashboard' }, { label: 'Surveys', href: '/surveys' }, { label: 'Not Found' }]}
         />
       </div>
     )
@@ -333,7 +333,7 @@ export default function SurveyDetailPage() {
         title={survey.title}
         description={survey.project?.name || ''}
         breadcrumbs={[
-          { label: 'Dashboard', href: '/' },
+          { label: 'Dashboard', href: '/dashboard' },
           { label: 'Surveys', href: '/surveys' },
           { label: survey.title },
         ]}

@@ -496,7 +496,7 @@ export default function NewLeadPage() {
         title="Create New Lead"
         description="Add a new lead to your sales pipeline."
         breadcrumbs={[
-          { label: 'Dashboard', href: '/' },
+          { label: 'Dashboard', href: '/dashboard' },
           { label: 'Leads', href: '/leads' },
           { label: 'New Lead' },
         ]}

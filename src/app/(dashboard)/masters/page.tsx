@@ -146,7 +146,7 @@ export default function MastersPage() {
         title="Master Data Management"
         description="Manage reference data, categories, and system-wide configurations"
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "Masters" },
         ]}
         actions={

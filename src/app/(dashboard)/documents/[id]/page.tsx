@@ -88,7 +88,7 @@ export default function DocumentDetailPage() {
         title={doc.name}
         description={`${doc.project} - ${doc.category}`}
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "Documents", href: "/documents" },
           { label: doc.id },
         ]}

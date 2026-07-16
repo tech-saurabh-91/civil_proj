@@ -251,7 +251,7 @@ export default function OcrPage() {
         title="Document OCR"
         description="Extract structured data from scanned documents using AI-powered OCR"
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "AI Module", href: "/ai" },
           { label: "OCR" },
         ]}

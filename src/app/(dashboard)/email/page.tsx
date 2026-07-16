@@ -103,7 +103,7 @@ export default function EmailPage() {
         title="Email Management"
         description="Compose, manage, and track emails"
         breadcrumbs={[
-          { label: 'Dashboard', href: '/' },
+          { label: 'Dashboard', href: '/dashboard' },
           { label: 'Email' },
         ]}
         actions={

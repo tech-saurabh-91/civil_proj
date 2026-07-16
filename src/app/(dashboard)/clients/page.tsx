@@ -146,7 +146,7 @@ export default function ClientsPage() {
         <PageHeader
           title="Client Management"
           description="Manage your construction clients, contractors, and government bodies"
-          breadcrumbs={[{ label: "Dashboard", href: "/" }, { label: "Clients" }]}
+          breadcrumbs={[{ label: "Dashboard", href: '/dashboard' }, { label: "Clients" }]}
         />
         <Card>
           <CardContent className="flex items-center justify-center py-12">
@@ -166,7 +166,7 @@ export default function ClientsPage() {
         title="Client Management"
         description="Manage your construction clients, contractors, and government bodies"
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "Clients" },
         ]}
         actions={

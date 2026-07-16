@@ -147,7 +147,7 @@ export default function InvoiceDetailPage() {
         title={invoice.invoiceNumber}
         description={invoice.title}
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "Invoices", href: "/invoices" },
           { label: invoice.invoiceNumber },
         ]}

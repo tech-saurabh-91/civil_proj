@@ -230,7 +230,7 @@ export default function TeamAnalyticsPage() {
         title="Team Analytics"
         description="Performance metrics, workload distribution, and attendance tracking"
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "Analytics", href: "/analytics" },
           { label: "Team" },
         ]}

@@ -150,7 +150,7 @@ export default function UsersPage() {
       <PageHeader
         title="User Management"
         description="Manage platform users, roles, and access permissions"
-        breadcrumbs={[{ label: 'Dashboard', href: '/' }, { label: 'Users' }]}
+        breadcrumbs={[{ label: 'Dashboard', href: '/dashboard' }, { label: 'Users' }]}
         actions={
           <Link href="/users/new">
             <Button>

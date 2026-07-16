@@ -150,7 +150,7 @@ export default function InvoicesPage() {
         title="Invoices"
         description="Create, manage and track project invoices"
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "Invoices" },
         ]}
         actions={

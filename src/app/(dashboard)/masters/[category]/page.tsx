@@ -311,7 +311,7 @@ export default function MasterCategoryPage() {
         title={category.name}
         description={category.description}
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "Masters", href: "/masters" },
           { label: category.name },
         ]}

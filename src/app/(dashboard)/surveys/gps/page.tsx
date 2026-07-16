@@ -406,7 +406,7 @@ export default function GpsTrackingPage() {
       <PageHeader
         title="GPS Tracking"
         description="Real-time field team location tracking with geofencing"
-        breadcrumbs={[{ label: 'Dashboard', href: '/' }, { label: 'GPS Tracking' }]}
+        breadcrumbs={[{ label: 'Dashboard', href: '/dashboard' }, { label: 'GPS Tracking' }]}
         actions={
           <div className="flex gap-2">
             <Button variant="outline" onClick={() => setShowFilters(!showFilters)}>

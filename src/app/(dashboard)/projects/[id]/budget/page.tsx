@@ -80,7 +80,7 @@ export default function BudgetPage({ params }: { params: Promise<{ id: string }>
         title="Budget Overview"
         description={`Financial summary for ${project.name}`}
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "Projects", href: "/projects" },
           { label: project.name, href: `/projects/${id}` },
           { label: "Budget" },

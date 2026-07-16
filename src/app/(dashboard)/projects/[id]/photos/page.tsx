@@ -101,7 +101,7 @@ export default function PhotosPage({ params }: { params: Promise<{ id: string }>
         title="Site Photos"
         description={`${photos.length} photo(s) uploaded`}
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "Projects", href: "/projects" },
           { label: "Photos" },
         ]}

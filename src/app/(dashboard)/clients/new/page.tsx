@@ -109,7 +109,7 @@ export default function NewClientPage() {
       <PageHeader
         title="Add New Client"
         description="Create a new client profile for your construction projects"
-        breadcrumbs={[{ label: 'Dashboard', href: '/' }, { label: 'Clients', href: '/clients' }, { label: 'New Client' }]}
+        breadcrumbs={[{ label: 'Dashboard', href: '/dashboard' }, { label: 'Clients', href: '/clients' }, { label: 'New Client' }]}
         actions={
           <Button variant="outline" asChild>
             <Link href="/clients"><ArrowLeft className="mr-2 h-4 w-4" />Back to Clients</Link>

@@ -65,7 +65,7 @@ export const SIDEBAR_NAV_ITEMS: readonly {
   {
     group: 'Dashboard',
     items: [
-      { label: 'Dashboard', href: '/', icon: 'LayoutDashboard' },
+      { label: 'Dashboard', href: '/dashboard', icon: 'LayoutDashboard' },
       { label: 'My Assignments', href: '/my-assignments', icon: 'ClipboardList' },
       { label: 'Process Flow', href: '/process-flow', icon: 'GitBranch' },
     ],

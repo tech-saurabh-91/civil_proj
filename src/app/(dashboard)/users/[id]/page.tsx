@@ -124,7 +124,7 @@ export default function UserDetailPage() {
         title={`${user.firstName} ${user.lastName}`}
         description={user.designation}
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "Users", href: "/users" },
           { label: `${user.firstName} ${user.lastName}` },
         ]}

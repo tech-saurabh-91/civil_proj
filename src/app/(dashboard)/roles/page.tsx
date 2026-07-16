@@ -62,7 +62,7 @@ export default function RolesPage() {
         title="Role Management"
         description="View user roles and their assignments"
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "Roles" },
         ]}
       />

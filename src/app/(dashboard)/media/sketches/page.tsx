@@ -116,7 +116,7 @@ export default function SketchesPage() {
         title="Sketch Pad"
         description="Create hand-drawn sketches for site documentation"
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "Media", href: "/media" },
           { label: "Sketches" },
         ]}

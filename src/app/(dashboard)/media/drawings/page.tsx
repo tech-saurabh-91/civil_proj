@@ -169,7 +169,7 @@ export default function DrawingsPage() {
         title="Drawing Upload"
         description="Upload and manage CAD files, blueprints, and technical drawings"
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "Media", href: "/media" },
           { label: "Drawings" },
         ]}

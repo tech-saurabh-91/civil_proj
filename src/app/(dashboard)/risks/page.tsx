@@ -223,7 +223,7 @@ export default function RisksPage() {
         title="Risk Assessment"
         description="Identify, assess and mitigate project risks"
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "Risks" },
         ]}
         actions={

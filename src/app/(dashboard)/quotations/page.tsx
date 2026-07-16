@@ -123,7 +123,7 @@ export default function QuotationsPage() {
         <PageHeader
           title="Quotations"
           description="Create, manage and track project quotations"
-          breadcrumbs={[{ label: "Dashboard", href: "/" }, { label: "Quotations" }]}
+          breadcrumbs={[{ label: "Dashboard", href: '/dashboard' }, { label: "Quotations" }]}
         />
         <Card>
           <CardContent className="flex items-center justify-center py-12">
@@ -143,7 +143,7 @@ export default function QuotationsPage() {
         title="Quotations"
         description="Create, manage and track project quotations"
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "Quotations" },
         ]}
         actions={

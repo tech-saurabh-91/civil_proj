@@ -231,7 +231,7 @@ export default function NewQuotationPage() {
         title="Create Quotation"
         description="Prepare a new quotation for client submission"
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "Quotations", href: "/quotations" },
           { label: "New Quotation" },
         ]}

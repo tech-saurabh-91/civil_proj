@@ -120,7 +120,7 @@ export default function MapPage({ params }: { params: Promise<{ id: string }> })
         title="Project Location"
         description={`Map view for ${project.name}`}
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "Projects", href: "/projects" },
           { label: project.name, href: `/projects/${id}` },
           { label: "Map" },

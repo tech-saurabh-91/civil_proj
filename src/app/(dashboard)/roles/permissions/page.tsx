@@ -221,7 +221,7 @@ export default function PermissionsPage() {
         title="Permissions Matrix"
         description="Global view of all role permissions across the platform"
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "Roles", href: "/roles" },
           { label: "Permissions Matrix" },
         ]}

@@ -279,7 +279,7 @@ export default function LeadsPage() {
         <PageHeader
           title="Lead Management"
           description="Track and manage your sales pipeline from inquiry to conversion."
-          breadcrumbs={[{ label: 'Dashboard', href: '/' }, { label: 'Leads' }]}
+          breadcrumbs={[{ label: 'Dashboard', href: '/dashboard' }, { label: 'Leads' }]}
         />
         <Card>
           <CardContent className="flex items-center justify-center py-12">
@@ -299,7 +299,7 @@ export default function LeadsPage() {
         title="Lead Management"
         description="Track and manage your sales pipeline from inquiry to conversion."
         breadcrumbs={[
-          { label: 'Dashboard', href: '/' },
+          { label: 'Dashboard', href: '/dashboard' },
           { label: 'Leads' },
         ]}
         actions={

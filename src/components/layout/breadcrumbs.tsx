@@ -94,7 +94,7 @@ export default function Breadcrumbs({ className }: BreadcrumbsProps) {
   return (
     <nav aria-label="Breadcrumb" className={cn('flex items-center gap-1 text-sm', className)}>
       <Link
-        href="/"
+        href="/dashboard"
         className="flex items-center text-muted-foreground hover:text-foreground transition-colors"
       >
         <Home className="h-4 w-4" />

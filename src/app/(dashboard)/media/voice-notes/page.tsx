@@ -235,7 +235,7 @@ export default function VoiceNotesPage() {
         title="Voice Notes"
         description="Record and manage audio observations from site surveys"
         breadcrumbs={[
-          { label: 'Dashboard', href: '/' },
+          { label: 'Dashboard', href: '/dashboard' },
           { label: 'Media', href: '/media' },
           { label: 'Voice Notes' },
         ]}

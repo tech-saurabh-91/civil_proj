@@ -148,7 +148,7 @@ export default function AccessRequestsPage() {
       <PageHeader
         title="Access Requests"
         description="Review and approve user access requests"
-        breadcrumbs={[{ label: 'Dashboard', href: '/' }, { label: 'Access Requests' }]}
+        breadcrumbs={[{ label: 'Dashboard', href: '/dashboard' }, { label: 'Access Requests' }]}
         actions={
           <Button variant="outline" size="sm" onClick={fetchRequests}>
             <RefreshCw className="h-4 w-4 mr-1" />Refresh

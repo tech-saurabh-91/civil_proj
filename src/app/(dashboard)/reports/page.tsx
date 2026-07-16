@@ -156,7 +156,7 @@ export default function ReportsPage() {
         <PageHeader
           title="Reports"
           description="Generate, manage, and download project reports"
-          breadcrumbs={[{ label: "Dashboard", href: "/" }, { label: "Reports" }]}
+          breadcrumbs={[{ label: "Dashboard", href: '/dashboard' }, { label: "Reports" }]}
         />
         <Card>
           <CardContent className="flex items-center justify-center py-12">
@@ -176,7 +176,7 @@ export default function ReportsPage() {
         title="Reports"
         description="Generate, manage, and download project reports"
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "Reports" },
         ]}
         actions={

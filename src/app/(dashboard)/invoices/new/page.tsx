@@ -224,7 +224,7 @@ export default function NewInvoicePage() {
         title="Create Invoice"
         description="Prepare a new invoice for client billing"
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "Invoices", href: "/invoices" },
           { label: "New Invoice" },
         ]}

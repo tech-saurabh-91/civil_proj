@@ -160,7 +160,7 @@ export default function DocumentsPage() {
   if (loading) {
     return (
       <div className="space-y-6">
-        <PageHeader title="Document Management" description="Organize, manage, and access all project documents" breadcrumbs={[{ label: "Dashboard", href: "/" }, { label: "Documents" }]} />
+        <PageHeader title="Document Management" description="Organize, manage, and access all project documents" breadcrumbs={[{ label: "Dashboard", href: '/dashboard' }, { label: "Documents" }]} />
         <Card>
           <CardContent className="flex items-center justify-center py-12">
             <div className="text-center">
@@ -178,7 +178,7 @@ export default function DocumentsPage() {
       <PageHeader
         title="Document Management"
         description="Organize, manage, and access all project documents"
-        breadcrumbs={[{ label: "Dashboard", href: "/" }, { label: "Documents" }]}
+        breadcrumbs={[{ label: "Dashboard", href: '/dashboard' }, { label: "Documents" }]}
         actions={
           <Button onClick={() => document.getElementById("doc-upload-input")?.click()}>
             <Upload className="mr-2 h-4 w-4" />Upload Document

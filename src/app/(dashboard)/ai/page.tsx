@@ -238,7 +238,7 @@ export default function AIAssistantPage() {
       <PageHeader
         title="AI Assistant"
         description="Ask questions about the platform — get instant answers"
-        breadcrumbs={[{ label: 'Dashboard', href: '/' }, { label: 'AI Assistant' }]}
+        breadcrumbs={[{ label: 'Dashboard', href: '/dashboard' }, { label: 'AI Assistant' }]}
       />
 
       <div className="grid gap-6 lg:grid-cols-4">

@@ -73,7 +73,7 @@ export default function VideosPage() {
         title="Video Management"
         description="Upload and manage site survey video recordings"
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "Media", href: "/media" },
           { label: "Videos" },
         ]}

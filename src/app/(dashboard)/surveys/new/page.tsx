@@ -236,7 +236,7 @@ export default function NewSurveyPage() {
         title="Create New Survey"
         description="Set up a new site survey with checklist and assignment"
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "Surveys", href: "/surveys" },
           { label: "New Survey" },
         ]}

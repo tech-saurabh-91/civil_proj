@@ -35,7 +35,7 @@ export default function ReportDetailPage() {
         title="Topographical Survey Report"
         description="Worli Sky Residences Tower A"
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "Reports", href: "/reports" },
           { label: "RPT-2026-001" },
         ]}

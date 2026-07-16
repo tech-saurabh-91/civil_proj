@@ -91,7 +91,7 @@ export default function Sidebar() {
 
   const isActiveRoute = useCallback(
     (href: string) => {
-      if (href === '/') return pathname === '/'
+      if (href === '/dashboard') return pathname === '/dashboard'
       return pathname.startsWith(href) && (pathname.length === href.length || pathname[href.length] === '/' || href.includes('['))
     },
     [pathname],

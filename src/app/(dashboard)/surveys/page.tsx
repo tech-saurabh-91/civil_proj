@@ -282,7 +282,7 @@ export default function SurveysPage() {
         <PageHeader
           title="Site Surveys"
           description="Manage and track all construction site surveys"
-          breadcrumbs={[{ label: 'Dashboard', href: '/' }, { label: 'Surveys' }]}
+          breadcrumbs={[{ label: 'Dashboard', href: '/dashboard' }, { label: 'Surveys' }]}
         />
         <Card>
           <CardContent className="flex items-center justify-center py-16">
@@ -300,7 +300,7 @@ export default function SurveysPage() {
         <PageHeader
           title="Site Surveys"
           description="Manage and track all construction site surveys"
-          breadcrumbs={[{ label: 'Dashboard', href: '/' }, { label: 'Surveys' }]}
+          breadcrumbs={[{ label: 'Dashboard', href: '/dashboard' }, { label: 'Surveys' }]}
           actions={
             <div className="flex items-center gap-2">
               <Link href="/surveys/new">

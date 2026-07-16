@@ -243,7 +243,7 @@ export default function ApiManagerPage() {
         title="API Manager"
         description="Manage API keys, monitor usage, and configure rate limiting"
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "API Manager" },
         ]}
         actions={

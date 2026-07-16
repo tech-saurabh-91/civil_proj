@@ -333,7 +333,7 @@ export default function BOQPage() {
         title="Bill of Quantities"
         description="Prepare and manage BOQ for project cost estimation"
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "BOQ" },
         ]}
         actions={

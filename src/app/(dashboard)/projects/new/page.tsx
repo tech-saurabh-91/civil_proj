@@ -231,7 +231,7 @@ export default function NewProjectPage() {
         title="Create New Project"
         description="Set up a new construction project with all required details"
         breadcrumbs={[
-          { label: "Dashboard", href: "/" },
+          { label: "Dashboard", href: '/dashboard' },
           { label: "Projects", href: "/projects" },
           { label: "New Project" },
         ]}

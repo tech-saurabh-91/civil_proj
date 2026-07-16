@@ -186,7 +186,7 @@ export default function ProcessFlowPage() {
         title="Construction Process Flow"
         description="Complete end-to-end lifecycle — from system setup and master data to project handover."
         breadcrumbs={[
-          { label: 'Dashboard', href: '/' },
+          { label: 'Dashboard', href: '/dashboard' },
           { label: 'Process Flow' },
         ]}
       />

@@ -162,7 +162,7 @@ export default function MeasurementsPage() {
   if (loading) {
     return (
       <div className="space-y-6">
-        <PageHeader title="Measurements" description="Track and manage all construction site measurements" breadcrumbs={[{ label: "Dashboard", href: "/" }, { label: "Measurements" }]} />
+        <PageHeader title="Measurements" description="Track and manage all construction site measurements" breadcrumbs={[{ label: "Dashboard", href: '/dashboard' }, { label: "Measurements" }]} />
         <Card>
           <CardContent className="flex items-center justify-center py-12">
             <div className="text-center">
@@ -180,7 +180,7 @@ export default function MeasurementsPage() {
       <PageHeader
         title="Measurements"
         description="Track and manage all construction site measurements"
-        breadcrumbs={[{ label: "Dashboard", href: "/" }, { label: "Measurements" }]}
+        breadcrumbs={[{ label: "Dashboard", href: '/dashboard' }, { label: "Measurements" }]}
         actions={
           <div className="flex items-center gap-2">
             <Button variant="outline" size="sm"><Download className="h-4 w-4 mr-2" />Export</Button>
