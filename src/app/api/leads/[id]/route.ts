@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
+import { auth } from '@/lib/auth'
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -83,17 +84,24 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     }
 
     const updateData: any = {}
+    const changes: Record<string, { old: any; new: any }> = {}
 
-    if (name) updateData.name = name
-    if (email !== undefined) updateData.email = email
-    if (phone !== undefined) updateData.phone = phone
-    if (company !== undefined) updateData.company = company
-    if (source !== undefined) updateData.source = source
-    if (status) updateData.status = status
-    if (priority) updateData.priority = priority
-    if (estimatedValue !== undefined) updateData.estimatedValue = estimatedValue ? parseFloat(estimatedValue) : null
-    if (notes !== undefined) updateData.notes = notes
-    if (assignedToId !== undefined) updateData.assignedToId = assignedToId
+    if (name && name !== (existing as any).name) { updateData.name = name; changes.name = { old: (existing as any).name, new: name } }
+    if (email !== undefined && email !== (existing as any).email) { updateData.email = email; changes.email = { old: (existing as any).email, new: email } }
+    if (phone !== undefined && phone !== (existing as any).phone) { updateData.phone = phone; changes.phone = { old: (existing as any).phone, new: phone } }
+    if (company !== undefined && company !== (existing as any).company) { updateData.company = company; changes.company = { old: (existing as any).company, new: company } }
+    if (source !== undefined && source !== (existing as any).source) { updateData.source = source; changes.source = { old: (existing as any).source, new: source } }
+    if (status && status !== (existing as any).status) { updateData.status = status; changes.status = { old: (existing as any).status, new: status } }
+    if (priority && priority !== (existing as any).priority) { updateData.priority = priority; changes.priority = { old: (existing as any).priority, new: priority } }
+    if (estimatedValue !== undefined) {
+      const newVal = estimatedValue ? parseFloat(estimatedValue) : null
+      if (newVal !== (existing as any).estimatedValue) {
+        updateData.estimatedValue = newVal
+        changes.estimatedValue = { old: (existing as any).estimatedValue, new: newVal }
+      }
+    }
+    if (notes !== undefined && notes !== (existing as any).notes) { updateData.notes = notes; changes.notes = { old: (existing as any).notes, new: notes } }
+    if (assignedToId !== undefined && assignedToId !== (existing as any).assignedToId) { updateData.assignedToId = assignedToId; changes.assignedToId = { old: (existing as any).assignedToId, new: assignedToId } }
 
     if (status === 'WON' && !(existing as any).clientId) {
       const client = await db.client.create({
@@ -117,6 +125,28 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
         client: { select: { id: true, companyName: true } },
       },
     })
+
+    if (Object.keys(changes).length > 0) {
+      const session = await auth()
+      const userId = (session?.user as any)?.id || 'system'
+      const userName = (session?.user as any)?.name || 'System'
+
+      let description = `Updated lead "${(existing as any).name}"`
+      if (changes.status) description = `Lead "${(existing as any).name}" status changed from ${changes.status.old} to ${changes.status.new}`
+      if (changes.assignedToId) description = `Lead "${(existing as any).name}" reassigned`
+
+      await db.auditLog.create({
+        data: {
+          userId,
+          action: 'UPDATED',
+          entityType: 'Lead',
+          entityId: id,
+          description,
+          oldValues: changes,
+          ipAddress: req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown',
+        },
+      })
+    }
 
     return NextResponse.json({ success: true, data: updated })
   } catch (error) {

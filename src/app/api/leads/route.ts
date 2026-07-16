@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
+import { auth } from '@/lib/auth'
 
 export async function GET(request: NextRequest) {
   try {
@@ -116,6 +117,21 @@ export async function POST(request: NextRequest) {
         clientId: clientId || null,
       },
     })
+
+    try {
+      const session = await auth()
+      const userId = (session?.user as any)?.id || 'system'
+      await db.auditLog.create({
+        data: {
+          userId,
+          action: 'CREATED',
+          entityType: 'Lead',
+          entityId: lead.id,
+          description: `Created new lead "${name}"`,
+          ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
+        },
+      })
+    } catch {}
 
     return NextResponse.json({ success: true, data: lead }, { status: 201 })
   } catch (error) {
